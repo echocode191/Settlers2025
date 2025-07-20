@@ -340,3 +340,11 @@ section {
 @media (max-width: 767px) {
   body { padding-bottom: 7rem; }
 }
+.fb-page {
+  margin: auto;
+  max-width: 500px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #30363d;
+}
