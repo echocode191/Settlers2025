@@ -5,7 +5,7 @@ import 'leaflet-routing-machine';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const settlersCoords = [-0.16486, 35.58073]; // Settlers Inn coordinates
+const settlersCoords = [-0.50191, 35.27944]; // ✅ Real Settlers Inn coordinates
 
 const Location = () => {
   const [userCoords, setUserCoords] = useState(null);
@@ -15,15 +15,15 @@ const Location = () => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const userMarkerRef = useRef(null);
-  const routeLineRef = useRef(null);
+  const routingControlRef = useRef(null);
 
   const jokes = [
-    "🐐 Shortcut via goat path... just kidding!",
-    "🛵 Dodging potholes like a pro...",
-    "🍲 Free aroma as you get closer...",
-    "🚕 We told the boda guy to hurry!",
-    "🗺️ Calculating... avoid cows on the road!",
-    "📡 GPS locking in like your hunger!"
+    "🛵 Boda guy said he's already halfway!",
+    "🐄 Avoiding cows and chaos... please wait.",
+    "📍 Recalculating... map prefers nyama choma stops!",
+    "📦 Route loaded — no detour to Mama Mboga this time!",
+    "🥾 If you walk, we’ll call it a fitness tour.",
+    "🍲 Follow the aroma. That’s our real direction system.",
   ];
 
   const styles = {
@@ -133,12 +133,17 @@ const Location = () => {
   }, []);
 
   const locateMe = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation not supported by your browser.');
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition((pos) => {
       const coords = [pos.coords.latitude, pos.coords.longitude];
       setUserCoords(coords);
 
       if (userMarkerRef.current) mapInstanceRef.current.removeLayer(userMarkerRef.current);
-      if (routeLineRef.current) mapInstanceRef.current.removeControl(routeLineRef.current);
+      if (routingControlRef.current) mapInstanceRef.current.removeControl(routingControlRef.current);
 
       userMarkerRef.current = L.marker(coords, {
         icon: L.divIcon({
@@ -162,17 +167,18 @@ const Location = () => {
         routeWhileDragging: false,
       }).addTo(mapInstanceRef.current);
 
-      routeLineRef.current = routingControl;
+      routingControlRef.current = routingControl;
 
       const dist = getDistance(coords[0], coords[1], settlersCoords[0], settlersCoords[1]);
       setDistance(dist);
 
-      // Show fun travel joke
       setJoke(jokes[Math.floor(Math.random() * jokes.length)]);
 
       mapInstanceRef.current.fitBounds(routingControl.getPlan().getWaypoints().map(w => w.latLng), {
         padding: [50, 50],
       });
+    }, () => {
+      alert('Could not fetch location.');
     });
   };
 
@@ -187,9 +193,9 @@ const Location = () => {
     <div style={styles.page}>
       <Navbar />
       <section style={styles.section}>
-        <h2 style={styles.title}>📍 Find Us</h2>
+        <h2 style={styles.title}>📍 Where to Find Settlers Inn</h2>
         <p style={styles.subtitle}>
-          We’re in the beautiful Kenya Highlands. Let’s get you there the smart way.
+          Navigate through the Highlands with flavor, fun, and full directions.
         </p>
 
         <div style={styles.mapBox} ref={mapRef} id="map" />
