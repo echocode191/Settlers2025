@@ -29,8 +29,6 @@ const App = () => {
       e.preventDefault();
       setDeferredPrompt(e);
       setShowBanner(true);
-
-      // Auto-hide banner after 7 seconds
       setTimeout(() => setShowBanner(false), 7000);
     });
   }, []);
@@ -51,7 +49,7 @@ const App = () => {
     <Router>
       <ScrollToTop />
 
-      {/* Install PWA banner */}
+      {/* Install banner */}
       {showBanner && (
         <div style={installBannerStyle} onClick={handleInstall}>
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
@@ -59,21 +57,22 @@ const App = () => {
       )}
 
       <Routes>
-        <Route path="/" element={<Valuation />} /> {/* TEMP homepage */}
+        <Route path="/" element={<Valuation />} /> {/* Landing page */}
+        <Route path="/home" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/accommodation" element={<Accommodation />} />
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/location" element={<Location />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/value" element={<Valuation />} /> {/* Alias */}
         <Route path="/offers" element={<Offers />} />
+        <Route path="/value" element={<Valuation />} /> {/* Optional alias */}
       </Routes>
     </Router>
   );
 };
 
-// 🔥 Banner style
+// Style for PWA install banner
 const installBannerStyle = {
   position: 'fixed',
   top: '10px',
@@ -90,7 +89,7 @@ const installBannerStyle = {
   animation: 'fadeInOut 7s ease-in-out',
 };
 
-// 🔁 CSS Animation
+// CSS animation injection
 const bannerAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
@@ -99,8 +98,6 @@ const bannerAnimation = `
   100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
 `;
-
-// Inject animation globally
 if (typeof document !== 'undefined') {
   const style = document.createElement('style');
   style.innerHTML = bannerAnimation;

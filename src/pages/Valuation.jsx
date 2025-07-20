@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 const Valuation = () => {
   const [showValue, setShowValue] = useState(false);
-  const navigate = useNavigate(); // ✅ React Router navigation
+  const navigate = useNavigate();
 
   const styles = {
     page: {
@@ -82,7 +82,7 @@ const Valuation = () => {
               </button>
               <button
                 style={{ ...styles.button, backgroundColor: '#1f6feb', color: '#fff' }}
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/home')}
               >
                 🚀 Proceed to Website
               </button>
@@ -115,7 +115,7 @@ const Valuation = () => {
 
               <button
                 style={{ ...styles.button, backgroundColor: '#9fef00' }}
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/home')}
               >
                 🛜 View Site Anyway
               </button>
