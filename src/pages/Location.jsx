@@ -1,18 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const settlersCoords = [-0.16486, 35.58073]; // Settlers Inn exact coordinates
+const settlersCoords = [-0.16486, 35.58073]; // Settlers Inn coordinates
 
-const Gallery = () => {
+const Location = () => {
   const [userCoords, setUserCoords] = useState(null);
   const [distance, setDistance] = useState(null);
+  const [joke, setJoke] = useState('');
+  const [mapExpanded, setMapExpanded] = useState(false);
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const userMarkerRef = useRef(null);
   const routeLineRef = useRef(null);
+
+  const jokes = [
+    "🐐 Shortcut via goat path... just kidding!",
+    "🛵 Dodging potholes like a pro...",
+    "🍲 Free aroma as you get closer...",
+    "🚕 We told the boda guy to hurry!",
+    "🗺️ Calculating... avoid cows on the road!",
+    "📡 GPS locking in like your hunger!"
+  ];
 
   const styles = {
     page: {
@@ -27,31 +39,32 @@ const Gallery = () => {
       margin: 'auto',
       padding: '2rem 1rem',
     },
-    h2: {
+    title: {
       textAlign: 'center',
       color: '#9fef00',
       fontSize: '2rem',
       marginBottom: '0.5rem',
     },
-    intro: {
+    subtitle: {
       textAlign: 'center',
       color: '#8b949e',
       marginBottom: '2rem',
       fontSize: '1rem',
     },
     mapBox: {
-      height: '400px',
+      height: mapExpanded ? '80vh' : '400px',
       borderRadius: '14px',
       overflow: 'hidden',
       border: '2px solid #30363d',
       boxShadow: '0 0 20px rgba(0,255,120,0.1)',
-      marginBottom: '2rem',
+      marginBottom: '1.5rem',
+      transition: '0.3s ease',
     },
     controls: {
       display: 'flex',
       justifyContent: 'center',
       gap: '1rem',
-      marginBottom: '2rem',
+      marginBottom: '1rem',
       flexWrap: 'wrap',
     },
     button: {
@@ -69,12 +82,18 @@ const Gallery = () => {
       textAlign: 'center',
       color: '#58a6ff',
       fontSize: '1rem',
-      marginTop: '-1rem',
+      marginTop: '0.8rem',
+    },
+    joke: {
+      textAlign: 'center',
+      fontSize: '0.95rem',
+      color: '#8b949e',
+      marginTop: '0.3rem',
     },
   };
 
   const getDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // km
+    const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -106,7 +125,7 @@ const Gallery = () => {
         iconSize: [30, 30],
         iconAnchor: [15, 15],
       }),
-    }).addTo(mapInstanceRef.current).bindPopup("Settlers Inn");
+    }).addTo(mapInstanceRef.current).bindPopup('Settlers Inn');
 
     return () => {
       mapInstanceRef.current.remove();
@@ -119,7 +138,7 @@ const Gallery = () => {
       setUserCoords(coords);
 
       if (userMarkerRef.current) mapInstanceRef.current.removeLayer(userMarkerRef.current);
-      if (routeLineRef.current) mapInstanceRef.current.removeLayer(routeLineRef.current);
+      if (routeLineRef.current) mapInstanceRef.current.removeControl(routeLineRef.current);
 
       userMarkerRef.current = L.marker(coords, {
         icon: L.divIcon({
@@ -130,13 +149,30 @@ const Gallery = () => {
         }),
       }).addTo(mapInstanceRef.current).bindPopup("You are here").openPopup();
 
-      const line = L.polyline([coords, settlersCoords], { color: '#9fef00', weight: 4 }).addTo(mapInstanceRef.current);
-      routeLineRef.current = line;
+      const routingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(coords[0], coords[1]),
+          L.latLng(settlersCoords[0], settlersCoords[1]),
+        ],
+        lineOptions: {
+          styles: [{ color: '#9fef00', weight: 5 }],
+        },
+        createMarker: () => null,
+        show: false,
+        routeWhileDragging: false,
+      }).addTo(mapInstanceRef.current);
+
+      routeLineRef.current = routingControl;
 
       const dist = getDistance(coords[0], coords[1], settlersCoords[0], settlersCoords[1]);
       setDistance(dist);
 
-      mapInstanceRef.current.fitBounds(line.getBounds(), { padding: [50, 50] });
+      // Show fun travel joke
+      setJoke(jokes[Math.floor(Math.random() * jokes.length)]);
+
+      mapInstanceRef.current.fitBounds(routingControl.getPlan().getWaypoints().map(w => w.latLng), {
+        padding: [50, 50],
+      });
     });
   };
 
@@ -151,24 +187,33 @@ const Gallery = () => {
     <div style={styles.page}>
       <Navbar />
       <section style={styles.section}>
-        <h2 style={styles.h2}>📍 Visit Settlers Inn</h2>
-        <p style={styles.intro}>
-          Use the tools below to find your way from where you are to our location!
+        <h2 style={styles.title}>📍 Find Us</h2>
+        <p style={styles.subtitle}>
+          We’re in the beautiful Kenya Highlands. Let’s get you there the smart way.
         </p>
 
         <div style={styles.mapBox} ref={mapRef} id="map" />
 
         <div style={styles.controls}>
           <button onClick={locateMe} style={styles.button}>📍 Locate Me</button>
-          <button onClick={flyToSettlers} style={{ ...styles.button, backgroundColor: '#9fef00', color: '#0d1117' }}>
+          <button onClick={flyToSettlers} style={{ ...styles.button, backgroundColor: '#9fef00' }}>
             🚀 Take Me to Settlers
+          </button>
+          <button
+            onClick={() => setMapExpanded(!mapExpanded)}
+            style={{ ...styles.button, backgroundColor: '#1f6feb', color: '#fff' }}
+          >
+            {mapExpanded ? '🗺️ Collapse Map' : '🔍 Expand Map'}
           </button>
         </div>
 
         {distance && (
-          <div style={styles.distance}>
-            🛣️ You're approximately <strong>{distance} km</strong> from Settlers Inn.
-          </div>
+          <>
+            <div style={styles.distance}>
+              🛣️ You're approximately <strong>{distance} km</strong> away.
+            </div>
+            <div style={styles.joke}>{joke}</div>
+          </>
         )}
       </section>
       <Footer />
@@ -189,4 +234,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default Location;
