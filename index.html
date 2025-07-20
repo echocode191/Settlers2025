@@ -6,7 +6,7 @@
 
     <title>Settlers Inn | Where Settlers Still Eat Like Kings</title>
 
-    <!-- SEO -->
+    <!-- SEO Meta -->
     <meta name="description" content="Settlers Inn — Authentic dishes & cozy stays in Kipkelion, Kenya Highlands. Come hungry, leave like a king!" />
     <meta name="keywords" content="Settlers Inn, Kipkelion, Kenya hotels, local food, African cuisine, family restaurant, Highlands stay" />
     <meta name="author" content="EchoBiz (Kimutai Gibson)" />
@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
 
-    <!-- Facebook SDK (load early) -->
+    <!-- Facebook SDK -->
     <script async defer crossorigin="anonymous"
       src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
       nonce="settlersInnScript">
@@ -33,16 +33,16 @@
 
   <body style="margin: 0; font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9;">
     <noscript>
-      <strong>We're sorry but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
+      <strong>We're sorry, but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
     </noscript>
 
-    <!-- Facebook SDK Root (required) -->
+    <!-- Facebook SDK Root (must be inside <body>) -->
     <div id="fb-root"></div>
 
-    <!-- React Mount Point -->
+    <!-- React App Mount Point -->
     <div id="root"></div>
 
-    <!-- Vite Entry -->
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Vite entry point -->
+    <script type="module" src="/main.jsx"></script>
   </body>
 </html>
