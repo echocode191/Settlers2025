@@ -14,17 +14,20 @@ const Home = () => {
 
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [showInstallToast, setShowInstallToast] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
-    const yearEl = document.getElementById("year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-
     const msgInterval = setInterval(() => {
       setPhraseIndex(prev => (prev + 1) % funnyPhrases.length);
     }, 4000);
 
-    const toastTimer = setTimeout(() => setShowInstallToast(true), 4000);
-    const hideToastTimer = setTimeout(() => setShowInstallToast(false), 10000);
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallToast(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
     // Trigger Facebook parsing if FB SDK is available
     if (window.FB) {
@@ -33,18 +36,24 @@ const Home = () => {
 
     return () => {
       clearInterval(msgInterval);
-      clearTimeout(toastTimer);
-      clearTimeout(hideToastTimer);
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     };
   }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      setShowInstallToast(false);
+    }
+  };
 
   return (
     <>
       <Navbar />
 
       {showInstallToast && (
-        <div style={toastStyle}>
-          🧠 Tip: You can install <strong>Settlers Inn</strong> as an app from your browser!
+        <div style={toastStyle} onClick={handleInstallClick}>
+          🧠 Tip: Tap here to <strong>install Settlers Inn</strong> as an app!
         </div>
       )}
 
@@ -121,7 +130,9 @@ const Home = () => {
         <a href="https://wa.me/254748778388" target="_blank" rel="noreferrer" title="Chat on WhatsApp">💬</a>
       </div>
 
-      <span id="year" style={{ display: 'block', textAlign: 'center', marginTop: '2rem', color: '#666' }}></span>
+      <p style={{ textAlign: 'center', marginTop: '2rem', color: '#666' }}>
+        &copy; {new Date().getFullYear()}
+      </p>
     </>
   );
 };
@@ -143,6 +154,7 @@ const toastStyle = {
   textAlign: 'center',
   animation: 'fadeInOut 6s ease-in-out',
   lineHeight: '1.5',
+  cursor: 'pointer',
 };
 
 // ✅ Inject keyframes dynamically
