@@ -24,24 +24,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
 
-    <!-- Facebook SDK Script (loaded early to support reviews) -->
+    <!-- Facebook SDK (load early) -->
     <script async defer crossorigin="anonymous"
       src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
       nonce="settlersInnScript">
     </script>
   </head>
 
-  <body style="margin:0; font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9;">
+  <body style="margin: 0; font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9;">
     <noscript>
       <strong>We're sorry but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
     </noscript>
 
-    <!-- Facebook SDK Root (must be in <body>) -->
+    <!-- Facebook SDK Root (required) -->
     <div id="fb-root"></div>
 
+    <!-- React Mount Point -->
     <div id="root"></div>
 
-    <!-- Vite entry point -->
+    <!-- Vite Entry -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
