@@ -9,6 +9,7 @@ import Gallery from './pages/Gallery';
 import Location from './pages/Location';
 import Contact from './pages/Contact';
 import Offers from './pages/Offers';
+import Valuation from './pages/Valuation';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -58,13 +59,14 @@ const App = () => {
       )}
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Valuation />} /> {/* TEMP homepage */}
         <Route path="/menu" element={<Menu />} />
         <Route path="/accommodation" element={<Accommodation />} />
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/location" element={<Location />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/value" element={<Valuation />} /> {/* Alias */}
         <Route path="/offers" element={<Offers />} />
       </Routes>
     </Router>
