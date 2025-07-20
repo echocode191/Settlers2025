@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const Location = () => {
+const settlersCoords = [-0.16486, 35.58073]; // Settlers Inn exact coordinates
+
+const Gallery = () => {
+  const [userCoords, setUserCoords] = useState(null);
+  const [distance, setDistance] = useState(null);
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const userMarkerRef = useRef(null);
+  const routeLineRef = useRef(null);
+
   const styles = {
     page: {
       fontFamily: "'Fira Code', monospace",
@@ -12,98 +23,170 @@ const Location = () => {
       paddingBottom: '2rem',
     },
     section: {
-      maxWidth: '900px',
+      maxWidth: '1100px',
       margin: 'auto',
       padding: '2rem 1rem',
     },
-    title: {
+    h2: {
       textAlign: 'center',
       color: '#9fef00',
       fontSize: '2rem',
       marginBottom: '0.5rem',
     },
-    subtitle: {
+    intro: {
       textAlign: 'center',
       color: '#8b949e',
       marginBottom: '2rem',
       fontSize: '1rem',
     },
-    mapContainer: {
-      borderRadius: '12px',
+    mapBox: {
+      height: '400px',
+      borderRadius: '14px',
       overflow: 'hidden',
-      border: '1px solid #30363d',
-      boxShadow: '0 0 12px rgba(88,166,255,0.1)',
+      border: '2px solid #30363d',
+      boxShadow: '0 0 20px rgba(0,255,120,0.1)',
       marginBottom: '2rem',
     },
-    iframe: {
-      width: '100%',
-      height: '400px',
-      border: 'none',
-    },
-    actions: {
+    controls: {
       display: 'flex',
       justifyContent: 'center',
-      flexWrap: 'wrap',
       gap: '1rem',
       marginBottom: '2rem',
+      flexWrap: 'wrap',
     },
-    actionBtn: {
-      padding: '0.8rem 1.4rem',
-      background: '#58a6ff',
+    button: {
+      padding: '0.7rem 1.5rem',
+      borderRadius: '10px',
+      border: 'none',
+      backgroundColor: '#25D366',
       color: '#0d1117',
-      borderRadius: '8px',
-      textDecoration: 'none',
-      fontWeight: 'bold',
-      transition: '0.3s ease',
+      fontSize: '1rem',
+      cursor: 'pointer',
+      boxShadow: '0 0 10px rgba(37, 211, 102, 0.4)',
+      transition: '0.3s',
     },
-    whatsapp: {
-      background: '#25d366',
-      color: 'white',
+    distance: {
+      textAlign: 'center',
+      color: '#58a6ff',
+      fontSize: '1rem',
+      marginTop: '-1rem',
     },
+  };
+
+  const getDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return (R * c).toFixed(2);
+  };
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    mapInstanceRef.current = L.map(mapRef.current, {
+      center: settlersCoords,
+      zoom: 14,
+      zoomControl: false,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '',
+    }).addTo(mapInstanceRef.current);
+
+    L.marker(settlersCoords, {
+      icon: L.divIcon({
+        className: 'settlers-marker',
+        html: '🏠',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+      }),
+    }).addTo(mapInstanceRef.current).bindPopup("Settlers Inn");
+
+    return () => {
+      mapInstanceRef.current.remove();
+    };
+  }, []);
+
+  const locateMe = () => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const coords = [pos.coords.latitude, pos.coords.longitude];
+      setUserCoords(coords);
+
+      if (userMarkerRef.current) mapInstanceRef.current.removeLayer(userMarkerRef.current);
+      if (routeLineRef.current) mapInstanceRef.current.removeLayer(routeLineRef.current);
+
+      userMarkerRef.current = L.marker(coords, {
+        icon: L.divIcon({
+          className: 'user-marker',
+          html: '🧍',
+          iconSize: [28, 28],
+          iconAnchor: [14, 14],
+        }),
+      }).addTo(mapInstanceRef.current).bindPopup("You are here").openPopup();
+
+      const line = L.polyline([coords, settlersCoords], { color: '#9fef00', weight: 4 }).addTo(mapInstanceRef.current);
+      routeLineRef.current = line;
+
+      const dist = getDistance(coords[0], coords[1], settlersCoords[0], settlersCoords[1]);
+      setDistance(dist);
+
+      mapInstanceRef.current.fitBounds(line.getBounds(), { padding: [50, 50] });
+    });
+  };
+
+  const flyToSettlers = () => {
+    mapInstanceRef.current.flyTo(settlersCoords, 17, {
+      animate: true,
+      duration: 2,
+    });
   };
 
   return (
     <div style={styles.page}>
       <Navbar />
-
       <section style={styles.section}>
-        <h2 style={styles.title}>📍 Our Location</h2>
-        <p style={styles.subtitle}>We’re tucked away in the beautiful Kenya Highlands. Come find your peace.</p>
+        <h2 style={styles.h2}>📍 Visit Settlers Inn</h2>
+        <p style={styles.intro}>
+          Use the tools below to find your way from where you are to our location!
+        </p>
 
-        <div style={styles.mapContainer}>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1993.1089110590363!2d35.2794369!3d-0.5019141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182ba9c43b1f6f1d%3A0xd2cfbe08f96a1f79!2sSettlers%20Inn!5e0!3m2!1sen!2ske!4v1689948372724!5m2!1sen!2ske"
-            style={styles.iframe}
-            allowFullScreen=""
-            loading="lazy"
-            title="Settlers Inn Location"
-          ></iframe>
+        <div style={styles.mapBox} ref={mapRef} id="map" />
+
+        <div style={styles.controls}>
+          <button onClick={locateMe} style={styles.button}>📍 Locate Me</button>
+          <button onClick={flyToSettlers} style={{ ...styles.button, backgroundColor: '#9fef00', color: '#0d1117' }}>
+            🚀 Take Me to Settlers
+          </button>
         </div>
 
-        <div style={styles.actions}>
-          <a href="tel:+254748778388" style={styles.actionBtn}>📞 Call Us</a>
-          <a
-            href="https://wa.me/254748778388?text=Hi%20Settlers%20Inn%20👋%2C%20could%20you%20please%20send%20me%20directions%20to%20your%20place%3F"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ ...styles.actionBtn, ...styles.whatsapp }}
-          >
-            💬 WhatsApp Directions
-          </a>
-          <a
-            href="https://maps.app.goo.gl/4V42cGSvm2bvzsFX8"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={styles.actionBtn}
-          >
-            🧭 Open in Google Maps
-          </a>
-        </div>
+        {distance && (
+          <div style={styles.distance}>
+            🛣️ You're approximately <strong>{distance} km</strong> from Settlers Inn.
+          </div>
+        )}
       </section>
-
       <Footer />
+
+      <style>{`
+        .leaflet-container {
+          width: 100%;
+          height: 100%;
+        }
+        .settlers-marker {
+          font-size: 1.6rem;
+        }
+        .user-marker {
+          font-size: 1.4rem;
+        }
+      `}</style>
     </div>
   );
 };
 
-export default Location;
+export default Gallery;
