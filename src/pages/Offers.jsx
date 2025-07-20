@@ -10,6 +10,8 @@ const Offers = () => {
   const [messageIndex, setMessageIndex] = useState(0);
   const [fakeLoading, setFakeLoading] = useState(false);
   const [joke, setJoke] = useState("");
+  const [feedbackStep, setFeedbackStep] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
 
   const funnyMessages = [
     "🎯 This is not a drill! Real offer, real food!",
@@ -54,7 +56,7 @@ const Offers = () => {
     }, 1000);
 
     const messageInterval = setInterval(() => {
-      setMessageIndex(prev => (prev + 1) % funnyMessages.length);
+      setMessageIndex((prev) => (prev + 1) % funnyMessages.length);
     }, 4000);
 
     return () => {
@@ -67,17 +69,21 @@ const Offers = () => {
     localStorage.setItem(offerKey, "true");
     setClaimed(true);
     setFakeLoading(true);
-
     const randomJoke = funnyJokes[Math.floor(Math.random() * funnyJokes.length)];
     setJoke(randomJoke);
 
     setTimeout(() => {
-      // WhatsApp redirect after 4s
-      const url = `https://wa.me/254748778388?text=${encodeURIComponent(
-        "Hi Settlers Inn! I just claimed the 10% OFF offer. I'd like to order or book:"
-      )}`;
-      window.location.href = url;
+      setFakeLoading(false);
+      setFeedbackStep(true);
     }, 4000);
+  };
+
+  const handleSend = () => {
+    if (!feedbackMessage.trim()) return;
+    const url = `https://wa.me/254748778388?text=${encodeURIComponent(
+      `Hi Settlers Inn! I just claimed the 10% OFF offer.\n\nHere’s my request:\n${feedbackMessage}`
+    )}`;
+    window.open(url, '_blank');
   };
 
   return (
@@ -118,14 +124,40 @@ const Offers = () => {
             <div style={{ marginTop: '1.5rem' }}>
               <div className="spinner" style={styles.spinner}></div>
               <p style={styles.joke}>{joke}</p>
-              <p style={{ color: "#58a6ff", fontSize: "0.9rem" }}>Opening WhatsApp...</p>
+              <p style={{ color: "#58a6ff", fontSize: "0.9rem" }}>Almost done...</p>
             </div>
           )}
 
-          {claimed && !fakeLoading && (
+          {claimed && !fakeLoading && !feedbackStep && (
             <button style={{ ...styles.button, backgroundColor: "#555", cursor: "not-allowed" }}>
               ✅ Already Claimed
             </button>
+          )}
+
+          {feedbackStep && (
+            <div style={{ marginTop: "1.5rem", textAlign: "left" }}>
+              <label style={{ color: "#9fef00", fontSize: "1rem" }}>
+                ✍️ Tell us what you'd like to order or book:
+              </label>
+              <textarea
+                rows="4"
+                placeholder="e.g. I'd love to reserve a room for Friday and order chicken stew 🍗"
+                value={feedbackMessage}
+                onChange={(e) => setFeedbackMessage(e.target.value)}
+                style={styles.textarea}
+              />
+              <button
+                onClick={handleSend}
+                style={{
+                  ...styles.button,
+                  marginTop: "1rem",
+                  backgroundColor: "#9fef00",
+                  color: "#0d1117",
+                }}
+              >
+                💬 Send via WhatsApp
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -195,31 +227,4 @@ const styles = {
     boxShadow: "0 0 10px rgba(37, 211, 102, 0.3)",
   },
   spinner: {
-    border: "4px solid #2b3137",
-    borderTop: "4px solid #25D366",
-    borderRadius: "50%",
-    width: "40px",
-    height: "40px",
-    animation: "spin 1s linear infinite",
-    margin: "0 auto 1rem",
-  },
-  joke: {
-    color: "#ccc",
-    fontSize: "1rem",
-    marginBottom: "0.5rem",
-  },
-};
-
-// Global CSS keyframes (should go in styles.css or inject dynamically)
-if (typeof document !== "undefined") {
-  const style = document.createElement("style");
-  style.innerHTML = `
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-export default Offers;
+    border: "4px
