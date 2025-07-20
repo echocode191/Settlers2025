@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
-/* Global Base */
+/* === Global Reset === */
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
@@ -11,9 +11,24 @@ body {
   background: linear-gradient(160deg, #0d1117, #0c0f16);
   color: #c9d1d9;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Animations */
+/* === Themes === */
+body.dark {
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+body.light {
+  background-color: #f5f5f5;
+  color: #222;
+}
+body.dark a { color: #58a6ff; }
+body.light a { color: #1f6feb; }
+body.light .hero { background-color: #fff; }
+body.dark .hero { background-color: transparent; }
+
+/* === Animations === */
 @keyframes fadeInUp {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -30,8 +45,12 @@ body {
   0% { transform: scale(0.95); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-/* Header */
+/* === Header / Navbar === */
 header {
   display: flex;
   justify-content: space-between;
@@ -88,10 +107,14 @@ nav a:hover {
     margin-top: 1rem;
   }
   nav.active { display: flex; }
-  nav a { padding: 0.5rem 1rem; border-top: 1px solid #30363d; }
+  nav a {
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #30363d;
+    width: 100%;
+  }
 }
 
-/* Hero Section */
+/* === Hero === */
 .hero {
   position: relative;
   height: 100vh;
@@ -157,17 +180,13 @@ nav a:hover {
   background-color: #bfff3c;
   box-shadow: 0 0 20px #9fef00;
 }
-.hero-content .rotating-phrase {
+.rotating-phrase {
   font-size: 1.2rem;
-  margin-bottom: 0.5rem;
   color: #9fef00;
   animation: pulse 3s infinite ease-in-out;
 }
-.animated-title {
-  animation: fadeIn 1.2s ease-out forwards;
-}
 
-/* Sections */
+/* === Sections === */
 section {
   max-width: 1000px;
   margin: auto;
@@ -180,7 +199,7 @@ section {
   color: #8b949e;
 }
 
-/* Featured */
+/* === Featured Dishes === */
 .featured {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -211,7 +230,7 @@ section {
   box-shadow: 0 8px 20px rgba(88,166,255,0.25);
 }
 
-/* Reviews */
+/* === Reviews === */
 .reviews {
   padding: 4rem 1rem;
   background: #0d1117;
@@ -251,7 +270,7 @@ section {
   font-size: 0.85rem;
 }
 
-/* Footer */
+/* === Footer === */
 .settlers-footer {
   background: rgba(22, 27, 34, 0.9);
   padding: 3rem 1.5rem 2rem;
@@ -305,7 +324,7 @@ section {
   color: #8b949e;
 }
 
-/* Quick Access (Mobile) */
+/* === Mobile Quick Access === */
 .quick-access {
   position: fixed;
   bottom: 5.5rem;
@@ -339,61 +358,4 @@ section {
 }
 @media (max-width: 767px) {
   body { padding-bottom: 7rem; }
-}
-.fb-page {
-  margin: auto;
-  max-width: 500px;
-  overflow: hidden;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid #30363d;
-}
-.fb-button {
-  display: inline-block;
-  padding: 0.8rem 1.6rem;
-  background-color: #1877f2;
-  color: white;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-}
-.fb-button:hover {
-  background-color: #145dbf;
-  box-shadow: 0 0 10px rgba(24, 119, 242, 0.5);
-}
-/* Dark theme */
-body.dark {
-  background-color: #0d1117;
-  color: #c9d1d9;
-}
-
-/* Light theme */
-body.light {
-  background-color: #f5f5f5;
-  color: #222;
-}
-
-body.light a {
-  color: #1f6feb;
-}
-
-body.dark a {
-  color: #58a6ff;
-}
-
-body.light .hero {
-  background-color: #fff;
-}
-
-body.dark .hero {
-  background-color: transparent;
-}
-
-/* Add any specific overrides as needed */
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }

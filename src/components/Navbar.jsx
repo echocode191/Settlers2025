@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = ({ toggleTheme, currentTheme }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const location = useLocation();
   const navigate = useNavigate();
 
   const isHome = location.pathname === '/';
 
   useEffect(() => {
-    const closeMenu = () => setMenuOpen(false);
-    window.addEventListener('resize', closeMenu);
-    return () => window.removeEventListener('resize', closeMenu);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleMenu = () => setMenuOpen(prev => !prev);
 
   const navLinks = [
     { to: '/', label: 'Home' },
@@ -55,11 +56,12 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       margin: 0,
     },
     navContainer: {
-      display: menuOpen || window.innerWidth > 768 ? 'flex' : 'none',
-      flexDirection: window.innerWidth > 768 ? 'row' : 'column',
+      display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
       gap: '1rem',
-      alignItems: 'center',
-      marginTop: window.innerWidth > 768 ? '0' : '1rem',
+      alignItems: isMobile ? 'flex-start' : 'center',
+      width: isMobile ? '100%' : 'auto',
+      paddingTop: isMobile ? '1rem' : 0,
     },
     navLink: {
       color: '#58a6ff',
@@ -93,14 +95,14 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
     },
     themeToggle: {
       fontSize: '1.1rem',
-      marginLeft: '1rem',
+      marginLeft: isMobile ? 0 : '1rem',
       background: '#222',
       color: '#9fef00',
       border: '1px solid #444',
       borderRadius: '8px',
       padding: '5px 10px',
       cursor: 'pointer',
-    }
+    },
   };
 
   return (

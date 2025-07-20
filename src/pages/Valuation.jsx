@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Valuation = () => {
   const [showValue, setShowValue] = useState(false);
+  const navigate = useNavigate(); // ✅ React Router navigation
 
   const styles = {
     page: {
@@ -78,25 +80,45 @@ const Valuation = () => {
               <button style={styles.button} onClick={() => setShowValue(true)}>
                 💸 Show Estimated Value
               </button>
-              <a href="/" style={{ ...styles.button, backgroundColor: '#1f6feb', color: '#fff' }}>
+              <button
+                style={{ ...styles.button, backgroundColor: '#1f6feb', color: '#fff' }}
+                onClick={() => navigate('/')}
+              >
                 🚀 Proceed to Website
-              </a>
+              </button>
             </>
           ) : (
             <div style={styles.priceBox}>
               <h3 style={styles.title}>💰 Professional Web Breakdown</h3>
-              <div style={styles.priceRow}><span style={styles.label}>Design & Styling:</span> Ksh 12,000 <span style={styles.usd}>($90)</span></div>
-              <div style={styles.priceRow}><span style={styles.label}>Smart Map & Routing:</span> Ksh 7,000 <span style={styles.usd}>($55)</span></div>
-              <div style={styles.priceRow}><span style={styles.label}>WhatsApp + PWA Features:</span> Ksh 6,000 <span style={styles.usd}>($45)</span></div>
-              <div style={styles.priceRow}><span style={styles.label}>Performance Optimization:</span> Ksh 5,000 <span style={styles.usd}>($40)</span></div>
-              <div style={styles.priceRow}><span style={styles.label}>Hosting + Tech Stack:</span> Ksh 4,000 <span style={styles.usd}>($30)</span></div>
-              <div style={styles.priceRow}><strong>Total Value:</strong> <span style={{ color: '#9fef00' }}>Ksh 34,000+</span> <span style={styles.usd}>(~$260)</span></div>
+              <div style={styles.priceRow}>
+                <span style={styles.label}>Design & Styling:</span> Ksh 12,000 <span style={styles.usd}>($90)</span>
+              </div>
+              <div style={styles.priceRow}>
+                <span style={styles.label}>Smart Map & Routing:</span> Ksh 7,000 <span style={styles.usd}>($55)</span>
+              </div>
+              <div style={styles.priceRow}>
+                <span style={styles.label}>WhatsApp + PWA Features:</span> Ksh 6,000 <span style={styles.usd}>($45)</span>
+              </div>
+              <div style={styles.priceRow}>
+                <span style={styles.label}>Performance Optimization:</span> Ksh 5,000 <span style={styles.usd}>($40)</span>
+              </div>
+              <div style={styles.priceRow}>
+                <span style={styles.label}>Hosting + Tech Stack:</span> Ksh 4,000 <span style={styles.usd}>($30)</span>
+              </div>
+              <div style={styles.priceRow}>
+                <strong>Total Value:</strong> <span style={{ color: '#9fef00' }}>Ksh 34,000+</span> <span style={styles.usd}>(~$260)</span>
+              </div>
 
-              <p style={styles.subtitle}>Made with ❤️ by <strong>Kimutai Gibson</strong> — 0721 635 810</p>
+              <p style={styles.subtitle}>
+                Made with ❤️ by <strong>Kimutai Gibson</strong> — 0721 635 810
+              </p>
 
-              <a href="/" style={{ ...styles.button, backgroundColor: '#9fef00' }}>
+              <button
+                style={{ ...styles.button, backgroundColor: '#9fef00' }}
+                onClick={() => navigate('/')}
+              >
                 🛜 View Site Anyway
-              </a>
+              </button>
             </div>
           )}
         </div>
