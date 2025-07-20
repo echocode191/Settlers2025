@@ -15,41 +15,51 @@ const Accommodation = () => {
       maxWidth: '900px',
       margin: 'auto',
       padding: '2rem 1rem',
+      textAlign: 'center',
     },
     title: {
-      textAlign: 'center',
       color: '#9fef00',
       fontSize: '2rem',
       marginBottom: '0.5rem',
+      animation: 'popIn 0.6s ease-in-out',
     },
     subtitle: {
-      textAlign: 'center',
       color: '#8b949e',
+      fontSize: '1rem',
       marginBottom: '2rem',
+      animation: 'fadeIn 2s ease-in-out',
+    },
+    thriller: {
+      fontSize: '1.2rem',
+      color: '#58a6ff',
+      marginBottom: '2.5rem',
+      fontStyle: 'italic',
+      animation: 'pulse 3s ease-in-out infinite',
     },
     roomGrid: {
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-      gap: '1.5rem',
+      gap: '2rem',
     },
     roomCard: {
       background: '#161b22',
       border: '1px solid #30363d',
       borderRadius: '12px',
-      padding: '1rem',
-      boxShadow: '0 0 10px rgba(88,166,255,0.1)',
-      textAlign: 'center',
+      padding: '1.5rem',
+      boxShadow: '0 0 15px rgba(88,166,255,0.15)',
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     },
     roomImage: {
       width: '100%',
-      borderRadius: '8px',
+      borderRadius: '10px',
       marginBottom: '0.8rem',
       border: '1px solid #30363d',
+      transition: 'transform 0.3s ease-in-out',
     },
     roomTitle: {
       color: '#58a6ff',
-      marginBottom: '0.5rem',
-      fontSize: '1.1rem',
+      marginBottom: '0.4rem',
+      fontSize: '1.2rem',
     },
     roomDesc: {
       fontSize: '0.9rem',
@@ -59,7 +69,7 @@ const Accommodation = () => {
     roomPrice: {
       color: '#9fef00',
       fontWeight: 'bold',
-      marginBottom: '1rem',
+      marginBottom: '1.2rem',
     },
     bookBtn: {
       display: 'inline-block',
@@ -69,6 +79,7 @@ const Accommodation = () => {
       borderRadius: '8px',
       textDecoration: 'none',
       fontWeight: 'bold',
+      transition: 'background 0.3s ease',
     },
   };
 
@@ -76,20 +87,16 @@ const Accommodation = () => {
     {
       title: 'Standard Room',
       img: '/assets/room.jpg',
-      desc: 'A cozy space for solo travelers or couples. Clean and quiet.',
+      desc: 'Simple. Clean. Safe. Like a Netflix opening scene before everything goes perfectly right.',
       price: 'KES 1,800 / night',
+      msg: "Hi Settlers Inn! I'd love to book the Standard Room — solo traveler vibes 🧳🛏️",
     },
     {
       title: 'Family Room',
       img: '/assets/indoor.jpg',
-      desc: 'Spacious and comfy — great for families or groups.',
+      desc: 'Big enough for your squad. Cozy enough for family drama. The happy kind. Mostly.',
       price: 'KES 2,500 / night',
-    },
-    {
-      title: 'Outdoor Cottage',
-      img: '/assets/outdoor.jpg',
-      desc: 'Private cottage with a garden view and peaceful vibes.',
-      price: 'KES 3,200 / night',
+      msg: "Hi Settlers Inn! I'd love to book the Family Room — it's time to reunite the crew 👨‍👩‍👧‍👦✨",
     },
   ];
 
@@ -98,8 +105,13 @@ const Accommodation = () => {
       <Navbar />
 
       <section style={styles.section}>
-        <h2 style={styles.title}>🛏️ Accommodation</h2>
-        <p style={styles.subtitle}>Stay the night. Wake up to clean air, birdsong, and warm chai.</p>
+        <h2 style={styles.title}>🏨 Heaven Found: Settlers Stays</h2>
+        <p style={styles.subtitle}>
+          You don't just sleep here. You reset. You reconnect. You *recharge like royalty.*
+        </p>
+        <p style={styles.thriller}>
+          🎬 "2 rooms. 1 destiny. Will you survive the comfort?" 🍃
+        </p>
 
         <div style={styles.roomGrid}>
           {rooms.map((room, i) => (
@@ -109,7 +121,7 @@ const Accommodation = () => {
               <p style={styles.roomDesc}>{room.desc}</p>
               <p style={styles.roomPrice}>{room.price}</p>
               <a
-                href="https://wa.me/254748778388?text=Hi%20Settlers%20Inn%2C%20I'd%20love%20to%20book%20a%20room."
+                href={`https://wa.me/254748778388?text=${encodeURIComponent(room.msg)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={styles.bookBtn}
@@ -125,5 +137,26 @@ const Accommodation = () => {
     </div>
   );
 };
+
+// Animations (inject only once)
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 export default Accommodation;
