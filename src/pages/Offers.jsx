@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Offers = () => {
   const offerKey = "settlers-offer-claimed";
@@ -83,7 +83,7 @@ const Offers = () => {
     const url = `https://wa.me/254748778388?text=${encodeURIComponent(
       `Hi Settlers Inn! I just claimed the 10% OFF offer.\n\nHere’s my request:\n${feedbackMessage}`
     )}`;
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   return (
@@ -102,8 +102,8 @@ const Offers = () => {
           )}
 
           <p style={styles.description}>
-            Treat yourself to hearty Kenyan dishes & comfy rooms at Settlers Inn.  
-            This week's discount is so good, we almost ate it ourselves!
+            Treat yourself to hearty Kenyan dishes & comfy rooms at Settlers Inn. This week's
+            discount is so good, we almost ate it ourselves!
           </p>
 
           {!claimed && !fakeLoading && (
@@ -121,8 +121,8 @@ const Offers = () => {
           )}
 
           {fakeLoading && (
-            <div style={{ marginTop: '1.5rem' }}>
-              <div className="spinner" style={styles.spinner}></div>
+            <div style={{ marginTop: "1.5rem" }}>
+              <div style={styles.spinner}></div>
               <p style={styles.joke}>{joke}</p>
               <p style={{ color: "#58a6ff", fontSize: "0.9rem" }}>Almost done...</p>
             </div>
@@ -177,7 +177,6 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     textAlign: "center",
-    animation: "fadeIn 1s ease",
   },
   funHeader: {
     fontSize: "1.2rem",
@@ -227,4 +226,29 @@ const styles = {
     boxShadow: "0 0 10px rgba(37, 211, 102, 0.3)",
   },
   spinner: {
-    border: "4px
+    border: "4px solid #ccc",
+    borderTop: "4px solid #9fef00",
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    margin: "0 auto",
+    animation: "spin 1s linear infinite",
+  },
+  joke: {
+    color: "#999",
+    marginTop: "1rem",
+    fontStyle: "italic",
+  },
+  textarea: {
+    width: "100%",
+    padding: "0.8rem",
+    fontSize: "1rem",
+    borderRadius: "8px",
+    border: "1px solid #333",
+    backgroundColor: "#0d1117",
+    color: "#fff",
+    marginTop: "0.5rem",
+  },
+};
+
+export default Offers;
