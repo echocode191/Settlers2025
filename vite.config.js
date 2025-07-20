@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'assets/logo.png'],
+      includeAssets: ['favicon.ico', 'assets/logo.png', 'apple-touch-icon.png'],
       manifest: {
         name: 'Settlers Inn',
         short_name: 'Settlers',
@@ -15,18 +15,47 @@ export default defineConfig({
         display: 'standalone',
         background_color: '#0d1117',
         theme_color: '#0d1117',
+        description: 'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
         icons: [
           {
             src: 'assets/logo.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any maskable',
           },
           {
             src: 'assets/logo.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any maskable',
           },
         ],
+      },
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.destination === 'image',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+              },
+            },
+          },
+          {
+            urlPattern: ({ request }) =>
+              ['style', 'script', 'worker'].includes(request.destination),
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'static-resources',
+            },
+          },
+        ],
+      },
+      devOptions: {
+        enabled: true,
       },
     }),
   ],
