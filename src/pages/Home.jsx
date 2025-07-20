@@ -29,7 +29,7 @@ const Home = () => {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-    // Trigger Facebook parsing if FB SDK is available
+    // Trigger Facebook parsing if SDK is ready
     if (window.FB) {
       window.FB.XFBML.parse();
     }
@@ -43,6 +43,7 @@ const Home = () => {
   const handleInstallClick = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
+      setDeferredPrompt(null);
       setShowInstallToast(false);
     }
   };
