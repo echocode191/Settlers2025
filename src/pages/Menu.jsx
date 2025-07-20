@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Navbar from '../../../settlers-inn/src/components/Navbar';
-import Footer from '../../../settlers-inn/src/components/Footer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const Menu = () => {
   const [foodName, setFoodName] = useState('');
