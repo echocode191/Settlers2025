@@ -392,3 +392,8 @@ body.dark .hero {
 }
 
 /* Add any specific overrides as needed */
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
