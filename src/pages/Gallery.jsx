@@ -26,6 +26,7 @@ const Gallery = () => {
       color: '#c9d1d9',
       minHeight: '100vh',
       paddingBottom: '2rem',
+      animation: 'zoomIn 0.7s ease-in-out',
     },
     section: {
       maxWidth: '1100px',
@@ -37,26 +38,34 @@ const Gallery = () => {
       color: '#9fef00',
       fontSize: '2rem',
       marginBottom: '0.5rem',
+      animation: 'fadeIn 1s ease',
     },
     intro: {
       textAlign: 'center',
       color: '#8b949e',
       marginBottom: '2rem',
       fontSize: '1rem',
+      animation: 'fadeIn 1.2s ease',
     },
     grid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
       gap: '1rem',
     },
     img: (index) => ({
       width: '100%',
-      borderRadius: '10px',
+      height: 'auto',
+      maxHeight: '160px',
+      objectFit: 'cover',
+      borderRadius: '12px',
       border: '1px solid #30363d',
-      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
+      boxShadow: '0 4px 14px rgba(0, 255, 120, 0.08)',
       opacity: 0,
-      animation: `fadeInUp 0.7s ease forwards`,
+      transform: 'scale(0.95)',
+      animation: `fadeInUp 0.6s ease forwards`,
       animationDelay: `${index * 0.1}s`,
+      transition: 'transform 0.3s ease',
+      cursor: 'pointer',
     }),
   };
 
@@ -70,7 +79,14 @@ const Gallery = () => {
 
         <div style={styles.grid}>
           {images.map((img, i) => (
-            <img key={i} src={img.src} alt={img.alt} style={styles.img(i)} />
+            <img
+              key={i}
+              src={img.src}
+              alt={img.alt}
+              style={styles.img(i)}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
+            />
           ))}
         </div>
       </section>
@@ -79,8 +95,18 @@ const Gallery = () => {
 
       <style>{`
         @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(30px); }
+          0% { opacity: 0; transform: translateY(20px); }
           100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+          0% { opacity: 0; transform: scale(0.95); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
       `}</style>
     </div>
