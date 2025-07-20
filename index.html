@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Settlers Inn | Where Settlers Still Eat Like Kings</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Settlers Inn — Authentic dishes & cozy stays in Kipkelion, Kenya Highlands. Come hungry, leave like a king!" />
+    <meta name="keywords" content="Settlers Inn, Kipkelion, Kenya hotels, local food, African cuisine, family restaurant, Highlands stay" />
+    <meta name="author" content="EchoBiz (Kimutai Gibson)" />
+
+    <!-- PWA Meta -->
+    <meta name="theme-color" content="#0d1117" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/assets/logo.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/logo.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
+
+    <!-- Facebook SDK Script (loaded early to support reviews) -->
+    <script async defer crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
+      nonce="settlersInnScript">
+    </script>
+  </head>
+
+  <body style="margin:0; font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9;">
+    <noscript>
+      <strong>We're sorry but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
+    </noscript>
+
+    <!-- Facebook SDK Root (must be in <body>) -->
+    <div id="fb-root"></div>
+
+    <div id="root"></div>
+
+    <!-- Vite entry point -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
