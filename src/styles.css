@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
-/* Global Base */
+/* GLOBAL */
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
@@ -13,18 +13,25 @@ body {
   overflow-x: hidden;
 }
 
-/* Animations */
+/* ANIMATIONS */
 @keyframes fadeInUp {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 @keyframes pulse {
-  0% { text-shadow: 0 0 0 rgba(88, 166, 255, 0); }
-  50% { text-shadow: 0 0 8px rgba(88, 166, 255, 0.4); }
-  100% { text-shadow: 0 0 0 rgba(88, 166, 255, 0); }
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes popIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-/* Header */
+/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
@@ -44,6 +51,7 @@ header {
 .brand img {
   height: 45px;
   margin-right: 0.8rem;
+  box-shadow: 0 0 12px rgba(159, 239, 0, 0.3);
 }
 .brand h1 {
   font-size: 1.4rem;
@@ -81,10 +89,13 @@ nav a:hover {
     margin-top: 1rem;
   }
   nav.active { display: flex; }
-  nav a { padding: 0.5rem 1rem; border-top: 1px solid #30363d; }
+  nav a {
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #30363d;
+  }
 }
 
-/* Hero */
+/* HERO */
 .hero {
   position: relative;
   height: 100vh;
@@ -104,9 +115,17 @@ nav a:hover {
   opacity: 0.35;
   filter: brightness(0.7);
 }
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 80%);
+  z-index: 1;
+}
 .hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   animation: fadeInUp 1s ease-out;
   max-width: 700px;
   padding: 1rem;
@@ -115,11 +134,18 @@ nav a:hover {
   font-size: 2.8rem;
   color: #9fef00;
   margin-bottom: 1rem;
+  animation: fadeIn 1.2s ease-out forwards;
 }
 .hero-content p {
   font-size: 1.2rem;
   color: #999;
   margin-bottom: 2rem;
+}
+.hero-content .rotating-phrase {
+  font-size: 1.2rem;
+  color: #9fef00;
+  animation: pulse 3s infinite ease-in-out;
+  margin-bottom: 0.5rem;
 }
 .hero-button {
   font-family: 'Fira Code', monospace;
@@ -149,7 +175,7 @@ nav a:hover {
   box-shadow: 0 0 12px #9fef00;
 }
 
-/* Section Base */
+/* SECTIONS */
 section {
   max-width: 1000px;
   margin: auto;
@@ -162,7 +188,7 @@ section {
   color: #8b949e;
 }
 
-/* Featured Dishes */
+/* FEATURED */
 .featured {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -192,7 +218,7 @@ section {
   box-shadow: 0 8px 20px rgba(88,166,255,0.2);
 }
 
-/* Reviews */
+/* REVIEWS */
 .reviews {
   padding: 4rem 1rem;
   background: #0d1117;
@@ -231,11 +257,20 @@ section {
   font-size: 0.85rem;
 }
 
-/* Footer */
+/* FACEBOOK */
+.fb-reviews {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(5px);
+  border: 1px solid #2b3137;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+/* FOOTER */
 .settlers-footer {
   background: linear-gradient(to right, #161b22, #0d1117);
   padding: 3rem 1.5rem 2rem;
-  font-family: 'Fira Code', monospace;
   color: #c9d1d9;
   border-top: 1px solid #2b3137;
 }
@@ -302,17 +337,7 @@ section {
   text-decoration: underline;
 }
 
-/* Contact Toggle */
-@media (max-width: 600px) {
-  #contactInfo {
-    display: none;
-  }
-  #contactInfo.show {
-    display: block;
-  }
-}
-
-/* Quick Access */
+/* QUICK ACCESS */
 .quick-access {
   position: fixed;
   bottom: 5.5rem;
@@ -351,40 +376,3 @@ section {
     padding-bottom: 7rem;
   }
 }
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-
-@keyframes popIn {
-  0% { transform: scale(0.95); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.hero-content .rotating-phrase {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: #9fef00;
-  animation: pulse 3s infinite ease-in-out;
-}
-
-.animated-title {
-  animation: fadeIn 1.2s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-
-
