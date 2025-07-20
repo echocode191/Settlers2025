@@ -5,7 +5,7 @@ import 'leaflet-routing-machine';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const settlersCoords = [-0.50191, 35.27944]; // ✅ Real Settlers Inn coordinates
+const settlersCoords = [-0.16486, 35.58073]; // Updated Settlers Inn location
 
 const Location = () => {
   const [userCoords, setUserCoords] = useState(null);
@@ -15,15 +15,15 @@ const Location = () => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const userMarkerRef = useRef(null);
-  const routingControlRef = useRef(null);
+  const routeLineRef = useRef(null);
 
   const jokes = [
-    "🛵 Boda guy said he's already halfway!",
-    "🐄 Avoiding cows and chaos... please wait.",
-    "📍 Recalculating... map prefers nyama choma stops!",
-    "📦 Route loaded — no detour to Mama Mboga this time!",
-    "🥾 If you walk, we’ll call it a fitness tour.",
-    "🍲 Follow the aroma. That’s our real direction system.",
+    "🐐 Shortcut via goat path... just kidding!",
+    "🛵 Dodging potholes like a pro...",
+    "🍲 Free aroma as you get closer...",
+    "🚕 We told the boda guy to hurry!",
+    "🗺️ Calculating... avoid cows on the road!",
+    "📡 GPS locking in like your hunger!"
   ];
 
   const styles = {
@@ -125,7 +125,7 @@ const Location = () => {
         iconSize: [30, 30],
         iconAnchor: [15, 15],
       }),
-    }).addTo(mapInstanceRef.current).bindPopup('Settlers Inn');
+    }).addTo(mapInstanceRef.current).bindPopup('📍 Settlers Inn — We’re here!');
 
     return () => {
       mapInstanceRef.current.remove();
@@ -133,17 +133,12 @@ const Location = () => {
   }, []);
 
   const locateMe = () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation not supported by your browser.');
-      return;
-    }
-
     navigator.geolocation.getCurrentPosition((pos) => {
       const coords = [pos.coords.latitude, pos.coords.longitude];
       setUserCoords(coords);
 
       if (userMarkerRef.current) mapInstanceRef.current.removeLayer(userMarkerRef.current);
-      if (routingControlRef.current) mapInstanceRef.current.removeControl(routingControlRef.current);
+      if (routeLineRef.current) mapInstanceRef.current.removeControl(routeLineRef.current);
 
       userMarkerRef.current = L.marker(coords, {
         icon: L.divIcon({
@@ -152,7 +147,7 @@ const Location = () => {
           iconSize: [28, 28],
           iconAnchor: [14, 14],
         }),
-      }).addTo(mapInstanceRef.current).bindPopup("You are here").openPopup();
+      }).addTo(mapInstanceRef.current).bindPopup("📍 You're here!").openPopup();
 
       const routingControl = L.Routing.control({
         waypoints: [
@@ -167,18 +162,15 @@ const Location = () => {
         routeWhileDragging: false,
       }).addTo(mapInstanceRef.current);
 
-      routingControlRef.current = routingControl;
+      routeLineRef.current = routingControl;
 
       const dist = getDistance(coords[0], coords[1], settlersCoords[0], settlersCoords[1]);
       setDistance(dist);
-
       setJoke(jokes[Math.floor(Math.random() * jokes.length)]);
 
       mapInstanceRef.current.fitBounds(routingControl.getPlan().getWaypoints().map(w => w.latLng), {
         padding: [50, 50],
       });
-    }, () => {
-      alert('Could not fetch location.');
     });
   };
 
@@ -193,9 +185,9 @@ const Location = () => {
     <div style={styles.page}>
       <Navbar />
       <section style={styles.section}>
-        <h2 style={styles.title}>📍 Where to Find Settlers Inn</h2>
+        <h2 style={styles.title}>📍 Find Us</h2>
         <p style={styles.subtitle}>
-          Navigate through the Highlands with flavor, fun, and full directions.
+          We’re in the beautiful Kenya Highlands. Let’s get you here — street style.
         </p>
 
         <div style={styles.mapBox} ref={mapRef} id="map" />
@@ -234,6 +226,22 @@ const Location = () => {
         }
         .user-marker {
           font-size: 1.4rem;
+        }
+        .leaflet-popup-content-wrapper {
+          background-color: #161b22;
+          color: #c9d1d9;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(159, 239, 0, 0.2);
+        }
+        .leaflet-popup-tip {
+          background-color: #161b22;
+        }
+        .leaflet-popup-content {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.95rem;
+        }
+        .leaflet-routing-container {
+          display: none;
         }
       `}</style>
     </div>
