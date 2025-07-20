@@ -1,8 +1,6 @@
-// src/pages/Offers.jsx
 import React, { useEffect, useState } from "react";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-
 
 const Offers = () => {
   const offerKey = "settlers-offer-claimed";
@@ -10,6 +8,8 @@ const Offers = () => {
   const [countdown, setCountdown] = useState("");
   const [expired, setExpired] = useState(false);
   const [messageIndex, setMessageIndex] = useState(0);
+  const [fakeLoading, setFakeLoading] = useState(false);
+  const [joke, setJoke] = useState("");
 
   const funnyMessages = [
     "🎯 This is not a drill! Real offer, real food!",
@@ -20,13 +20,21 @@ const Offers = () => {
     "🕒 Hurry! Offer runs faster than our waiter!",
   ];
 
+  const funnyJokes = [
+    "🤣 Scanning your stomach... yep, it's hungry!",
+    "🤖 Warming up our chef bots...",
+    "💸 Applying discount magic. Please wait...",
+    "🍛 Spicing up your offer. Hang tight...",
+    "🐐 Herding goats for the freshest stew...",
+    "⏳ One moment... bribing the waiter with chai ☕",
+  ];
+
   const offerExpiresAt = new Date("2025-07-25T23:59:59");
 
   useEffect(() => {
     const isClaimed = localStorage.getItem(offerKey) === "true";
     setClaimed(isClaimed);
 
-    // Countdown timer
     const countdownInterval = setInterval(() => {
       const now = new Date().getTime();
       const distance = offerExpiresAt.getTime() - now;
@@ -45,7 +53,6 @@ const Offers = () => {
       setCountdown(`${hours}h ${minutes}m ${seconds}s`);
     }, 1000);
 
-    // Message changer
     const messageInterval = setInterval(() => {
       setMessageIndex(prev => (prev + 1) % funnyMessages.length);
     }, 4000);
@@ -59,39 +66,71 @@ const Offers = () => {
   const handleClaim = () => {
     localStorage.setItem(offerKey, "true");
     setClaimed(true);
+    setFakeLoading(true);
+
+    const randomJoke = funnyJokes[Math.floor(Math.random() * funnyJokes.length)];
+    setJoke(randomJoke);
+
+    setTimeout(() => {
+      // WhatsApp redirect after 4s
+      const url = `https://wa.me/254748778388?text=${encodeURIComponent(
+        "Hi Settlers Inn! I just claimed the 10% OFF offer. I'd like to order or book:"
+      )}`;
+      window.location.href = url;
+    }, 4000);
   };
 
   return (
-    <div style={styles.wrapper}>
-      <h2 style={styles.funHeader}>{funnyMessages[messageIndex]}</h2>
+    <>
+      <Navbar />
+      <div style={styles.wrapper}>
+        <h2 style={styles.funHeader}>{funnyMessages[messageIndex]}</h2>
 
-      <div style={styles.card}>
-        <h1 style={styles.title}>🔥 10% OFF This Week Only!</h1>
+        <div style={styles.card}>
+          <h1 style={styles.title}>🔥 10% OFF This Week Only!</h1>
 
-        {!expired && (
-          <div style={styles.countdown}>
-            ⏳ Time left: <strong style={styles.timer}>{countdown}</strong>
-          </div>
-        )}
+          {!expired && (
+            <div style={styles.countdown}>
+              ⏳ Time left: <strong style={styles.timer}>{countdown}</strong>
+            </div>
+          )}
 
-        <p style={styles.description}>
-          Treat yourself to hearty Kenyan dishes & comfy rooms at Settlers Inn.  
-          This week's discount is so good, we almost ate it ourselves!
-        </p>
+          <p style={styles.description}>
+            Treat yourself to hearty Kenyan dishes & comfy rooms at Settlers Inn.  
+            This week's discount is so good, we almost ate it ourselves!
+          </p>
 
-        <button
-          onClick={handleClaim}
-          disabled={claimed || expired}
-          style={{
-            ...styles.button,
-            backgroundColor: claimed ? "#555" : "#25D366",
-            cursor: claimed ? "not-allowed" : "pointer",
-          }}
-        >
-          {claimed ? "✅ Already Claimed" : expired ? "❌ Expired" : "🎁 Claim Your Offer"}
-        </button>
+          {!claimed && !fakeLoading && (
+            <button
+              onClick={handleClaim}
+              disabled={expired}
+              style={{
+                ...styles.button,
+                backgroundColor: expired ? "#555" : "#25D366",
+                cursor: expired ? "not-allowed" : "pointer",
+              }}
+            >
+              {expired ? "❌ Expired" : "🎁 Claim Your Offer"}
+            </button>
+          )}
+
+          {fakeLoading && (
+            <div style={{ marginTop: '1.5rem' }}>
+              <div className="spinner" style={styles.spinner}></div>
+              <p style={styles.joke}>{joke}</p>
+              <p style={{ color: "#58a6ff", fontSize: "0.9rem" }}>Opening WhatsApp...</p>
+            </div>
+          )}
+
+          {claimed && !fakeLoading && (
+            <button style={{ ...styles.button, backgroundColor: "#555", cursor: "not-allowed" }}>
+              ✅ Already Claimed
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
@@ -155,6 +194,32 @@ const styles = {
     transition: "0.3s ease",
     boxShadow: "0 0 10px rgba(37, 211, 102, 0.3)",
   },
+  spinner: {
+    border: "4px solid #2b3137",
+    borderTop: "4px solid #25D366",
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    animation: "spin 1s linear infinite",
+    margin: "0 auto 1rem",
+  },
+  joke: {
+    color: "#ccc",
+    fontSize: "1rem",
+    marginBottom: "0.5rem",
+  },
 };
+
+// Global CSS keyframes (should go in styles.css or inject dynamically)
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 export default Offers;
