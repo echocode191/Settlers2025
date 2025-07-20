@@ -348,3 +348,18 @@ section {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid #30363d;
 }
+.fb-button {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  background-color: #1877f2;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+.fb-button:hover {
+  background-color: #145dbf;
+  box-shadow: 0 0 10px rgba(24, 119, 242, 0.5);
+}
