@@ -29,11 +29,6 @@ const Home = () => {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-    // Trigger Facebook parsing if SDK is ready
-    if (window.FB) {
-      window.FB.XFBML.parse();
-    }
-
     return () => {
       clearInterval(msgInterval);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
@@ -100,23 +95,17 @@ const Home = () => {
           <div className="review"><p>“Clean, affordable, and that fish was perfection.”</p><span>— Jane M.</span></div>
         </div>
 
-        <div className="fb-reviews" style={{ marginTop: '2rem' }}>
-          <h2>👍 Facebook Reviews (Live)</h2>
-          <div
-            className="fb-page"
-            data-href="https://www.facebook.com/settlersinn1"
-            data-tabs="timeline"
-            data-width="500"
-            data-height="400"
-            data-small-header="false"
-            data-adapt-container-width="true"
-            data-hide-cover="false"
-            data-show-facepile="true"
+        <div className="fb-reviews" style={{ marginTop: '2rem', textAlign: 'center' }}>
+          <h2>👍 See More on Facebook</h2>
+          <p>We love your feedback — view our latest reviews and updates!</p>
+          <a
+            href="https://www.facebook.com/settlersinn1"
+            className="fb-button"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <blockquote cite="https://www.facebook.com/settlersinn1" className="fb-xfbml-parse-ignore">
-              <a href="https://www.facebook.com/settlersinn1">Settlers Inn</a>
-            </blockquote>
-          </div>
+            🔗 Visit Settlers Inn on Facebook
+          </a>
         </div>
       </section>
 
