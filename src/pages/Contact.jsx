@@ -34,6 +34,7 @@ const Contact = () => {
       borderRadius: '12px',
       padding: '2rem',
       boxShadow: '0 0 12px rgba(88,166,255,0.1)',
+      marginBottom: '3rem',
     },
     contactItem: {
       marginBottom: '1rem',
@@ -57,6 +58,39 @@ const Contact = () => {
       textDecoration: 'none',
       fontWeight: 'bold',
     },
+    divider: {
+      margin: '2rem 0',
+      borderTop: '1px dashed #30363d',
+    },
+    creatorBox: {
+      background: '#0d1117',
+      border: '2px solid #9fef00',
+      borderRadius: '14px',
+      padding: '2rem',
+      boxShadow: '0 0 20px rgba(159,239,0,0.15)',
+      textAlign: 'center',
+    },
+    creatorHeading: {
+      color: '#9fef00',
+      fontSize: '1.6rem',
+      marginBottom: '1rem',
+    },
+    creatorBio: {
+      color: '#c9d1d9',
+      fontSize: '1rem',
+      lineHeight: '1.6',
+      marginBottom: '1.2rem',
+    },
+    phone: {
+      fontSize: '1.1rem',
+      color: '#58a6ff',
+      fontWeight: 'bold',
+    },
+    lightNote: {
+      color: '#8b949e',
+      fontSize: '0.9rem',
+      marginTop: '1rem',
+    }
   };
 
   return (
@@ -93,6 +127,32 @@ const Contact = () => {
           >
             💬 Message on WhatsApp
           </a>
+        </div>
+
+        <div style={styles.divider}></div>
+
+        <div style={styles.creatorBox}>
+          <h3 style={styles.creatorHeading}>⚡ Built by Kim — The Agent on the Street</h3>
+          <p style={styles.creatorBio}>
+            Hi! I'm Kimutai, the mind behind this experience — blending design, code, and vibe straight from the streets of Kenya 🛠️🇰🇪. 
+            <br /> I build smart, fast websites with maps, bots, and energy. <br />
+            Whether you're running a business, street idea, or dreaming big — let’s make it real.
+          </p>
+
+          <p style={styles.phone}>📞 0721 635 810</p>
+
+          <a
+            href="https://wa.me/254721635810?text=Hi%20Kim%20👋%2C%20just%20saw%20your%20Settlers%20Inn%20website%20—%20can%20you%20build%20one%20for%20me%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.whatsapp}
+          >
+            💬 Chat with Kim Now
+          </a>
+
+          <p style={styles.lightNote}>
+            💻 React Dev • Leaflet Maps • Firebase • Street-smart Brands
+          </p>
         </div>
       </section>
 
