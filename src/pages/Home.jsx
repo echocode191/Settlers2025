@@ -14,12 +14,11 @@ const Home = () => {
 
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [showInstallToast, setShowInstallToast] = useState(false);
+  const [fbReady, setFbReady] = useState(false);
 
   useEffect(() => {
     const yearEl = document.getElementById("year");
-    if (yearEl) {
-      yearEl.textContent = new Date().getFullYear();
-    }
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
     const msgInterval = setInterval(() => {
       setPhraseIndex(prev => (prev + 1) % funnyPhrases.length);
@@ -28,16 +27,24 @@ const Home = () => {
     const toastTimer = setTimeout(() => setShowInstallToast(true), 4000);
     const hideToastTimer = setTimeout(() => setShowInstallToast(false), 10000);
 
-    // Delay parse to allow Facebook SDK to load
-    const fbTimer = setTimeout(() => {
-      if (window.FB) window.FB.XFBML.parse();
-    }, 1500);
+    // Load Facebook SDK
+    if (!window.FB) {
+      const fbScript = document.createElement('script');
+      fbScript.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
+      fbScript.async = true;
+      fbScript.defer = true;
+      fbScript.crossOrigin = "anonymous";
+      fbScript.onload = () => setFbReady(true);
+      document.body.appendChild(fbScript);
+    } else {
+      window.FB.XFBML.parse();
+      setFbReady(true);
+    }
 
     return () => {
       clearInterval(msgInterval);
       clearTimeout(toastTimer);
       clearTimeout(hideToastTimer);
-      clearTimeout(fbTimer);
     };
   }, []);
 
@@ -52,7 +59,7 @@ const Home = () => {
       )}
 
       <section className="hero">
-        <video className="bg-video" autoPlay muted loop playsInline>
+        <video className="bg-video" autoPlay muted loop playsInline preload="auto">
           <source src="/assets/settlers.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
@@ -95,15 +102,18 @@ const Home = () => {
 
         <div className="fb-reviews" style={{ marginTop: '2rem' }}>
           <h2>💬 Facebook Reviews (Live)</h2>
-          <div className="fb-page"
+          {!fbReady && <p>Loading Facebook feed...</p>}
+          <div
+            className="fb-page"
             data-href="https://www.facebook.com/settlersinn1/"
             data-tabs="timeline"
-            data-width="500"
+            data-width="100%"
             data-height="400"
             data-small-header="false"
             data-adapt-container-width="true"
             data-hide-cover="false"
-            data-show-facepile="true">
+            data-show-facepile="true"
+          >
             <blockquote cite="https://www.facebook.com/settlersinn1/" className="fb-xfbml-parse-ignore">
               <a href="https://www.facebook.com/settlersinn1/">Settlers Inn</a>
             </blockquote>
@@ -146,7 +156,7 @@ const toastStyle = {
   lineHeight: '1.5',
 };
 
-// ✅ Inject keyframes for fade animation
+// ✅ Inject keyframes dynamically
 const fadeInOutAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateY(10px); }
