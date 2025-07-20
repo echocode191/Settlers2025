@@ -27,19 +27,34 @@ const Home = () => {
     const toastTimer = setTimeout(() => setShowInstallToast(true), 4000);
     const hideToastTimer = setTimeout(() => setShowInstallToast(false), 10000);
 
-    // Load Facebook SDK
-    if (!window.FB) {
-      const fbScript = document.createElement('script');
-      fbScript.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
-      fbScript.async = true;
-      fbScript.defer = true;
-      fbScript.crossOrigin = "anonymous";
-      fbScript.onload = () => setFbReady(true);
-      document.body.appendChild(fbScript);
-    } else {
-      window.FB.XFBML.parse();
-      setFbReady(true);
+    // ✅ Facebook SDK loader
+    const loadFacebookSDK = () => {
+      if (document.getElementById('facebook-jssdk')) {
+        window.FB && window.FB.XFBML.parse();
+        setFbReady(true);
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.id = 'facebook-jssdk';
+      script.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        setFbReady(true);
+        window.FB && window.FB.XFBML.parse();
+      };
+      document.body.appendChild(script);
+    };
+
+    // ✅ Ensure fb-root exists
+    if (!document.getElementById('fb-root')) {
+      const fbRoot = document.createElement('div');
+      fbRoot.id = 'fb-root';
+      document.body.prepend(fbRoot);
     }
+
+    loadFacebookSDK();
 
     return () => {
       clearInterval(msgInterval);
@@ -50,6 +65,7 @@ const Home = () => {
 
   return (
     <>
+      <div id="fb-root"></div>
       <Navbar />
 
       {showInstallToast && (
