@@ -14,7 +14,6 @@ const Home = () => {
 
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [showInstallToast, setShowInstallToast] = useState(false);
-  const [fbReady, setFbReady] = useState(false);
 
   useEffect(() => {
     const yearEl = document.getElementById("year");
@@ -27,34 +26,10 @@ const Home = () => {
     const toastTimer = setTimeout(() => setShowInstallToast(true), 4000);
     const hideToastTimer = setTimeout(() => setShowInstallToast(false), 10000);
 
-    // ✅ Facebook SDK loader
-    const loadFacebookSDK = () => {
-      if (document.getElementById('facebook-jssdk')) {
-        window.FB && window.FB.XFBML.parse();
-        setFbReady(true);
-        return;
-      }
-
-      const script = document.createElement('script');
-      script.id = 'facebook-jssdk';
-      script.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0';
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        setFbReady(true);
-        window.FB && window.FB.XFBML.parse();
-      };
-      document.body.appendChild(script);
-    };
-
-    // ✅ Ensure fb-root exists
-    if (!document.getElementById('fb-root')) {
-      const fbRoot = document.createElement('div');
-      fbRoot.id = 'fb-root';
-      document.body.prepend(fbRoot);
+    // Trigger Facebook parsing if FB SDK is available
+    if (window.FB) {
+      window.FB.XFBML.parse();
     }
-
-    loadFacebookSDK();
 
     return () => {
       clearInterval(msgInterval);
@@ -65,7 +40,6 @@ const Home = () => {
 
   return (
     <>
-      <div id="fb-root"></div>
       <Navbar />
 
       {showInstallToast && (
@@ -117,21 +91,20 @@ const Home = () => {
         </div>
 
         <div className="fb-reviews" style={{ marginTop: '2rem' }}>
-          <h2>💬 Facebook Reviews (Live)</h2>
-          {!fbReady && <p>Loading Facebook feed...</p>}
+          <h2>👍 Facebook Reviews (Live)</h2>
           <div
             className="fb-page"
-            data-href="https://www.facebook.com/settlersinn1/"
+            data-href="https://www.facebook.com/settlersinn1"
             data-tabs="timeline"
-            data-width="100%"
+            data-width="500"
             data-height="400"
             data-small-header="false"
             data-adapt-container-width="true"
             data-hide-cover="false"
             data-show-facepile="true"
           >
-            <blockquote cite="https://www.facebook.com/settlersinn1/" className="fb-xfbml-parse-ignore">
-              <a href="https://www.facebook.com/settlersinn1/">Settlers Inn</a>
+            <blockquote cite="https://www.facebook.com/settlersinn1" className="fb-xfbml-parse-ignore">
+              <a href="https://www.facebook.com/settlersinn1">Settlers Inn</a>
             </blockquote>
           </div>
         </div>
