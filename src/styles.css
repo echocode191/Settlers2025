@@ -1,49 +1,4 @@
 /* === Base Reset === */
-/* === Dark Theme === */
-body.dark {
-  background: #0d1117;
-  color: #c9d1d9;
-}
-
-body.dark a {
-  color: #58a6ff;
-}
-
-body.dark .hero-button {
-  background-color: #21262d;
-  border-color: #30363d;
-  color: #9fef00;
-}
-
-body.dark .hero-button:hover {
-  background-color: #58a6ff;
-  color: #fff;
-}
-
-/* Add all other dark styles if needed... */
-
-/* === Light Theme === */
-body.light {
-  background: #f8f9fa;
-  color: #111;
-}
-
-body.light a {
-  color: #007bff;
-}
-
-body.light .hero-button {
-  background-color: #e0e0e0;
-  border-color: #bbb;
-  color: #333;
-}
-
-body.light .hero-button:hover {
-  background-color: #007bff;
-  color: #fff;
-}
-
-/* Similarly adapt .dish, .review, .quick-access, etc. */
 
 body {
   margin: 0;

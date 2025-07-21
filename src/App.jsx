@@ -22,26 +22,8 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
-  const [theme, setTheme] = useState('dark');
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
-
-  // Load theme from localStorage
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme) setTheme(storedTheme);
-  }, []);
-
-  // Apply theme class to <body>
-  useEffect(() => {
-    document.body.className = ''; // Clear existing
-    document.body.classList.add(theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-  };
 
   // Handle PWA install prompt
   useEffect(() => {
@@ -69,21 +51,23 @@ const App = () => {
     <Router>
       <ScrollToTop />
 
-      {/* Install banner */}
+      {/* PWA Install Banner */}
       {showBanner && (
         <div style={installBannerStyle} onClick={handleInstall}>
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
         </div>
       )}
 
-      {/* Navbar should show on all pages except landing */}
       <Routes>
+        {/* Landing Page */}
         <Route path="/" element={<Valuation />} />
+
+        {/* All other pages with Navbar */}
         <Route
           path="*"
           element={
             <>
-              <Navbar toggleTheme={toggleTheme} currentTheme={theme} />
+              <Navbar />
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/menu" element={<Menu />} />
@@ -93,7 +77,7 @@ const App = () => {
                 <Route path="/location" element={<Location />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/offers" element={<Offers />} />
-                <Route path="/value" element={<Valuation />} />
+                <Route path="/value" element={<Valuation />} /> {/* optional alias */}
               </Routes>
             </>
           }
@@ -103,7 +87,7 @@ const App = () => {
   );
 };
 
-// === PWA Install Banner Style ===
+// Style for PWA Install Banner
 const installBannerStyle = {
   position: 'fixed',
   top: '10px',
@@ -120,7 +104,7 @@ const installBannerStyle = {
   animation: 'fadeInOut 7s ease-in-out',
 };
 
-// === Inject Keyframe Animation ===
+// Inject keyframes for fade animation
 const bannerAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }

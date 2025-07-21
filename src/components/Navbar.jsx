@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
-const Navbar = ({ toggleTheme, currentTheme }) => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const location = useLocation();
@@ -16,14 +16,13 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu on route change
-    setMenuOpen(false);
+    setMenuOpen(false); // Close menu on navigation
   }, [location]);
 
   const toggleMenu = () => setMenuOpen(prev => !prev);
 
   const navLinks = [
-    { to: '/', label: '🏠 Home' },
+    { to: '/home', label: '🏠 Home' },
     { to: '/menu', label: '🥘 Menu' },
     { to: '/accommodation', label: '🛏️ Stay' },
     { to: '/about', label: '📖 About' },
@@ -39,7 +38,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '1rem 1.5rem',
-      background: currentTheme === 'dark' ? 'rgba(13, 17, 23, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+      background: 'rgba(13, 17, 23, 0.9)',
       borderBottom: '1px solid #2b3137',
       backdropFilter: 'blur(8px)',
       position: 'sticky',
@@ -57,7 +56,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
     },
     title: {
       fontSize: '1.4rem',
-      color: currentTheme === 'dark' ? '#9fef00' : '#0a0a0a',
+      color: '#9fef00',
       margin: 0,
     },
     navContainer: {
@@ -69,7 +68,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       paddingTop: isMobile ? '1rem' : 0,
     },
     navLink: {
-      color: currentTheme === 'dark' ? '#58a6ff' : '#0077cc',
+      color: '#58a6ff',
       textDecoration: 'none',
       fontSize: '1rem',
       padding: '6px 10px',
@@ -77,7 +76,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       transition: 'all 0.2s ease-in-out',
     },
     navLinkActive: {
-      backgroundColor: currentTheme === 'dark' ? '#58a6ff22' : '#d0eaff',
+      backgroundColor: '#58a6ff22',
       color: '#9fef00',
       fontWeight: 'bold',
       textShadow: '0 0 6px #9fef00',
@@ -87,26 +86,16 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       background: 'none',
       border: 'none',
       fontSize: '1.6rem',
-      color: currentTheme === 'dark' ? '#58a6ff' : '#0077cc',
+      color: '#58a6ff',
       cursor: 'pointer',
     },
     backBtn: {
       fontSize: '1.4rem',
-      color: currentTheme === 'dark' ? '#58a6ff' : '#0077cc',
+      color: '#58a6ff',
       marginRight: '0.8rem',
       cursor: 'pointer',
       border: 'none',
       background: 'none',
-    },
-    themeToggle: {
-      fontSize: '0.95rem',
-      marginLeft: isMobile ? 0 : '0.8rem',
-      background: currentTheme === 'dark' ? '#20262e' : '#eaeaea',
-      color: currentTheme === 'dark' ? '#9fef00' : '#007700',
-      border: '1px solid #333',
-      borderRadius: '8px',
-      padding: '6px 10px',
-      cursor: 'pointer',
     },
   };
 
@@ -138,10 +127,6 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
             {label}
           </NavLink>
         ))}
-
-        <button onClick={toggleTheme} style={styles.themeToggle}>
-          {currentTheme === 'dark' ? '🌞 Light' : '🌙 Dark'}
-        </button>
       </nav>
     </header>
   );
