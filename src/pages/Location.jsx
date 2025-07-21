@@ -5,7 +5,7 @@ import 'leaflet-routing-machine';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const settlersCoords = [-0.16486, 35.58073];
+const settlersCoords = [-0.1995774048265411, 35.43807506648199];
 
 const Location = () => {
   const [userCoords, setUserCoords] = useState(null);
@@ -48,13 +48,11 @@ const Location = () => {
       zoomControl: false,
     });
 
-    // Detailed Light Map (normal color)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
       maxZoom: 19,
     }).addTo(mapInstanceRef.current);
 
-    // Settlers Marker
     L.marker(settlersCoords, {
       icon: L.divIcon({
         className: 'settlers-marker',
@@ -62,11 +60,12 @@ const Location = () => {
         iconSize: [30, 30],
         iconAnchor: [15, 15],
       }),
-    }).addTo(mapInstanceRef.current).bindPopup('📍 Settlers Inn — We’re here!').openPopup();
+    })
+      .addTo(mapInstanceRef.current)
+      .bindPopup('📍 Settlers Inn — We’re here!')
+      .openPopup();
 
-    return () => {
-      mapInstanceRef.current.remove();
-    };
+    return () => mapInstanceRef.current.remove();
   }, []);
 
   const locateMe = () => {
@@ -74,10 +73,11 @@ const Location = () => {
       const coords = [pos.coords.latitude, pos.coords.longitude];
       setUserCoords(coords);
 
-      if (userMarkerRef.current) mapInstanceRef.current.removeLayer(userMarkerRef.current);
-      if (routeLineRef.current) mapInstanceRef.current.removeControl(routeLineRef.current);
+      if (userMarkerRef.current)
+        mapInstanceRef.current.removeLayer(userMarkerRef.current);
+      if (routeLineRef.current)
+        mapInstanceRef.current.removeControl(routeLineRef.current);
 
-      // Add user marker
       userMarkerRef.current = L.marker(coords, {
         icon: L.divIcon({
           className: 'user-marker',
@@ -85,9 +85,11 @@ const Location = () => {
           iconSize: [28, 28],
           iconAnchor: [14, 14],
         }),
-      }).addTo(mapInstanceRef.current).bindPopup("📍 You're here!").openPopup();
+      })
+        .addTo(mapInstanceRef.current)
+        .bindPopup("📍 You're here!")
+        .openPopup();
 
-      // Route line
       const routingControl = L.Routing.control({
         waypoints: [L.latLng(coords), L.latLng(settlersCoords)],
         lineOptions: {
