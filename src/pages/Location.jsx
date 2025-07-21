@@ -12,6 +12,7 @@ const Location = () => {
   const [distance, setDistance] = useState(null);
   const [joke, setJoke] = useState('');
   const [mapExpanded, setMapExpanded] = useState(false);
+
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const userMarkerRef = useRef(null);
@@ -111,15 +112,18 @@ const Location = () => {
 
     mapInstanceRef.current = L.map(mapRef.current, {
       center: settlersCoords,
-      zoom: 14,
+      zoom: 15,
       zoomControl: false,
     });
 
-    // You can swap this with a dark tile layer if desired
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '',
+    // Dark CartoDB tile layer for pro clarity
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | Map © OpenStreetMap',
+      subdomains: 'abcd',
+      maxZoom: 20,
     }).addTo(mapInstanceRef.current);
 
+    // Settlers marker
     L.marker(settlersCoords, {
       icon: L.divIcon({
         className: 'settlers-marker',
@@ -152,10 +156,7 @@ const Location = () => {
       }).addTo(mapInstanceRef.current).bindPopup("📍 You're here!").openPopup();
 
       const routingControl = L.Routing.control({
-        waypoints: [
-          L.latLng(coords[0], coords[1]),
-          L.latLng(settlersCoords[0], settlersCoords[1]),
-        ],
+        waypoints: [L.latLng(coords), L.latLng(settlersCoords)],
         lineOptions: {
           styles: [{ color: '#9fef00', weight: 5 }],
         },
@@ -178,10 +179,14 @@ const Location = () => {
   };
 
   const flyToSettlers = () => {
-    mapInstanceRef.current.flyTo(settlersCoords, 17, {
+    mapInstanceRef.current.flyTo(settlersCoords, 18, {
       animate: true,
       duration: 2,
     });
+  };
+
+  const openGoogleMaps = () => {
+    window.open('https://www.google.com/maps/place/-0.16486,35.58073', '_blank');
   };
 
   return (
@@ -205,6 +210,12 @@ const Location = () => {
             style={{ ...styles.button, backgroundColor: '#1f6feb', color: '#fff' }}
           >
             {mapExpanded ? '🗺️ Collapse Map' : '🔍 Expand Map'}
+          </button>
+          <button
+            onClick={openGoogleMaps}
+            style={{ ...styles.button, backgroundColor: '#ff9900', color: '#000' }}
+          >
+            🌍 Open in Google Maps
           </button>
         </div>
 
