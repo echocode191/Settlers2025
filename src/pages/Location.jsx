@@ -27,14 +27,14 @@ const Location = () => {
   ];
 
   const getDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
+    const R = 6371; // km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
       Math.sin(dLat / 2) ** 2 +
       Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) ** 2;
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return (R * c).toFixed(2);
   };
@@ -48,12 +48,13 @@ const Location = () => {
       zoomControl: false,
     });
 
-    // High-detail light map
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors',
-  maxZoom: 19,
-}).addTo(mapInstanceRef.current);
+    // Detailed Light Map (normal color)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(mapInstanceRef.current);
 
+    // Settlers Marker
     L.marker(settlersCoords, {
       icon: L.divIcon({
         className: 'settlers-marker',
@@ -61,7 +62,7 @@ const Location = () => {
         iconSize: [30, 30],
         iconAnchor: [15, 15],
       }),
-    }).addTo(mapInstanceRef.current).bindPopup('📍 Settlers Inn — We’re here!');
+    }).addTo(mapInstanceRef.current).bindPopup('📍 Settlers Inn — We’re here!').openPopup();
 
     return () => {
       mapInstanceRef.current.remove();
@@ -76,6 +77,7 @@ const Location = () => {
       if (userMarkerRef.current) mapInstanceRef.current.removeLayer(userMarkerRef.current);
       if (routeLineRef.current) mapInstanceRef.current.removeControl(routeLineRef.current);
 
+      // Add user marker
       userMarkerRef.current = L.marker(coords, {
         icon: L.divIcon({
           className: 'user-marker',
@@ -85,6 +87,7 @@ const Location = () => {
         }),
       }).addTo(mapInstanceRef.current).bindPopup("📍 You're here!").openPopup();
 
+      // Route line
       const routingControl = L.Routing.control({
         waypoints: [L.latLng(coords), L.latLng(settlersCoords)],
         lineOptions: {
@@ -116,7 +119,7 @@ const Location = () => {
   };
 
   const openGoogleMaps = () => {
-    window.open('https://www.google.com/maps/place/-0.16486,35.58073', '_blank');
+    window.open('https://maps.app.goo.gl/T4JeUH1KDCUrx9mK7', '_blank');
   };
 
   return (
@@ -148,7 +151,7 @@ const Location = () => {
           <button onClick={() => setMapExpanded(!mapExpanded)} style={buttonStyle}>
             {mapExpanded ? '🗺️ Collapse Map' : '🔍 Expand Map'}
           </button>
-          <button onClick={openGoogleMaps} style={{ ...buttonStyle, backgroundColor: '#fbbc05' }}>
+          <button onClick={openGoogleMaps} style={{ ...buttonStyle, backgroundColor: '#fbbc05', color: '#000' }}>
             🌍 Google Maps
           </button>
         </div>
