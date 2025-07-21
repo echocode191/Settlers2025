@@ -16,7 +16,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
   }, []);
 
   useEffect(() => {
-    // Close menu on route change (mobile)
+    // Close mobile menu on route change
     setMenuOpen(false);
   }, [location]);
 
@@ -39,7 +39,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '1rem 1.5rem',
-      background: 'rgba(13, 17, 23, 0.9)',
+      background: currentTheme === 'dark' ? 'rgba(13, 17, 23, 0.9)' : 'rgba(255, 255, 255, 0.9)',
       borderBottom: '1px solid #2b3137',
       backdropFilter: 'blur(8px)',
       position: 'sticky',
@@ -57,7 +57,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
     },
     title: {
       fontSize: '1.4rem',
-      color: '#9fef00',
+      color: currentTheme === 'dark' ? '#9fef00' : '#0a0a0a',
       margin: 0,
     },
     navContainer: {
@@ -67,10 +67,9 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       alignItems: isMobile ? 'flex-start' : 'center',
       width: isMobile ? '100%' : 'auto',
       paddingTop: isMobile ? '1rem' : 0,
-      animation: isMobile && menuOpen ? 'fadeInDown 0.3s ease' : '',
     },
     navLink: {
-      color: '#58a6ff',
+      color: currentTheme === 'dark' ? '#58a6ff' : '#0077cc',
       textDecoration: 'none',
       fontSize: '1rem',
       padding: '6px 10px',
@@ -78,7 +77,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       transition: 'all 0.2s ease-in-out',
     },
     navLinkActive: {
-      backgroundColor: '#58a6ff22',
+      backgroundColor: currentTheme === 'dark' ? '#58a6ff22' : '#d0eaff',
       color: '#9fef00',
       fontWeight: 'bold',
       textShadow: '0 0 6px #9fef00',
@@ -88,12 +87,12 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       background: 'none',
       border: 'none',
       fontSize: '1.6rem',
-      color: '#58a6ff',
+      color: currentTheme === 'dark' ? '#58a6ff' : '#0077cc',
       cursor: 'pointer',
     },
     backBtn: {
       fontSize: '1.4rem',
-      color: '#58a6ff',
+      color: currentTheme === 'dark' ? '#58a6ff' : '#0077cc',
       marginRight: '0.8rem',
       cursor: 'pointer',
       border: 'none',
@@ -102,8 +101,8 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
     themeToggle: {
       fontSize: '0.95rem',
       marginLeft: isMobile ? 0 : '0.8rem',
-      background: '#20262e',
-      color: '#9fef00',
+      background: currentTheme === 'dark' ? '#20262e' : '#eaeaea',
+      color: currentTheme === 'dark' ? '#9fef00' : '#007700',
       border: '1px solid #333',
       borderRadius: '8px',
       padding: '6px 10px',

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
+import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Accommodation from './pages/Accommodation';
@@ -21,9 +22,28 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
+  const [theme, setTheme] = useState('dark');
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
 
+  // Load theme from localStorage
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) setTheme(storedTheme);
+  }, []);
+
+  // Apply theme class to <body>
+  useEffect(() => {
+    document.body.className = ''; // Clear existing
+    document.body.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  // Handle PWA install prompt
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -56,23 +76,34 @@ const App = () => {
         </div>
       )}
 
+      {/* Navbar should show on all pages except landing */}
       <Routes>
-        <Route path="/" element={<Valuation />} /> {/* Landing page */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/accommodation" element={<Accommodation />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/location" element={<Location />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/offers" element={<Offers />} />
-        <Route path="/value" element={<Valuation />} /> {/* Optional alias */}
+        <Route path="/" element={<Valuation />} />
+        <Route
+          path="*"
+          element={
+            <>
+              <Navbar toggleTheme={toggleTheme} currentTheme={theme} />
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/menu" element={<Menu />} />
+                <Route path="/accommodation" element={<Accommodation />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/location" element={<Location />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/offers" element={<Offers />} />
+                <Route path="/value" element={<Valuation />} />
+              </Routes>
+            </>
+          }
+        />
       </Routes>
     </Router>
   );
 };
 
-// Style for PWA install banner
+// === PWA Install Banner Style ===
 const installBannerStyle = {
   position: 'fixed',
   top: '10px',
@@ -89,7 +120,7 @@ const installBannerStyle = {
   animation: 'fadeInOut 7s ease-in-out',
 };
 
-// CSS animation injection
+// === Inject Keyframe Animation ===
 const bannerAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
