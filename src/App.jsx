@@ -25,7 +25,7 @@ const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
 
-  // Handle PWA install prompt
+  // Show PWA install banner
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -47,47 +47,39 @@ const App = () => {
     }
   };
 
+  // Show navbar on all pages except landing (/)
+  const location = useLocation();
+  const showNavbar = location.pathname !== '/';
+
   return (
     <Router>
       <ScrollToTop />
 
-      {/* PWA Install Banner */}
       {showBanner && (
         <div style={installBannerStyle} onClick={handleInstall}>
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
         </div>
       )}
 
-      <Routes>
-        {/* Landing Page */}
-        <Route path="/" element={<Valuation />} />
+      {showNavbar && <Navbar />}
 
-        {/* All other pages with Navbar */}
-        <Route
-          path="*"
-          element={
-            <>
-              <Navbar />
-              <Routes>
-                <Route path="/home" element={<Home />} />
-                <Route path="/menu" element={<Menu />} />
-                <Route path="/accommodation" element={<Accommodation />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/location" element={<Location />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/offers" element={<Offers />} />
-                <Route path="/value" element={<Valuation />} /> {/* optional alias */}
-              </Routes>
-            </>
-          }
-        />
+      <Routes>
+        <Route path="/" element={<Valuation />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/accommodation" element={<Accommodation />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/location" element={<Location />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/offers" element={<Offers />} />
+        <Route path="/value" element={<Valuation />} />
       </Routes>
     </Router>
   );
 };
 
-// Style for PWA Install Banner
+// Style for PWA banner
 const installBannerStyle = {
   position: 'fixed',
   top: '10px',
@@ -104,7 +96,7 @@ const installBannerStyle = {
   animation: 'fadeInOut 7s ease-in-out',
 };
 
-// Inject keyframes for fade animation
+// Add keyframes
 const bannerAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
