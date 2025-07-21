@@ -43,6 +43,20 @@ const Home = () => {
     }
   };
 
+  // ✅ Facebook SDK loader
+  useEffect(() => {
+    const loadFacebookSDK = () => {
+      if (window.FB) return;
+      const script = document.createElement("script");
+      script.async = true;
+      script.defer = true;
+      script.crossOrigin = "anonymous";
+      script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
+      document.body.appendChild(script);
+    };
+    loadFacebookSDK();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -94,18 +108,30 @@ const Home = () => {
           <div className="review"><p>“The tea, the vibe, the rooms — everything’s on point!”</p><span>— Brian N.</span></div>
           <div className="review"><p>“Clean, affordable, and that fish was perfection.”</p><span>— Jane M.</span></div>
         </div>
+      </section>
 
-        <div className="fb-reviews" style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <h2>👍 See More on Facebook</h2>
-          <p>We love your feedback — view our latest reviews and updates!</p>
-          <a
-            href="https://www.facebook.com/settlersinn1"
-            className="fb-button"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* ✅ Facebook Reviews Embed */}
+      <section style={{ margin: '4rem auto', maxWidth: '800px', padding: '2rem 1rem', borderTop: '1px solid #30363d' }}>
+        <h2 style={{ color: '#58a6ff', textAlign: 'center' }}>💬 Facebook Reviews (Live)</h2>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div
+            className="fb-page"
+            data-href="https://www.facebook.com/settlersinn1/"
+            data-tabs="timeline"
+            data-width="380"
+            data-height="400"
+            data-small-header="false"
+            data-adapt-container-width="true"
+            data-hide-cover="false"
+            data-show-facepile="true"
           >
-            🔗 Visit Settlers Inn on Facebook
-          </a>
+            <blockquote
+              cite="https://www.facebook.com/settlersinn1/"
+              className="fb-xfbml-parse-ignore"
+            >
+              <a href="https://www.facebook.com/settlersinn1/">Settlers Inn</a>
+            </blockquote>
+          </div>
         </div>
       </section>
 

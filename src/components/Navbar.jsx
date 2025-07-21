@@ -15,17 +15,22 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    // Close menu on route change (mobile)
+    setMenuOpen(false);
+  }, [location]);
+
   const toggleMenu = () => setMenuOpen(prev => !prev);
 
   const navLinks = [
-    { to: '/', label: 'Home' },
-    { to: '/menu', label: 'Menu' },
-    { to: '/accommodation', label: 'Stay' },
-    { to: '/about', label: 'About' },
-    { to: '/gallery', label: 'Gallery' },
+    { to: '/', label: '🏠 Home' },
+    { to: '/menu', label: '🥘 Menu' },
+    { to: '/accommodation', label: '🛏️ Stay' },
+    { to: '/about', label: '📖 About' },
+    { to: '/gallery', label: '📷 Gallery' },
     { to: '/location', label: '📍 Location' },
-    { to: '/contact', label: 'Contact' },
-    { to: '/offers', label: 'Offers' },
+    { to: '/contact', label: '📞 Contact' },
+    { to: '/offers', label: '💎 Offers' },
   ];
 
   const styles = {
@@ -34,7 +39,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '1rem 1.5rem',
-      background: 'rgba(13, 17, 23, 0.85)',
+      background: 'rgba(13, 17, 23, 0.9)',
       borderBottom: '1px solid #2b3137',
       backdropFilter: 'blur(8px)',
       position: 'sticky',
@@ -58,10 +63,11 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
     navContainer: {
       display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
       flexDirection: isMobile ? 'column' : 'row',
-      gap: '1rem',
+      gap: isMobile ? '0.5rem' : '1.2rem',
       alignItems: isMobile ? 'flex-start' : 'center',
       width: isMobile ? '100%' : 'auto',
       paddingTop: isMobile ? '1rem' : 0,
+      animation: isMobile && menuOpen ? 'fadeInDown 0.3s ease' : '',
     },
     navLink: {
       color: '#58a6ff',
@@ -75,7 +81,7 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
       backgroundColor: '#58a6ff22',
       color: '#9fef00',
       fontWeight: 'bold',
-      textShadow: '0 0 5px #9fef00',
+      textShadow: '0 0 6px #9fef00',
     },
     menuBtn: {
       display: 'block',
@@ -88,19 +94,19 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
     backBtn: {
       fontSize: '1.4rem',
       color: '#58a6ff',
-      marginRight: '1rem',
+      marginRight: '0.8rem',
       cursor: 'pointer',
       border: 'none',
       background: 'none',
     },
     themeToggle: {
-      fontSize: '1.1rem',
-      marginLeft: isMobile ? 0 : '1rem',
-      background: '#222',
+      fontSize: '0.95rem',
+      marginLeft: isMobile ? 0 : '0.8rem',
+      background: '#20262e',
       color: '#9fef00',
-      border: '1px solid #444',
+      border: '1px solid #333',
       borderRadius: '8px',
-      padding: '5px 10px',
+      padding: '6px 10px',
       cursor: 'pointer',
     },
   };
@@ -115,7 +121,9 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
         <h1 style={styles.title}>Settlers Inn</h1>
       </div>
 
-      <button style={styles.menuBtn} onClick={toggleMenu}>☰</button>
+      <button style={styles.menuBtn} onClick={toggleMenu}>
+        ☰
+      </button>
 
       <nav style={styles.navContainer}>
         {navLinks.map(({ to, label }) => (
@@ -127,7 +135,6 @@ const Navbar = ({ toggleTheme, currentTheme }) => {
                 ? { ...styles.navLink, ...styles.navLinkActive }
                 : styles.navLink
             }
-            onClick={() => setMenuOpen(false)}
           >
             {label}
           </NavLink>

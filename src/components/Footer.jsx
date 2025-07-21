@@ -7,51 +7,47 @@ const Footer = () => {
   const styles = {
     footer: {
       background: 'linear-gradient(to right, #161b22, #0d1117)',
-      padding: '3rem 1.5rem 2rem',
+      padding: '3rem 1rem 2rem',
       fontFamily: 'Fira Code, monospace',
       color: '#c9d1d9',
-      borderTop: '1px solid #2b3137'
+      borderTop: '1px solid #2b3137',
     },
     container: {
       display: 'flex',
       flexWrap: 'wrap',
-      gap: '2rem',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      gap: '3rem',
       maxWidth: '1000px',
-      margin: 'auto'
+      margin: 'auto',
+      textAlign: 'center',
     },
     col: {
-      flex: '1 1 260px'
+      minWidth: '260px',
+      flex: '1',
     },
     heading: {
       color: '#9fef00',
       marginBottom: '0.8rem',
       fontSize: '1.2rem',
-      cursor: 'pointer'
-    },
-    ul: {
-      listStyle: 'none',
-      padding: 0,
-      margin: 0
-    },
-    li: {
-      margin: '0.4rem 0'
+      cursor: 'pointer',
     },
     a: {
       color: '#58a6ff',
       textDecoration: 'none',
-      fontSize: '0.95rem'
+      fontSize: '0.95rem',
     },
     aHover: {
       textDecoration: 'underline',
-      color: '#1f6feb'
+      color: '#1f6feb',
     },
     contactInfo: {
-      transition: 'all 0.3s ease'
+      transition: 'all 0.3s ease',
+      fontSize: '0.95rem',
+      lineHeight: '1.7',
     },
     cta: {
       textAlign: 'center',
-      marginTop: '2rem'
+      marginTop: '2rem',
     },
     whatsapp: {
       display: 'inline-block',
@@ -62,14 +58,14 @@ const Footer = () => {
       fontWeight: 'bold',
       fontFamily: 'Fira Code',
       textDecoration: 'none',
-      transition: 'background 0.3s ease, transform 0.2s ease'
+      transition: 'background 0.3s ease, transform 0.2s ease',
     },
     bottom: {
       textAlign: 'center',
       marginTop: '2.5rem',
       fontSize: '0.85rem',
-      color: '#8b949e'
-    }
+      color: '#8b949e',
+    },
   };
 
   return (
@@ -82,8 +78,6 @@ const Footer = () => {
           <p>Where Settlers Still Eat Like Kings.</p>
         </div>
 
-        {/* Quick Links */}
-       
         {/* Contact Info */}
         <div style={styles.col}>
           <h4 style={styles.heading}>Contact Us</h4>
@@ -110,7 +104,17 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div style={styles.bottom}>
-        <p>Built with ❤️ by <a href="https://wa.me/254721635810" target="_blank" rel="noreferrer" style={styles.a}>EchoBiz (Kimutai Gibson)</a></p>
+        <p>
+          Built with ❤️ by{' '}
+          <a
+            href="https://wa.me/254721635810"
+            target="_blank"
+            rel="noreferrer"
+            style={styles.a}
+          >
+            EchoBiz (Kimutai Gibson)
+          </a>
+        </p>
         <p>© {year} Settlers Inn. All rights reserved.</p>
       </div>
     </footer>

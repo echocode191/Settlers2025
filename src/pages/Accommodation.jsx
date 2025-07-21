@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Accommodation = () => {
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes popIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.6; }
+        100% { opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
   const styles = {
     page: {
       fontFamily: "'Fira Code', monospace",
@@ -19,7 +39,7 @@ const Accommodation = () => {
     },
     title: {
       color: '#9fef00',
-      fontSize: '2rem',
+      fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
       marginBottom: '0.5rem',
       animation: 'popIn 0.6s ease-in-out',
     },
@@ -98,6 +118,13 @@ const Accommodation = () => {
       price: 'KES 2,500 / night',
       msg: "Hi Settlers Inn! I'd love to book the Family Room — it's time to reunite the crew 👨‍👩‍👧‍👦✨",
     },
+    {
+      title: 'Conference Room',
+      img: '/assets/conference.jpg',
+      desc: 'Equipped for meetings, trainings & strategy sessions. Power up your plans with Wi-Fi, coffee, and space to think.',
+      price: 'KES 3,500 / session',
+      msg: "Hello Settlers Inn! I'd like to reserve the Conference Room for a team session 💼🖥️. Please share availability.",
+    },
   ];
 
   return (
@@ -107,10 +134,10 @@ const Accommodation = () => {
       <section style={styles.section}>
         <h2 style={styles.title}>🏨 Heaven Found: Settlers Stays</h2>
         <p style={styles.subtitle}>
-          You don't just sleep here. You reset. You reconnect. You *recharge like royalty.*
+          You don't just sleep here. You reset. You reconnect. You <i>recharge like royalty.</i>
         </p>
         <p style={styles.thriller}>
-          🎬 "2 rooms. 1 destiny. Will you survive the comfort?" 🍃
+          🎬 "3 rooms. 1 legacy. Comfort is calling…" 📞
         </p>
 
         <div style={styles.roomGrid}>
@@ -137,26 +164,5 @@ const Accommodation = () => {
     </div>
   );
 };
-
-// Animations (inject only once)
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style');
-  style.innerHTML = `
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.6; }
-      100% { opacity: 1; }
-    }
-  `;
-  document.head.appendChild(style);
-}
 
 export default Accommodation;

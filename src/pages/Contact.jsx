@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Contact = () => {
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
   const styles = {
     page: {
       fontFamily: "'Fira Code', monospace",
@@ -35,6 +46,7 @@ const Contact = () => {
       padding: '2rem',
       boxShadow: '0 0 12px rgba(88,166,255,0.1)',
       marginBottom: '3rem',
+      animation: 'fadeIn 1s ease',
     },
     contactItem: {
       marginBottom: '1rem',
@@ -69,6 +81,7 @@ const Contact = () => {
       padding: '2rem',
       boxShadow: '0 0 20px rgba(159,239,0,0.15)',
       textAlign: 'center',
+      animation: 'fadeIn 1.4s ease',
     },
     creatorHeading: {
       color: '#9fef00',

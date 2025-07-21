@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Gallery = () => {
+  const [popupImg, setPopupImg] = useState(null);
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') setPopupImg(null);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   const images = [
     { src: '/assets/tea.jpg', alt: 'Tea' },
     { src: '/assets/chapatis.jpg', alt: 'Chapatis' },
@@ -67,6 +77,26 @@ const Gallery = () => {
       transition: 'transform 0.3s ease',
       cursor: 'pointer',
     }),
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      backgroundColor: 'rgba(0, 0, 0, 0.85)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 999,
+      animation: 'fadeIn 0.4s ease',
+    },
+    fullImg: {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      borderRadius: '14px',
+      border: '2px solid #9fef00',
+      boxShadow: '0 0 40px rgba(159, 239, 0, 0.2)',
+    },
   };
 
   return (
@@ -86,10 +116,17 @@ const Gallery = () => {
               style={styles.img(i)}
               onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
               onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
+              onClick={() => setPopupImg(img)}
             />
           ))}
         </div>
       </section>
+
+      {popupImg && (
+        <div style={styles.overlay} onClick={() => setPopupImg(null)}>
+          <img src={popupImg.src} alt={popupImg.alt} style={styles.fullImg} />
+        </div>
+      )}
 
       <Footer />
 

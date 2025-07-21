@@ -5,7 +5,7 @@ import 'leaflet-routing-machine';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const settlersCoords = [-0.16486, 35.58073]; // Updated Settlers Inn location
+const settlersCoords = [-0.16486, 35.58073];
 
 const Location = () => {
   const [userCoords, setUserCoords] = useState(null);
@@ -42,17 +42,17 @@ const Location = () => {
     title: {
       textAlign: 'center',
       color: '#9fef00',
-      fontSize: '2rem',
+      fontSize: 'clamp(1.6rem, 4vw, 2.2rem)',
       marginBottom: '0.5rem',
     },
     subtitle: {
       textAlign: 'center',
       color: '#8b949e',
       marginBottom: '2rem',
-      fontSize: '1rem',
+      fontSize: 'clamp(0.9rem, 3vw, 1.1rem)',
     },
     mapBox: {
-      height: mapExpanded ? '80vh' : '400px',
+      height: mapExpanded ? 'min(80vh, 500px)' : '400px',
       borderRadius: '14px',
       overflow: 'hidden',
       border: '2px solid #30363d',
@@ -68,7 +68,7 @@ const Location = () => {
       flexWrap: 'wrap',
     },
     button: {
-      padding: '0.7rem 1.5rem',
+      padding: '0.9rem 1.6rem',
       borderRadius: '10px',
       border: 'none',
       backgroundColor: '#25D366',
@@ -77,6 +77,7 @@ const Location = () => {
       cursor: 'pointer',
       boxShadow: '0 0 10px rgba(37, 211, 102, 0.4)',
       transition: '0.3s',
+      minWidth: '150px',
     },
     distance: {
       textAlign: 'center',
@@ -114,6 +115,7 @@ const Location = () => {
       zoomControl: false,
     });
 
+    // You can swap this with a dark tile layer if desired
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '',
     }).addTo(mapInstanceRef.current);
@@ -168,9 +170,10 @@ const Location = () => {
       setDistance(dist);
       setJoke(jokes[Math.floor(Math.random() * jokes.length)]);
 
-      mapInstanceRef.current.fitBounds(routingControl.getPlan().getWaypoints().map(w => w.latLng), {
-        padding: [50, 50],
-      });
+      mapInstanceRef.current.fitBounds(
+        routingControl.getPlan().getWaypoints().map((w) => w.latLng),
+        { padding: [50, 50] }
+      );
     });
   };
 
@@ -242,6 +245,14 @@ const Location = () => {
         }
         .leaflet-routing-container {
           display: none;
+        }
+        @media (max-width: 600px) {
+          .leaflet-popup-content {
+            font-size: 0.85rem;
+          }
+          .leaflet-popup-content-wrapper {
+            max-width: 200px;
+          }
         }
       `}</style>
     </div>

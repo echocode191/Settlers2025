@@ -1,361 +1,236 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
-
-/* === Global Reset === */
-* {
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-}
+/* === Base Reset === */
 body {
   margin: 0;
-  font-family: 'Fira Code', monospace;
-  background: linear-gradient(160deg, #0d1117, #0c0f16);
+  font-family: 'Segoe UI', sans-serif;
+  background: #0d1117;
   color: #c9d1d9;
-  overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.6;
 }
 
-/* === Themes === */
-body.dark {
-  background-color: #0d1117;
-  color: #c9d1d9;
-}
-body.light {
-  background-color: #f5f5f5;
-  color: #222;
-}
-body.dark a { color: #58a6ff; }
-body.light a { color: #1f6feb; }
-body.light .hero { background-color: #fff; }
-body.dark .hero { background-color: transparent; }
-
-/* === Animations === */
-@keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulse {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes popIn {
-  0% { transform: scale(0.95); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* === Header / Navbar === */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  background: rgba(13, 17, 23, 0.85);
-  border-bottom: 1px solid #2b3137;
-  backdrop-filter: blur(10px) contrast(1.2);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.brand {
-  display: flex;
-  align-items: center;
-}
-.brand img {
-  height: 45px;
-  margin-right: 0.8rem;
-}
-.brand h1 {
-  font-size: 1.4rem;
-  color: #9fef00;
-  margin: 0;
-}
-nav {
-  display: flex;
-  gap: 1.2rem;
-}
-nav a {
+a {
   color: #58a6ff;
   text-decoration: none;
-  font-size: 1rem;
-  transition: 0.2s;
-}
-nav a:hover {
-  color: #1f6feb;
-  text-shadow: 0 0 6px #58a6ff;
-}
-.menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.6rem;
-  color: #58a6ff;
-  cursor: pointer;
-}
-@media (max-width: 768px) {
-  .menu-btn { display: block; }
-  nav {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 1rem;
-  }
-  nav.active { display: flex; }
-  nav a {
-    padding: 0.5rem 1rem;
-    border-top: 1px solid #30363d;
-    width: 100%;
-  }
 }
 
-/* === Hero === */
+a:hover {
+  text-decoration: underline;
+}
+
+/* === Hero Section === */
 .hero {
   position: relative;
-  height: 100vh;
+  overflow: hidden;
+  height: 95vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  overflow: hidden;
 }
+
 .bg-video {
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.3;
-  filter: brightness(0.6);
-  z-index: 0;
+  z-index: -1;
+  filter: brightness(0.5);
 }
+
 .hero-content {
-  position: relative;
   z-index: 1;
-  animation: fadeInUp 1s ease-out;
-  max-width: 700px;
-  padding: 1rem;
+  padding: 2rem;
 }
-.hero-content h2 {
-  font-size: 2.8rem;
+
+.animated-title {
+  font-size: 2.5rem;
   color: #9fef00;
+  text-shadow: 0 0 5px #9fef00;
   margin-bottom: 1rem;
 }
-.hero-content p {
+
+.rotating-phrase {
   font-size: 1.2rem;
-  color: #999;
-  margin-bottom: 1.5rem;
+  color: #58a6ff;
+  margin-bottom: 1rem;
 }
+
 .hero-button {
-  font-family: 'Fira Code', monospace;
+  display: inline-block;
+  margin: 0.5rem;
+  background-color: #21262d;
+  border: 1px solid #30363d;
+  padding: 12px 24px;
+  border-radius: 30px;
+  color: #9fef00;
+  font-weight: bold;
   font-size: 1rem;
-  padding: 0.7rem 1.4rem;
-  margin: 0.5rem auto;
+  transition: 0.3s ease;
+}
+
+.hero-button:hover {
   background-color: #58a6ff;
   color: #fff;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-  box-shadow: 0 4px 14px rgba(88, 166, 255, 0.3);
 }
-.hero-button:hover {
-  background-color: #1f6feb;
-  box-shadow: 0 0 20px #58a6ff;
-  transform: translateY(-2px) scale(1.02);
-}
+
 .hero-button.book {
   background-color: #9fef00;
   color: #0d1117;
-  box-shadow: 0 4px 14px rgba(159, 239, 0, 0.4);
-}
-.hero-button.book:hover {
-  background-color: #bfff3c;
-  box-shadow: 0 0 20px #9fef00;
-}
-.rotating-phrase {
-  font-size: 1.2rem;
-  color: #9fef00;
-  animation: pulse 3s infinite ease-in-out;
 }
 
-/* === Sections === */
-section {
-  max-width: 1000px;
-  margin: auto;
-  padding: 3rem 1rem;
-  animation: fadeInUp 1s ease-out;
+.hero-button.book:hover {
+  background-color: #58a6ff;
+  color: #fff;
 }
+
+/* === Intro Section === */
 .intro {
+  padding: 2rem;
   text-align: center;
   font-size: 1.1rem;
-  color: #8b949e;
+  color: #c9d1d9;
 }
 
 /* === Featured Dishes === */
 .featured {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
 }
+
 .dish {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px) contrast(1.2);
-  border: 1px solid #2b3137;
-  border-radius: 14px;
+  background: #161b22;
   padding: 1rem;
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  width: 250px;
   text-align: center;
-  transition: 0.3s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
 }
+
+.dish:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px #58a6ff44;
+}
+
 .dish img {
-  max-width: 100%;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
   border-radius: 12px;
 }
+
 .dish h3 {
+  margin: 1rem 0 0.5rem;
   color: #9fef00;
-  margin-top: 0.8rem;
-}
-.dish:hover {
-  transform: translateY(-6px);
-  border-color: #58a6ff;
-  box-shadow: 0 8px 20px rgba(88,166,255,0.25);
 }
 
-/* === Reviews === */
-.reviews {
-  padding: 4rem 1rem;
-  background: #0d1117;
-}
-.reviews h2 {
-  font-size: 1.6rem;
-  color: #58a6ff;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-.review-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  max-width: 900px;
-  margin: auto;
-}
-.review {
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(6px);
-  border: 1px solid #2b3137;
-  padding: 1.5rem;
-  border-radius: 14px;
+.dish p {
   font-size: 0.95rem;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
-  transition: 0.3s ease;
-}
-.review:hover {
-  border-color: #58a6ff;
-}
-.review p {
   color: #c9d1d9;
-  margin-bottom: 0.5rem;
-}
-.review span {
-  color: #9fef00;
-  font-size: 0.85rem;
 }
 
-/* === Footer === */
-.settlers-footer {
-  background: rgba(22, 27, 34, 0.9);
-  padding: 3rem 1.5rem 2rem;
-  color: #c9d1d9;
-  border-top: 1px solid #2b3137;
-  backdrop-filter: blur(10px);
+/* === Reviews Section === */
+.reviews {
+  padding: 3rem 1rem;
+  background: #0d1117;
+  border-top: 1px solid #30363d;
 }
-.footer-container {
+
+.reviews h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #58a6ff;
+}
+
+.review-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  justify-content: space-between;
-  max-width: 1000px;
-  margin: auto;
-}
-.footer-col h3 {
-  color: #9fef00;
-  margin-bottom: 0.8rem;
-}
-.footer-col a {
-  color: #58a6ff;
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-.footer-col a:hover {
-  text-decoration: underline;
-  color: #1f6feb;
-}
-.footer-cta {
-  text-align: center;
-  margin-top: 2rem;
-}
-.whatsapp-button {
-  background-color: #25D366;
-  color: #fff;
-  padding: 0.7rem 1.5rem;
-  border-radius: 8px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: 0.3s;
-}
-.whatsapp-button:hover {
-  background-color: #1ebe5d;
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(37, 211, 102, 0.5);
-}
-.footer-bottom {
-  text-align: center;
-  margin-top: 2.5rem;
-  font-size: 0.85rem;
-  color: #8b949e;
+  justify-content: center;
 }
 
-/* === Mobile Quick Access === */
+.review {
+  background-color: #161b22;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #30363d;
+  width: 300px;
+}
+
+.review p {
+  font-style: italic;
+}
+
+.review span {
+  display: block;
+  margin-top: 1rem;
+  color: #9fef00;
+  text-align: right;
+}
+
+/* === Facebook Section === */
+.fb-page,
+.fb-page * {
+  max-width: 100% !important;
+}
+
+/* === Quick Access Floating Bar === */
 .quick-access {
   position: fixed;
-  bottom: 5.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(22, 27, 34, 0.95);
-  border: 1px solid #30363d;
-  border-radius: 40px;
-  padding: 0.6rem 1.2rem;
+  bottom: 10px;
+  right: 12px;
   display: flex;
-  gap: 1.2rem;
-  z-index: 999;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  backdrop-filter: blur(6px);
-  animation: fadeInUp 0.9s ease-out;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
 }
+
 .quick-access a {
+  background-color: #161b22;
+  border: 1px solid #30363d;
   color: #9fef00;
-  font-size: 1.4rem;
-  text-decoration: none;
-  transition: transform 0.2s ease, color 0.3s ease;
-  animation: pulse 3s ease-in-out infinite;
+  font-size: 20px;
+  padding: 12px;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 0 6px #000;
+  transition: transform 0.2s, background 0.3s;
 }
+
 .quick-access a:hover {
-  transform: scale(1.25);
-  color: #58a6ff;
-  text-shadow: 0 0 6px rgba(88,166,255,0.6);
+  background-color: #58a6ff;
+  color: white;
+  transform: scale(1.1);
 }
-@media (min-width: 768px) {
-  .quick-access { display: none; }
+
+/* === Toast Animation === */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
 }
-@media (max-width: 767px) {
-  body { padding-bottom: 7rem; }
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .featured {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .dish {
+    width: 90%;
+  }
+
+  .review {
+    width: 90%;
+  }
 }

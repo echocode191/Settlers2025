@@ -19,7 +19,6 @@ const Menu = () => {
     const interval = setInterval(() => {
       setJokeIndex((prev) => (prev + 1) % foodJokes.length);
     }, 4000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -36,7 +35,7 @@ const Menu = () => {
       fontFamily: "'Fira Code', monospace",
       backgroundColor: '#0d1117',
       color: '#c9d1d9',
-      margin: 0,
+      minHeight: '100vh',
       paddingBottom: '5rem',
     },
     section: {
@@ -52,17 +51,19 @@ const Menu = () => {
       boxShadow: '0 0 15px rgba(88,166,255,0.1)',
       textAlign: 'center',
       marginBottom: '3rem',
-      animation: 'popIn 0.6s ease',
     },
-    h2: {
-      color: '#9fef00',
-      fontSize: '1.6rem',
-      marginBottom: '0.6rem',
-      animation: 'typewriter 3s steps(40, end) 1 normal both',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      borderRight: '2px solid #9fef00',
-    },
+   h2: {
+  color: '#9fef00',
+  fontSize: '1.5rem',
+  marginBottom: '0.6rem',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '100%',
+  display: 'block',
+  animation: 'typewriter 3s steps(40, end) 1 normal both',
+},
+
     p: {
       color: '#8b949e',
       marginBottom: '1rem',
@@ -82,8 +83,9 @@ const Menu = () => {
       border: '1px solid #30363d',
       borderRadius: '8px',
       color: '#c9d1d9',
-      minWidth: '220px',
       fontFamily: 'Fira Code',
+      minWidth: '220px',
+      flex: '1',
     },
     button: {
       padding: '0.6rem 1.2rem',
@@ -94,13 +96,14 @@ const Menu = () => {
       fontFamily: 'Fira Code',
       cursor: 'pointer',
       fontWeight: 'bold',
+      flexShrink: 0,
     },
     menuSection: {
       paddingTop: '1rem',
     },
     category: {
       marginBottom: '2.5rem',
-      animation: 'fadeInUp 1s ease',
+      animation: 'fadeInUp 0.8s ease',
     },
     categoryTitle: {
       color: '#58a6ff',
@@ -115,6 +118,7 @@ const Menu = () => {
       marginBottom: '0.7rem',
       padding: '0.4rem 0.2rem',
       borderBottom: '1px dashed #30363d',
+      fontSize: '0.95rem',
     },
     floatBtn: {
       position: 'fixed',
@@ -164,7 +168,6 @@ const Menu = () => {
     },
   ];
 
-  // Inject global keyframes if not already
   useEffect(() => {
     if (typeof document !== "undefined") {
       const style = document.createElement("style");
@@ -176,10 +179,6 @@ const Menu = () => {
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popIn {
-          0% { transform: scale(0.8); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
         }
         @keyframes typewriter {
           from { width: 0; }
@@ -198,7 +197,6 @@ const Menu = () => {
   return (
     <div style={styles.body}>
       <Navbar />
-
       <section style={styles.section}>
         <div style={styles.orderBox}>
           <h2 style={styles.h2}>🍛 Welcome to Our Delicious World</h2>
@@ -241,7 +239,6 @@ const Menu = () => {
       >
         💬
       </a>
-
       <Footer />
     </div>
   );

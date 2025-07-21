@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -12,12 +12,13 @@ const Offers = () => {
   const [joke, setJoke] = useState("");
   const [feedbackStep, setFeedbackStep] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  const textareaRef = useRef(null);
 
   const funnyMessages = [
     "🎯 This is not a drill! Real offer, real food!",
     "🍲 Come hungry. Leave royalty.",
     "🚨 10% off before Grandma eats it all!",
-    "🎁 Offers hotter than our chapatis!",
+    "🏱 Offers hotter than our chapatis!",
     "👑 Eat like a king. Pay like a peasant.",
     "🕒 Hurry! Offer runs faster than our waiter!",
   ];
@@ -64,6 +65,12 @@ const Offers = () => {
       clearInterval(messageInterval);
     };
   }, []);
+
+  useEffect(() => {
+    if (feedbackStep && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [feedbackStep]);
 
   const handleClaim = () => {
     localStorage.setItem(offerKey, "true");
@@ -116,7 +123,7 @@ const Offers = () => {
                 cursor: expired ? "not-allowed" : "pointer",
               }}
             >
-              {expired ? "❌ Expired" : "🎁 Claim Your Offer"}
+              {expired ? "❌ Expired" : "🏱 Claim Your Offer"}
             </button>
           )}
 
@@ -140,6 +147,7 @@ const Offers = () => {
                 ✍️ Tell us what you'd like to order or book:
               </label>
               <textarea
+                ref={textareaRef}
                 rows="4"
                 placeholder="e.g. I'd love to reserve a room for Friday and order chicken stew 🍗"
                 value={feedbackMessage}
@@ -250,5 +258,26 @@ const styles = {
     marginTop: "0.5rem",
   },
 };
+
+// Inject keyframes for animation
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 export default Offers;
