@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Accommodation from './pages/Accommodation';
@@ -25,7 +24,6 @@ const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
 
-  // Show PWA install banner
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -47,24 +45,19 @@ const App = () => {
     }
   };
 
-  // Show navbar on all pages except landing (/)
-  const location = useLocation();
-  const showNavbar = location.pathname !== '/';
-
   return (
     <Router>
       <ScrollToTop />
 
+      {/* Install banner */}
       {showBanner && (
         <div style={installBannerStyle} onClick={handleInstall}>
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
         </div>
       )}
 
-      {showNavbar && <Navbar />}
-
       <Routes>
-        <Route path="/" element={<Valuation />} />
+        <Route path="/" element={<Valuation />} /> {/* Landing page */}
         <Route path="/home" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/accommodation" element={<Accommodation />} />
@@ -73,13 +66,13 @@ const App = () => {
         <Route path="/location" element={<Location />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/offers" element={<Offers />} />
-        <Route path="/value" element={<Valuation />} />
+        <Route path="/value" element={<Valuation />} /> {/* Optional alias */}
       </Routes>
     </Router>
   );
 };
 
-// Style for PWA banner
+// Style for PWA install banner
 const installBannerStyle = {
   position: 'fixed',
   top: '10px',
@@ -96,7 +89,7 @@ const installBannerStyle = {
   animation: 'fadeInOut 7s ease-in-out',
 };
 
-// Add keyframes
+// CSS animation injection
 const bannerAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
