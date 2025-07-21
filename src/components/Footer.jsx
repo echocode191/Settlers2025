@@ -82,9 +82,9 @@ const Footer = () => {
         <div style={styles.col}>
           <h4 style={styles.heading}>Contact Us</h4>
           <div style={styles.contactInfo}>
-            <p>📞 Hotel: <a href="tel:+254748778388" style={styles.a}>0748 778***</a></p>
-            <p>👤 Manager: <a href="tel:+254723709208" style={styles.a}>0723 709***</a></p>
-            <p>👤 Owner: <a href="tel:+254727046813" style={styles.a}>0727 046***</a></p>
+            <p>📞 Hotel: <a href="tel:+254748778388" style={styles.a}>0748 778388</a></p>
+            <p>👤 Manager: <a href="tel:+254723709208" style={styles.a}>0723 709208</a></p>
+            <p>👤 Owner: <a href="tel:+254727046813" style={styles.a}>0727 046813</a></p>
             <p>✉️ <a href="mailto:settlersinn@gmail.com" style={styles.a}>settlersinn@gmail.com</a></p>
           </div>
         </div>
