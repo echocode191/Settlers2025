@@ -93,7 +93,7 @@ const Footer = () => {
               👤 Owner: <a href="tel:+254727046813" style={styles.a}>0727 046813</a>
             </p>
             <p>
-              ✉️ <a href="mailto:settlersinn@gmail.com" style={styles.a}>settlersinn@gmail.com</a>
+              ✉️ <a href="mailto:settlersinn2030@gmail.com" style={styles.a}>settlersinn@gmail.com</a>
             </p>
           </div>
         </div>
