@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Menu from './pages/Menu';
@@ -60,7 +60,11 @@ const App = () => {
       )}
 
       <Routes>
+        {/* ✅ Landing Page */}
         <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} /> {/* Alias for safety */}
+
+        {/* ✅ Other Pages */}
         <Route path="/menu" element={<Menu />} />
         <Route path="/accommodation" element={<Accommodation />} />
         <Route path="/about" element={<About />} />
@@ -69,6 +73,9 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/value" element={<Valuation />} />
+
+        {/* ❌ Catch-all fallback for unknown routes */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
