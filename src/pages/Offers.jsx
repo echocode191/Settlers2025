@@ -18,9 +18,9 @@ const Offers = () => {
     "🎯 This is not a drill! Real offer, real food!",
     "🍲 Come hungry. Leave royalty.",
     "🚨 10% off before Grandma eats it all!",
-    "🏱 Offers hotter than our chapatis!",
+    "🔥 Offers hotter than our chapatis!",
     "👑 Eat like a king. Pay like a peasant.",
-    "🕒 Hurry! Offer runs faster than our waiter!",
+    "🕒 Hurry! This deal runs faster than our waiter!",
   ];
 
   const funnyJokes = [
@@ -76,8 +76,7 @@ const Offers = () => {
     localStorage.setItem(offerKey, "true");
     setClaimed(true);
     setFakeLoading(true);
-    const randomJoke = funnyJokes[Math.floor(Math.random() * funnyJokes.length)];
-    setJoke(randomJoke);
+    setJoke(funnyJokes[Math.floor(Math.random() * funnyJokes.length)]);
 
     setTimeout(() => {
       setFakeLoading(false);
@@ -100,17 +99,16 @@ const Offers = () => {
         <h2 style={styles.funHeader}>{funnyMessages[messageIndex]}</h2>
 
         <div style={styles.card}>
-          <h1 style={styles.title}>🔥 10% OFF This Week Only!</h1>
+          <h1 style={styles.title}>🎉 10% OFF — This Week Only!</h1>
 
           {!expired && (
             <div style={styles.countdown}>
-              ⏳ Time left: <strong style={styles.timer}>{countdown}</strong>
+              ⏳ Offer ends in: <strong style={styles.timer}>{countdown}</strong>
             </div>
           )}
 
           <p style={styles.description}>
-            Treat yourself to hearty Kenyan dishes & comfy rooms at Settlers Inn. This week's
-            discount is so good, we almost ate it ourselves!
+            Indulge in authentic Kenyan meals and cozy stays at Settlers Inn. Grab this deal before it vanishes!
           </p>
 
           {!claimed && !fakeLoading && (
@@ -123,7 +121,7 @@ const Offers = () => {
                 cursor: expired ? "not-allowed" : "pointer",
               }}
             >
-              {expired ? "❌ Expired" : "🏱 Claim Your Offer"}
+              {expired ? "❌ Offer Expired" : "🎁 Claim Offer Now"}
             </button>
           )}
 
@@ -131,12 +129,15 @@ const Offers = () => {
             <div style={{ marginTop: "1.5rem" }}>
               <div style={styles.spinner}></div>
               <p style={styles.joke}>{joke}</p>
-              <p style={{ color: "#58a6ff", fontSize: "0.9rem" }}>Almost done...</p>
+              <p style={{ color: "#58a6ff", fontSize: "0.9rem" }}>Finalizing your discount...</p>
             </div>
           )}
 
           {claimed && !fakeLoading && !feedbackStep && (
-            <button style={{ ...styles.button, backgroundColor: "#555", cursor: "not-allowed" }}>
+            <button
+              style={{ ...styles.button, backgroundColor: "#555", cursor: "not-allowed" }}
+              disabled
+            >
               ✅ Already Claimed
             </button>
           )}
@@ -144,7 +145,7 @@ const Offers = () => {
           {feedbackStep && (
             <div style={{ marginTop: "1.5rem", textAlign: "left" }}>
               <label style={{ color: "#9fef00", fontSize: "1rem" }}>
-                ✍️ Tell us what you'd like to order or book:
+                ✍️ What would you like to order or book?
               </label>
               <textarea
                 ref={textareaRef}
@@ -222,7 +223,7 @@ const styles = {
   description: {
     margin: "1rem 0 2rem",
     fontSize: "1.05rem",
-    color: "#999",
+    color: "#c9d1d9",
   },
   button: {
     padding: "0.9rem 2rem",
