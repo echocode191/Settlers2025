@@ -11,6 +11,7 @@ const Footer = () => {
       fontFamily: 'Fira Code, monospace',
       color: '#c9d1d9',
       borderTop: '1px solid #2b3137',
+      animation: 'fadeInUp 1s ease',
     },
     container: {
       display: 'flex',
@@ -30,15 +31,14 @@ const Footer = () => {
       marginBottom: '0.8rem',
       fontSize: '1.2rem',
       cursor: 'pointer',
+      textShadow: '0 0 6px #9fef00',
+      transition: 'transform 0.3s ease',
     },
     a: {
       color: '#58a6ff',
       textDecoration: 'none',
       fontSize: '0.95rem',
-    },
-    aHover: {
-      textDecoration: 'underline',
-      color: '#1f6feb',
+      transition: 'color 0.3s ease, text-shadow 0.3s ease',
     },
     contactInfo: {
       transition: 'all 0.3s ease',
@@ -58,7 +58,8 @@ const Footer = () => {
       fontWeight: 'bold',
       fontFamily: 'Fira Code',
       textDecoration: 'none',
-      transition: 'background 0.3s ease, transform 0.2s ease',
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+      boxShadow: '0 0 10px #25D36677',
     },
     bottom: {
       textAlign: 'center',
@@ -82,10 +83,18 @@ const Footer = () => {
         <div style={styles.col}>
           <h4 style={styles.heading}>Contact Us</h4>
           <div style={styles.contactInfo}>
-            <p>📞 Hotel: <a href="tel:+254748778388" style={styles.a}>0748 778388</a></p>
-            <p>👤 Manager: <a href="tel:+254723709208" style={styles.a}>0723 709208</a></p>
-            <p>👤 Owner: <a href="tel:+254727046813" style={styles.a}>0727 046813</a></p>
-            <p>✉️ <a href="mailto:settlersinn@gmail.com" style={styles.a}>settlersinn@gmail.com</a></p>
+            <p>
+              📞 Hotel: <a href="tel:+254748778388" style={styles.a}>0748 778388</a>
+            </p>
+            <p>
+              👤 Manager: <a href="tel:+254723709208" style={styles.a}>0723 709208</a>
+            </p>
+            <p>
+              👤 Owner: <a href="tel:+254727046813" style={styles.a}>0727 046813</a>
+            </p>
+            <p>
+              ✉️ <a href="mailto:settlersinn@gmail.com" style={styles.a}>settlersinn@gmail.com</a>
+            </p>
           </div>
         </div>
       </div>
@@ -97,6 +106,8 @@ const Footer = () => {
           target="_blank"
           rel="noreferrer"
           style={styles.whatsapp}
+          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.07)'}
+          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
         >
           📲 Chat with Us on WhatsApp
         </a>
@@ -111,12 +122,36 @@ const Footer = () => {
             target="_blank"
             rel="noreferrer"
             style={styles.a}
+            onMouseOver={(e) => {
+              e.currentTarget.style.color = '#1f6feb';
+              e.currentTarget.style.textShadow = '0 0 6px #1f6feb';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.color = '#58a6ff';
+              e.currentTarget.style.textShadow = 'none';
+            }}
           >
             EchoBiz (Kimutai Gibson)
           </a>
         </p>
         <p>© {year} Settlers Inn. All rights reserved.</p>
       </div>
+
+      {/* Glow animation */}
+      <style>
+        {`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}
+      </style>
     </footer>
   );
 };
