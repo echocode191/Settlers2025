@@ -25,12 +25,15 @@ const App = () => {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
+    const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setShowBanner(true);
       setTimeout(() => setShowBanner(false), 7000);
-    });
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const handleInstall = async () => {
@@ -57,7 +60,6 @@ const App = () => {
       )}
 
       <Routes>
-{/*         <Route path="/" element={<Valuation />} /> {/* Landing page */} */}
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/accommodation" element={<Accommodation />} />
@@ -66,7 +68,7 @@ const App = () => {
         <Route path="/location" element={<Location />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/offers" element={<Offers />} />
-        <Route path="/value" element={<Valuation />} /> {/* Optional alias */}
+        <Route path="/value" element={<Valuation />} />
       </Routes>
     </Router>
   );
@@ -89,7 +91,7 @@ const installBannerStyle = {
   animation: 'fadeInOut 7s ease-in-out',
 };
 
-// CSS animation injection
+// CSS animation for banner
 const bannerAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
@@ -98,6 +100,7 @@ const bannerAnimation = `
   100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
 `;
+
 if (typeof document !== 'undefined') {
   const style = document.createElement('style');
   style.innerHTML = bannerAnimation;
