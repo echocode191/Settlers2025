@@ -1,11 +1,11 @@
 /* === Base Reset === */
-
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: #0d1117;
   color: #c9d1d9;
   line-height: 1.6;
+  text-align: center; /* Center global text by default */
 }
 
 a {
@@ -47,8 +47,14 @@ a:hover {
 .animated-title {
   font-size: 2.5rem;
   color: #9fef00;
-  text-shadow: 0 0 5px #9fef00;
+  text-shadow: 0 0 8px #9fef00;
   margin-bottom: 1rem;
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { text-shadow: 0 0 8px #9fef00; }
+  50% { text-shadow: 0 0 20px #9fef00; }
 }
 
 .rotating-phrase {
@@ -88,7 +94,6 @@ a:hover {
 /* === Intro Section === */
 .intro {
   padding: 2rem;
-  text-align: center;
   font-size: 1.1rem;
   color: #c9d1d9;
 }
@@ -114,7 +119,7 @@ a:hover {
 
 .dish:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 8px #58a6ff44;
+  box-shadow: 0 0 10px #9fef0044;
 }
 
 .dish img {
@@ -142,7 +147,6 @@ a:hover {
 }
 
 .reviews h2 {
-  text-align: center;
   margin-bottom: 2rem;
   color: #58a6ff;
 }
@@ -160,6 +164,7 @@ a:hover {
   border-radius: 12px;
   border: 1px solid #30363d;
   width: 300px;
+  text-align: left;
 }
 
 .review p {
@@ -183,11 +188,12 @@ a:hover {
 .quick-access {
   position: fixed;
   bottom: 10px;
-  left: 10px; /* Aligned to bottom-left */
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: row; /* Horizontal layout */
-  flex-wrap: wrap; /* Allow wrapping on small screens */
-  gap: 12px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 14px;
   z-index: 9999;
 }
 
@@ -195,18 +201,24 @@ a:hover {
   background-color: #161b22;
   border: 1px solid #30363d;
   color: #9fef00;
-  font-size: 20px;
+  font-size: 22px;
   padding: 12px;
   border-radius: 50%;
   text-align: center;
-  box-shadow: 0 0 6px #000;
-  transition: transform 0.2s, background 0.3s;
+  box-shadow: 0 0 10px #58a6ff55;
+  transition: transform 0.2s ease, background 0.3s ease;
+  animation: bounce 4s infinite ease-in-out;
 }
 
 .quick-access a:hover {
   background-color: #58a6ff;
   color: white;
-  transform: scale(1.1);
+  transform: scale(1.15);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 /* === Toast Animation === */
@@ -234,17 +246,17 @@ a:hover {
 
   .review {
     width: 90%;
+    text-align: center;
   }
 
   .quick-access {
-    left: 10px;
-    right: 10px;
     flex-wrap: wrap;
-    gap: 8px;
+    justify-content: center;
+    transform: translateX(-50%);
   }
 
   .quick-access a {
-    font-size: 18px;
+    font-size: 20px;
     padding: 10px;
   }
 }
