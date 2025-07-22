@@ -10,6 +10,12 @@ const Contact = () => {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
       }
+      @supports (backdrop-filter: blur(10px)) {
+        .glass {
+          backdrop-filter: blur(14px);
+          background-color: rgba(22, 27, 34, 0.4);
+        }
+      }
     `;
     document.head.appendChild(style);
   }, []);
@@ -17,21 +23,22 @@ const Contact = () => {
   const styles = {
     page: {
       fontFamily: "'Fira Code', monospace",
-      backgroundColor: '#0d1117',
+      background: '#0d1117',
       color: '#c9d1d9',
       minHeight: '100vh',
       paddingBottom: '2rem',
     },
     section: {
-      maxWidth: '900px',
+      maxWidth: '960px',
       margin: 'auto',
-      padding: '2rem 1rem',
+      padding: '3rem 1rem',
     },
     title: {
       textAlign: 'center',
       color: '#9fef00',
-      fontSize: '2rem',
+      fontSize: '2.4rem',
       marginBottom: '0.5rem',
+      textShadow: '0 0 8px #9fef00aa',
     },
     subtitle: {
       textAlign: 'center',
@@ -39,18 +46,20 @@ const Contact = () => {
       marginBottom: '2rem',
       fontSize: '1rem',
     },
-    contactBox: {
-      background: '#161b22',
-      border: '1px solid #30363d',
-      borderRadius: '12px',
+    cardGlass: {
+      background: 'rgba(255,255,255,0.05)',
+      backdropFilter: 'blur(14px)',
+      WebkitBackdropFilter: 'blur(14px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      borderRadius: '16px',
+      boxShadow: '0 0 40px rgba(159, 239, 0, 0.1)',
       padding: '2rem',
-      boxShadow: '0 0 12px rgba(88,166,255,0.1)',
       marginBottom: '3rem',
-      animation: 'fadeIn 1s ease',
+      animation: 'fadeIn 0.8s ease',
     },
     contactItem: {
       marginBottom: '1rem',
-      fontSize: '1rem',
+      fontSize: '1.05rem',
     },
     label: {
       color: '#58a6ff',
@@ -66,22 +75,25 @@ const Contact = () => {
       padding: '0.8rem 1.4rem',
       background: '#25d366',
       color: 'white',
-      borderRadius: '8px',
+      borderRadius: '10px',
       textDecoration: 'none',
       fontWeight: 'bold',
+      boxShadow: '0 0 12px rgba(37, 211, 102, 0.4)',
     },
     divider: {
       margin: '2rem 0',
       borderTop: '1px dashed #30363d',
     },
     creatorBox: {
-      background: '#0d1117',
-      border: '2px solid #9fef00',
-      borderRadius: '14px',
+      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.1)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      borderRadius: '16px',
       padding: '2rem',
-      boxShadow: '0 0 20px rgba(159,239,0,0.15)',
+      boxShadow: '0 0 30px rgba(88, 166, 255, 0.1)',
       textAlign: 'center',
-      animation: 'fadeIn 1.4s ease',
+      animation: 'fadeIn 1.2s ease',
     },
     creatorHeading: {
       color: '#9fef00',
@@ -95,15 +107,15 @@ const Contact = () => {
       marginBottom: '1.2rem',
     },
     phone: {
-      fontSize: '1.1rem',
+      fontSize: '1.05rem',
       color: '#58a6ff',
       fontWeight: 'bold',
     },
     lightNote: {
       color: '#8b949e',
-      fontSize: '0.9rem',
+      fontSize: '0.85rem',
       marginTop: '1rem',
-    }
+    },
   };
 
   return (
@@ -112,9 +124,9 @@ const Contact = () => {
 
       <section style={styles.section}>
         <h2 style={styles.title}>📞 Contact Us</h2>
-        <p style={styles.subtitle}>Reach out for bookings, questions, or just to say hi.</p>
+        <p style={styles.subtitle}>Reach out for bookings, events, or any special cravings.</p>
 
-        <div style={styles.contactBox}>
+        <div style={styles.cardGlass}>
           <p style={styles.contactItem}>
             <span style={styles.label}>Hotel:</span>{' '}
             <a href="tel:+254748778388" style={styles.link}>0748 778 388</a>
@@ -147,15 +159,14 @@ const Contact = () => {
         <div style={styles.creatorBox}>
           <h3 style={styles.creatorHeading}>⚡ Built by Kim — The Agent on the Street</h3>
           <p style={styles.creatorBio}>
-            Hi! I'm Kimutai, the mind behind this experience — blending design, code, and vibe straight from the streets of Kenya 🛠️🇰🇪. 
-            <br /> I build smart, fast websites with maps, bots, and energy. <br />
-            Whether you're running a business, street idea, or dreaming big — let’s make it real.
+            Hello, I’m Kimutai — designer, developer, and street brand builder. <br />
+            I bring restaurant dreams to life with bots, maps, and full-stack energy straight from Kenya’s heartlands 🇰🇪.
           </p>
 
           <p style={styles.phone}>📞 0721 635 810</p>
 
           <a
-            href="https://wa.me/254721635810?text=Hi%20Kim%20👋%2C%20just%20saw%20your%20Settlers%20Inn%20website%20—%20can%20you%20build%20one%20for%20me%3F"
+            href="https://wa.me/254721635810?text=Hi%20Kim%20👋%2C%20I%20just%20saw%20your%20Settlers%20Inn%20website%20—%20can%20you%20build%20one%20for%20me%3F"
             target="_blank"
             rel="noopener noreferrer"
             style={styles.whatsapp}
@@ -164,7 +175,7 @@ const Contact = () => {
           </a>
 
           <p style={styles.lightNote}>
-            💻 React Dev • Leaflet Maps • Firebase • Street-smart Brands
+            💻 React • Firebase • AI Bots • Street-smart Solutions
           </p>
         </div>
       </section>
