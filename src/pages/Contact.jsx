@@ -134,7 +134,7 @@ const Contact = () => {
           </p>
           <p style={styles.contactItem}>
             <span style={styles.label}>Email:</span>{' '}
-            <a href="mailto:settlersinn@gmail.com" style={styles.link}>settlersinn@gmail.com</a>
+            <a href="mailto:settlersinn2030@gmail.com" style={styles.link}>settlersinn@gmail.com</a>
           </p>
 
           <a
