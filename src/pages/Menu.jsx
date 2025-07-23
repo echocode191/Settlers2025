@@ -184,7 +184,7 @@ const Menu = () => {
   };
 
   const categories = [
-    { id: 'breakfast', title: '🌅 Breakfast', items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 450'], ['Porridge with Sweet Potatoes', 'KES 300']] },
+    { id: 'breakfast', title: '🌅 Breakfast', items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 500']] },
     { id: 'lunch', title: '🍛 Lunch & Dinner', items: [['Whole Fish', 'KES 700KG'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'], ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'], ['Mbuzi 1/4KG', 'KES 350'], ['Mbuzi 1/2KG', 'KES 700'], ['Ng`ombe 1/4KG', 'KES 300'], ['Ng`ombe 1/2KG', 'KES 600'], ['Pork 1/4KG', 'KES 350'], ['Pork 1/2KG', 'KES 700']] },
     { id: 'dinner', title: '🌇 Dinner Special', items: [['Chicken Stir Fry', 'KES 800'], ['Nyama Choma (per plate)', 'KES 950']] },
     { id: 'matumbo', title: '🥠 Matumbo Zone', items: [['Matumbo Mbuzi 1/4KG', 'KES 300'], ['Matumbo Mbuzi 1/2KG', 'KES 600'], ['Matumbo Ng`ombe 1/4KG', 'KES 250'], ['Matumbo Ng`ombe 1/2KG', 'KES 500']] },
