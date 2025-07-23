@@ -12,7 +12,7 @@ export default defineConfig({
       includeAssets: [
         'favicon.ico',
         'apple-touch-icon.png',
-        'assets/logo.png'
+        'assets/logo.png' // only critical images
       ],
       manifest: {
         name: 'Settlers Inn',
@@ -27,29 +27,32 @@ export default defineConfig({
             src: 'assets/logo.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any maskable'
+            purpose: 'any maskable',
           },
           {
             src: 'assets/logo.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ]
+            purpose: 'any maskable',
+          },
+        ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],  // Exclude heavy files like mp4
-        globIgnores: ['**/assets/settlers.mp4'],            // Avoid build failure
-        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,     // Limit to 2MB (default safe)
+        globPatterns: ['**/*.{js,css,html,ico,svg}'], // ✅ Don't precache any images
+        globIgnores: [
+          '**/assets/settlers.mp4',
+          '**/*.{jpg,jpeg,png,webp,gif}' // ✅ ignore all image formats in precache
+        ],
+        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',
             handler: 'CacheFirst',
             options: {
-              cacheName: 'images-cache',
+              cacheName: 'image-cache',
               expiration: {
-                maxEntries: 60,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 15, // 15 Days
               },
             },
           },
@@ -65,9 +68,9 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.startsWith('/assets/'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'assets-cache',
+              cacheName: 'asset-cache',
               expiration: {
-                maxEntries: 80,
+                maxEntries: 30,
                 maxAgeSeconds: 60 * 60 * 24 * 7, // 7 Days
               },
             },
@@ -94,6 +97,6 @@ export default defineConfig({
     sourcemap: false,
     emptyOutDir: true,
     minify: 'esbuild',
-    chunkSizeWarningLimit: 1000, // Optional: silence chunk size warnings if needed
+    chunkSizeWarningLimit: 1000,
   },
 });
