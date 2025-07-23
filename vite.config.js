@@ -38,8 +38,9 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,mp4}'],
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // ✅ Allows files up to 10MB
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // ✅ exclude mp4 from precache
+        globIgnores: ['**/assets/settlers.mp4'],          // ✅ prevent build failure
+        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,   // 2MB default (safe)
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',
