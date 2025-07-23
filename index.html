@@ -1,90 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Charset & Viewport -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
+import path from 'path';
 
-    <!-- ✅ Title & Description -->
-    <title>Settlers Inn | Where Settlers Still Eat Like Kings</title>
-    <meta name="description" content="Settlers Inn — Authentic dishes & cozy stays in Kipkelion, Kenya Highlands. Come hungry, leave like a king!" />
-    <meta name="keywords" content="Settlers Inn, Kipkelion, Kenya hotels, local food, African cuisine, Highlands stay, restaurant Kericho, chapati, ugali, tea" />
-    <meta name="author" content="EchoBiz (Kimutai Gibson)" />
-
-    <!-- ✅ Canonical URL -->
-    <link rel="canonical" href="https://settlersinn.co.ke/" />
-
-    <!-- ✅ Social Meta (Open Graph) -->
-    <meta property="og:title" content="Settlers Inn | Where Settlers Still Eat Like Kings" />
-    <meta property="og:description" content="Authentic dishes, cozy rooms, and a legacy of taste in the heart of Kipkelion. Discover Settlers Inn." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://settlersinn.co.ke/" />
-    <meta property="og:image" content="https://settlersinn.co.ke/assets/logo.png" />
-
-    <!-- ✅ Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Settlers Inn | Where Settlers Still Eat Like Kings" />
-    <meta name="twitter:description" content="Settlers Inn — Dine, stay, and feel at home in Kipkelion, Kenya." />
-    <meta name="twitter:image" content="https://settlersinn.co.ke/assets/logo.png" />
-
-    <!-- ✅ PWA Meta -->
-    <meta name="theme-color" content="#0d1117" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="/assets/logo.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-
-    <!-- ✅ Favicon -->
-    <link rel="icon" type="image/png" href="/assets/logo.png" />
-
-    <!-- ✅ Fonts (Optimized) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
-
-    <!-- ✅ Structured Data (Schema.org JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Restaurant",
-      "name": "Settlers Inn",
-      "image": "https://settlersinn.co.ke/assets/logo.png",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Kipkelion",
-        "addressRegion": "Kericho",
-        "addressCountry": "KE"
+export default defineConfig({
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: [
+        'favicon.ico',
+        'apple-touch-icon.png',
+        'assets/logo.png'
+      ],
+      manifest: {
+        name: 'Settlers Inn',
+        short_name: 'Settlers',
+        start_url: '/',
+        display: 'standalone',
+        background_color: '#0d1117',
+        theme_color: '#9fef00',
+        description: 'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
+        icons: [
+          {
+            src: 'assets/logo.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: 'assets/logo.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
+          }
+        ]
       },
-      "description": "Settlers Inn — Authentic Kenyan cuisine & cozy stays in Kipkelion. Dine like royalty.",
-      "telephone": "+254748778388",
-      "url": "https://settlersinn.co.ke/",
-      "servesCuisine": ["Kenyan", "African", "Local"],
-      "priceRange": "$$",
-      "sameAs": [
-        "https://www.facebook.com/settlersinn1/",
-        "https://instagram.com"
-      ]
-    }
-    </script>
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],  // Exclude heavy files like mp4
+        globIgnores: ['**/assets/settlers.mp4'],            // Avoid build failure
+        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,     // Limit to 2MB (default safe)
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.destination === 'image',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images-cache',
+              expiration: {
+                maxEntries: 60,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+              },
+            },
+          },
+          {
+            urlPattern: ({ request }) =>
+              ['style', 'script', 'worker'].includes(request.destination),
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'static-resources',
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/assets/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'assets-cache',
+              expiration: {
+                maxEntries: 80,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 Days
+              },
+            },
+          },
+        ],
+        skipWaiting: true,
+        clientsClaim: true,
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
+    }),
+  ],
 
-    <!-- ✅ Facebook SDK -->
-    <script async defer crossorigin="anonymous"
-      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
-      nonce="settlersInnScript">
-    </script>
-  </head>
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 
-  <body style="margin: 0; font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9;">
-    <noscript>
-      <strong>We're sorry, but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
-    </noscript>
-
-    <!-- Facebook SDK Root -->
-    <div id="fb-root"></div>
-
-    <!-- React App Mount Point -->
-    <div id="root"></div>
-
-    <!-- Main Entry -->
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    emptyOutDir: true,
+    minify: 'esbuild',
+    chunkSizeWarningLimit: 1000, // Optional: silence chunk size warnings if needed
+  },
+});

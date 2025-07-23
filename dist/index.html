@@ -1,36 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Charset & Viewport -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- ✅ Title & Description -->
     <title>Settlers Inn | Where Settlers Still Eat Like Kings</title>
-
-    <!-- SEO Meta -->
     <meta name="description" content="Settlers Inn — Authentic dishes & cozy stays in Kipkelion, Kenya Highlands. Come hungry, leave like a king!" />
-    <meta name="keywords" content="Settlers Inn, Kipkelion, Kenya hotels, local food, African cuisine, family restaurant, Highlands stay" />
+    <meta name="keywords" content="Settlers Inn, Kipkelion, Kenya hotels, local food, African cuisine, Highlands stay, restaurant Kericho, chapati, ugali, tea" />
     <meta name="author" content="EchoBiz (Kimutai Gibson)" />
 
-    <!-- PWA Meta -->
+    <!-- ✅ Canonical URL -->
+    <link rel="canonical" href="https://settlersinn.co.ke/" />
+
+    <!-- ✅ Social Meta (Open Graph) -->
+    <meta property="og:title" content="Settlers Inn | Where Settlers Still Eat Like Kings" />
+    <meta property="og:description" content="Authentic dishes, cozy rooms, and a legacy of taste in the heart of Kipkelion. Discover Settlers Inn." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://settlersinn.co.ke/" />
+    <meta property="og:image" content="https://settlersinn.co.ke/assets/logo.png" />
+
+    <!-- ✅ Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Settlers Inn | Where Settlers Still Eat Like Kings" />
+    <meta name="twitter:description" content="Settlers Inn — Dine, stay, and feel at home in Kipkelion, Kenya." />
+    <meta name="twitter:image" content="https://settlersinn.co.ke/assets/logo.png" />
+
+    <!-- ✅ PWA Meta -->
     <meta name="theme-color" content="#0d1117" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/assets/logo.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <!-- Favicon -->
+    <!-- ✅ Favicon -->
     <link rel="icon" type="image/png" href="/assets/logo.png" />
 
-    <!-- Fonts -->
+    <!-- ✅ Fonts (Optimized) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
 
-    <!-- Facebook SDK -->
+    <!-- ✅ Structured Data (Schema.org JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Settlers Inn",
+      "image": "https://settlersinn.co.ke/assets/logo.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kipkelion",
+        "addressRegion": "Kericho",
+        "addressCountry": "KE"
+      },
+      "description": "Settlers Inn — Authentic Kenyan cuisine & cozy stays in Kipkelion. Dine like royalty.",
+      "telephone": "+254748778388",
+      "url": "https://settlersinn.co.ke/",
+      "servesCuisine": ["Kenyan", "African", "Local"],
+      "priceRange": "$$",
+      "sameAs": [
+        "https://www.facebook.com/settlersinn1/",
+        "https://instagram.com"
+      ]
+    }
+    </script>
+
+    <!-- ✅ Facebook SDK -->
     <script async defer crossorigin="anonymous"
       src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
       nonce="settlersInnScript">
     </script>
-    <script type="module" crossorigin src="/assets/index-BMM9nWrI.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-S3WbrCl5.css">
+    <script type="module" crossorigin src="/assets/index-Bm6OEcsu.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CHeLeR00.css">
   <link rel="manifest" href="/manifest.webmanifest"></head>
 
   <body style="margin: 0; font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9;">
@@ -38,12 +80,12 @@
       <strong>We're sorry, but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
     </noscript>
 
-    <!-- Facebook SDK Root (must be inside <body>) -->
+    <!-- Facebook SDK Root -->
     <div id="fb-root"></div>
 
     <!-- React App Mount Point -->
     <div id="root"></div>
 
-    <!-- ✅ Corrected Vite entry point -->
+    <!-- Main Entry -->
   </body>
 </html>
