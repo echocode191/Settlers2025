@@ -1,3 +1,4 @@
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -11,7 +12,7 @@ export default defineConfig({
       includeAssets: [
         'favicon.ico',
         'apple-touch-icon.png',
-        'assets/logo.png',
+        'assets/logo.png'
       ],
       manifest: {
         name: 'Settlers Inn',
@@ -20,27 +21,26 @@ export default defineConfig({
         display: 'standalone',
         background_color: '#0d1117',
         theme_color: '#9fef00',
-        description:
-          'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
+        description: 'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
         icons: [
           {
             src: 'assets/logo.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any maskable',
+            purpose: 'any maskable'
           },
           {
             src: 'assets/logo.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable',
-          },
-        ],
+            purpose: 'any maskable'
+          }
+        ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // ✅ exclude mp4 from precache
-        globIgnores: ['**/assets/settlers.mp4'],          // ✅ prevent build failure
-        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,   // 2MB default (safe)
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],  // Exclude heavy files like mp4
+        globIgnores: ['**/assets/settlers.mp4'],            // Avoid build failure
+        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,     // Limit to 2MB (default safe)
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',
@@ -49,7 +49,7 @@ export default defineConfig({
               cacheName: 'images-cache',
               expiration: {
                 maxEntries: 60,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
               },
             },
           },
@@ -68,7 +68,7 @@ export default defineConfig({
               cacheName: 'assets-cache',
               expiration: {
                 maxEntries: 80,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 Days
               },
             },
           },
@@ -94,5 +94,6 @@ export default defineConfig({
     sourcemap: false,
     emptyOutDir: true,
     minify: 'esbuild',
+    chunkSizeWarningLimit: 1000, // Optional: silence chunk size warnings if needed
   },
 });
