@@ -20,7 +20,8 @@ export default defineConfig({
         display: 'standalone',
         background_color: '#0d1117',
         theme_color: '#9fef00',
-        description: 'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
+        description:
+          'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
         icons: [
           {
             src: 'assets/logo.png',
@@ -38,6 +39,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,mp4}'],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // ✅ Allows files up to 10MB
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',
@@ -46,7 +48,7 @@ export default defineConfig({
               cacheName: 'images-cache',
               expiration: {
                 maxEntries: 60,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
               },
             },
           },
@@ -65,7 +67,7 @@ export default defineConfig({
               cacheName: 'assets-cache',
               expiration: {
                 maxEntries: 80,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 Days
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
               },
             },
           },
@@ -82,7 +84,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'), // Optional: Simplifies imports
+      '@': path.resolve(__dirname, './src'),
     },
   },
 
