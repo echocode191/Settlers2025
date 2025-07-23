@@ -191,7 +191,7 @@ const Menu = () => {
     { id: 'sides', title: '🍽️ Side Orders', items: [['White Ugali', 'KES 70'], ['Ugali Wimbi', 'KES 100'], ['Ugali Sorghum', 'KES 100'], ['White Rice', 'KES 120'], ['Stir Fried', 'KES 150'], ['Mboga Kienyeji', 'KES 100'], ['Sukuma wiki/Cabbage/spinach', 'KES 50'], ['Kachumbari', 'KES 100'], ['Beans Plain', 'KES 100']] },
     { id: 'soft', title: '🍹 Soft Beverages', items: [['Dasani 500ML', 'KES 50'], ['Dasani 1L', 'KES 100'], ['Plastic Soda 350ML', 'KES 50'], ['Dawa (take away)', 'KES 130'], ['Monster', 'KES 250'], ['Plastic Soda 500ML', 'KES 80'], ['Plastic Soda 1.25ML', 'KES 150'], ['Plastic Soda 1L', 'KES 130'], ['Plastic Soda 2L', 'KES 200'], ['Bottled Soda 300ML', 'KES 60'], ['Minute Maid 400ML', 'KES 80'], ['Minute Maid 1L', 'KES 150'], ['Yoghurt 500ML', 'KES 130'], ['Yatta Juice 1L', 'KES 350'], ['Redbull', 'KES 250'], ['Predator', 'KES 70'], ['Powerplay', 'KES 70'], ['Orchid Valley', 'KES 350'], ['Pep Juice', 'KES 100']] },
     { id: 'cake', title: '🍰 Cakes & Desserts', items: [['Vanilla 1KG', 'KES 1300'], ['Black Forest', 'KES 1500'], ['Marble 1KG', 'KES 1500'], ['Cake Slice', 'KES 100']] },
-    { id: 'beer', title: '🍺 Beer', items: [['Beer Cans', 'KES 300'], ['Bottled Beer', 'KES 700']] },
+    { id: 'beer', title: '🍺 Beer', items: [['Beer Cans', 'KES 350'], ['Bottled Beer', 'KES 300']] },
     { id: 'wine', title: '🍷 Wines', items: [['Caprice', 'KES 1000'], ['Four Cousins', 'KES 1600'], ['4th Street', 'KES 1600']] },
   ];
 
