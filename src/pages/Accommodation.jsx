@@ -19,6 +19,13 @@ const Accommodation = () => {
         50% { opacity: 0.6; }
         100% { opacity: 1; }
       }
+      @keyframes flickerZoom {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.03); opacity: 0.95; }
+      }
+      .scroll-container::-webkit-scrollbar {
+        display: none;
+      }
     `;
     document.head.appendChild(style);
   }, []);
@@ -56,6 +63,36 @@ const Accommodation = () => {
       fontStyle: 'italic',
       animation: 'pulse 3s ease-in-out infinite',
     },
+    scrollGallery: {
+      display: 'flex',
+      overflowX: 'auto',
+      gap: '1rem',
+      paddingBottom: '1rem',
+      scrollSnapType: 'x mandatory',
+      animation: 'fadeIn 2s ease-in-out',
+      marginBottom: '2rem',
+    },
+    scrollItem: {
+      flex: '0 0 auto',
+      scrollSnapAlign: 'start',
+      borderRadius: '10px',
+      overflow: 'hidden',
+      border: '1px solid #30363d',
+      boxShadow: '0 0 10px rgba(88,166,255,0.1)',
+      animation: 'flickerZoom 4s infinite ease-in-out',
+    },
+    image: {
+      width: '100%',
+      height: '180px',
+      objectFit: 'cover',
+      display: 'block',
+    },
+    video: {
+      width: '100%',
+      height: '160px', // ✅ Smaller video
+      objectFit: 'cover',
+      display: 'block',
+    },
     roomGrid: {
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
@@ -67,14 +104,12 @@ const Accommodation = () => {
       borderRadius: '12px',
       padding: '1.5rem',
       boxShadow: '0 0 15px rgba(88,166,255,0.15)',
-      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     },
     roomImage: {
       width: '100%',
       borderRadius: '10px',
       marginBottom: '0.8rem',
       border: '1px solid #30363d',
-      transition: 'transform 0.3s ease-in-out',
     },
     roomTitle: {
       color: '#58a6ff',
@@ -99,28 +134,39 @@ const Accommodation = () => {
       borderRadius: '8px',
       textDecoration: 'none',
       fontWeight: 'bold',
-      transition: 'background 0.3s ease',
     },
   };
+
+  const mediaItems = [
+    '/assets/room1.jpg',
+    '/assets/room2.jpg',
+    '/assets/conference1.jpg',
+    '/assets/Compound Overview1.jpg',
+    '/assets/upstairs env view1.jpg',
+    '/assets/dining2.jpg',
+    '/assets/cake video.mp4',
+    '/assets/Room 40sec.mp4',
+    '/assets/bar under construction.mp4',
+  ];
 
   const rooms = [
     {
       title: 'Standard Room',
-      img: '/assets/room.jpg',
+      img: '/assets/room1.jpg',
       desc: 'Simple. Clean. Safe. Like a Netflix opening scene before everything goes perfectly right.',
       price: 'KES 1,800 / night',
       msg: "Hi Settlers Inn! I'd love to book the Standard Room — solo traveler vibes 🧳🛏️",
     },
     {
       title: 'Family Room',
-      img: '/assets/indoor.jpg',
+      img: '/assets/room2.jpg',
       desc: 'Big enough for your squad. Cozy enough for family drama. The happy kind. Mostly.',
       price: 'KES 2,500 / night',
       msg: "Hi Settlers Inn! I'd love to book the Family Room — it's time to reunite the crew 👨‍👩‍👧‍👦✨",
     },
     {
       title: 'Conference Room',
-      img: '/assets/conference.jpg',
+      img: '/assets/conference1.jpg',
       desc: 'Equipped for meetings, trainings & strategy sessions. Power up your plans with Wi-Fi, coffee, and space to think.',
       price: 'KES 3,500 / session',
       msg: "Hello Settlers Inn! I'd like to reserve the Conference Room for a team session 💼🖥️. Please share availability.",
@@ -130,7 +176,6 @@ const Accommodation = () => {
   return (
     <div style={styles.page}>
       <Navbar />
-
       <section style={styles.section}>
         <h2 style={styles.title}>🏨 Heaven Found: Settlers Stays</h2>
         <p style={styles.subtitle}>
@@ -139,6 +184,28 @@ const Accommodation = () => {
         <p style={styles.thriller}>
           🎬 "3 rooms. 1 legacy. Comfort is calling…" 📞
         </p>
+
+        <div className="scroll-container" style={styles.scrollGallery}>
+          {mediaItems.map((src, i) => {
+            const isVideo = src.endsWith('.mp4');
+            return (
+              <div key={i} style={{ ...styles.scrollItem, width: '220px' }}>
+                {isVideo ? (
+                  <video
+                    src={src}
+                    style={styles.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <img src={src} alt={`media-${i}`} style={styles.image} />
+                )}
+              </div>
+            );
+          })}
+        </div>
 
         <div style={styles.roomGrid}>
           {rooms.map((room, i) => (
@@ -159,7 +226,6 @@ const Accommodation = () => {
           ))}
         </div>
       </section>
-
       <Footer />
     </div>
   );

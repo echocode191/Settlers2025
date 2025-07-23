@@ -5,7 +5,7 @@ body {
   background: #0d1117;
   color: #c9d1d9;
   line-height: 1.6;
-  text-align: center; /* Center global text by default */
+  text-align: center;
 }
 
 a {
@@ -20,28 +20,38 @@ a:hover {
 /* === Hero Section === */
 .hero {
   position: relative;
-  overflow: hidden;
   height: 95vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0);
 }
 
 .bg-video {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
   filter: brightness(0.5);
 }
 
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  backdrop-filter: blur(2px);
+  background: linear-gradient(to bottom, rgba(13,17,23,0.4), rgba(13,17,23,0.8));
+  z-index: -1;
+}
+
 .hero-content {
-  z-index: 1;
   padding: 2rem;
+  max-width: 600px;
+  margin: auto;
 }
 
 .animated-title {
@@ -49,31 +59,33 @@ a:hover {
   color: #9fef00;
   text-shadow: 0 0 8px #9fef00;
   margin-bottom: 1rem;
-  animation: pulseGlow 2s infinite;
+  animation: pulseGlow 2.5s infinite;
 }
 
 @keyframes pulseGlow {
-  0%, 100% { text-shadow: 0 0 8px #9fef00; }
-  50% { text-shadow: 0 0 20px #9fef00; }
+  0%, 100% { text-shadow: 0 0 10px #9fef00; }
+  50% { text-shadow: 0 0 25px #9fef00; }
 }
 
 .rotating-phrase {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #58a6ff;
   margin-bottom: 1rem;
+  text-shadow: 0 0 5px #58a6ff55;
 }
 
 .hero-button {
   display: inline-block;
   margin: 0.5rem;
-  background-color: #21262d;
-  border: 1px solid #30363d;
-  padding: 12px 24px;
+  padding: 12px 26px;
   border-radius: 30px;
-  color: #9fef00;
   font-weight: bold;
   font-size: 1rem;
-  transition: 0.3s ease;
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #9fef00;
+  box-shadow: 0 0 10px #9fef0044;
+  transition: all 0.3s ease;
 }
 
 .hero-button:hover {
@@ -88,14 +100,16 @@ a:hover {
 
 .hero-button.book:hover {
   background-color: #58a6ff;
-  color: #fff;
+  color: white;
 }
 
 /* === Intro Section === */
 .intro {
-  padding: 2rem;
+  padding: 2rem 1rem;
   font-size: 1.1rem;
   color: #c9d1d9;
+  max-width: 800px;
+  margin: auto;
 }
 
 /* === Featured Dishes === */
@@ -113,18 +127,18 @@ a:hover {
   border: 1px solid #30363d;
   border-radius: 16px;
   width: 250px;
-  text-align: center;
-  transition: transform 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px #161b2233;
 }
 
 .dish:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 10px #9fef0044;
+  box-shadow: 0 0 16px #9fef0055;
 }
 
 .dish img {
   width: 100%;
-  height: 150px;
+  height: 160px;
   object-fit: cover;
   border-radius: 12px;
 }
@@ -132,6 +146,7 @@ a:hover {
 .dish h3 {
   margin: 1rem 0 0.5rem;
   color: #9fef00;
+  text-shadow: 0 0 6px #9fef00aa;
 }
 
 .dish p {
@@ -149,6 +164,7 @@ a:hover {
 .reviews h2 {
   margin-bottom: 2rem;
   color: #58a6ff;
+  text-shadow: 0 0 5px #58a6ff77;
 }
 
 .review-grid {
@@ -165,6 +181,7 @@ a:hover {
   border: 1px solid #30363d;
   width: 300px;
   text-align: left;
+  box-shadow: 0 0 10px #161b2255;
 }
 
 .review p {
@@ -184,44 +201,7 @@ a:hover {
   max-width: 100% !important;
 }
 
-/* === Quick Access Floating Bar === */
-.quick-access {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 14px;
-  z-index: 9999;
-}
-
-.quick-access a {
-  background-color: #161b22;
-  border: 1px solid #30363d;
-  color: #9fef00;
-  font-size: 22px;
-  padding: 12px;
-  border-radius: 50%;
-  text-align: center;
-  box-shadow: 0 0 10px #58a6ff55;
-  transition: transform 0.2s ease, background 0.3s ease;
-  animation: bounce 4s infinite ease-in-out;
-}
-
-.quick-access a:hover {
-  background-color: #58a6ff;
-  color: white;
-  transform: scale(1.15);
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-/* === Toast Animation === */
+/* === Toast Install Prompt === */
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateY(10px); }
   10% { opacity: 1; transform: translateY(0); }
@@ -229,7 +209,34 @@ a:hover {
   100% { opacity: 0; transform: translateY(10px); }
 }
 
-/* === Responsive Adjustments === */
+/* === Final Clean Quick Access Bar === */
+.quick-access {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 9999;
+  padding: 0.2rem 1rem;
+  background: transparent;
+}
+
+.quick-access a {
+  font-size: 24px;
+  color: #9fef00;
+  background: none;
+  border: none;
+  transition: transform 0.2s ease, color 0.3s ease;
+  text-shadow: 0 0 6px #9fef00aa;
+}
+
+.quick-access a:hover {
+  transform: scale(1.2);
+  color: #58a6ff;
+}
+
+/* === Responsive Fixes === */
 @media (max-width: 768px) {
   .featured {
     flex-direction: column;
@@ -237,7 +244,7 @@ a:hover {
   }
 
   .hero-content h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   .dish {
@@ -250,13 +257,6 @@ a:hover {
   }
 
   .quick-access {
-    flex-wrap: wrap;
-    justify-content: center;
-    transform: translateX(-50%);
-  }
-
-  .quick-access a {
-    font-size: 20px;
-    padding: 10px;
+    gap: 16px;
   }
 }

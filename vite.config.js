@@ -19,7 +19,7 @@ export default defineConfig({
         start_url: '/',
         display: 'standalone',
         background_color: '#0d1117',
-        theme_color: '#0d1117',
+        theme_color: '#9fef00',
         description: 'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
         icons: [
           {
@@ -37,6 +37,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,mp4}'],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',
@@ -44,7 +45,7 @@ export default defineConfig({
             options: {
               cacheName: 'images-cache',
               expiration: {
-                maxEntries: 100,
+                maxEntries: 60,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
               },
             },
@@ -57,18 +58,34 @@ export default defineConfig({
               cacheName: 'static-resources',
             },
           },
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/assets/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'assets-cache',
+              expiration: {
+                maxEntries: 80,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 Days
+              },
+            },
+          },
         ],
+        skipWaiting: true,
+        clientsClaim: true,
       },
       devOptions: {
         enabled: true,
+        type: 'module',
       },
     }),
   ],
+
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'), // 🔁 Clean import paths (optional)
+      '@': path.resolve(__dirname, './src'), // Optional: Simplifies imports
     },
   },
+
   build: {
     outDir: 'dist',
     sourcemap: false,

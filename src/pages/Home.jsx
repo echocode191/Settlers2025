@@ -12,14 +12,53 @@ const Home = () => {
     "🚀 Settlers — where your stomach settles happy!"
   ];
 
+  const reviews = [
+  "“The best hangout in Kericho hands down!” — Mercy K.",
+  "“That coffee hit different... felt like Nairobi!” — Brian N.",
+  "“Clean, affordable, and that fish was perfection.” — Jane M.",
+  "“Chapo x sausage combo is undefeated.🔥” — Kiprotich L.",
+  "“That conference hall is 🔥 and the food... top tier!” — Ivy W.",
+  "“I’d come back just for the egg pancakes.🤤” — Moffat M.",
+  "“Service with a smile every single time.” — Susan W.",
+  "“I loved the quiet upstairs room with the morning view.” — Dennis K.",
+  "“Settlers is the reason I stopped cooking at home 😂” — Terry N.",
+  "“That nyama stew and ugali combo? Blessings!” — Juma B.",
+  "“My Sunday chill spot always. Cold Fanta and good vibes.” — Ruth M.",
+  "“Had our meeting there — WiFi, coffee, and comfort!” — Felix M.",
+  "“Their ‘Chapo X Ndazi’ plate is addictive 😅” — Lorraine W.",
+  "“Everytime I visit, there’s something new on the menu 👏” — Davis T.",
+  "“Kinda miss it when I’m away. Feels like home.” — Sharon A.",
+  "“Chips kuku never misses. Portions are crazy good.” — Kibet R.",
+  "“Late night tea + campus convos = Settlers magic!” — Alvin M.",
+  "“We came for lunch and stayed until sunset 😍” — Rose C.",
+  "“The cake? Moist. The icing? Just wow.” — Sylvia L.",
+  "“They even remembered my order from last time. Mad service!” — Kelvin N.",
+  "“Perfect stopover on our way to Narok.” — Sammy K.",
+  "“Bar section’s under construction but vibes already loaded.” — Winnie T.",
+  "“Samosas crispy. Soda cold. Prices fair. 5/5.” — Arnold M.",
+  "“Room service was fast and friendly.” — Carol W.",
+  "“I posted their food on IG — got 100+ likes 🤩” — Vicky J.",
+  "“I’ve done breakfast, lunch, AND dinner here. Never disappoints.” — George M.",
+  "“No cap, those chapos are elite level.” — Mike O.",
+  "“Took my parents here — even mum was impressed!” — Lydia N.",
+  "“They play soft R&B and gospel in the mornings. Mood✅” — Sheila M.",
+  "“Outdoor chill zone is peaceful. Just birds and vibes.” — Leon L.",
+  "“They even added a kids’ play area — thoughtful!” — Tabitha K.",
+  "“The security guy greeted us by name. Felt special.” — Jared B.",
+  "“I’m recommending Settlers to all my Nairobi people.” — Steve W.",
+  "“They let me charge my phone. Small kindness, big respect.” — Elsie G."
+];
+
   const [phraseIndex, setPhraseIndex] = useState(0);
+  const [reviewIndex, setReviewIndex] = useState(0);
   const [showInstallToast, setShowInstallToast] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
-    const msgInterval = setInterval(() => {
+    const interval = setInterval(() => {
       setPhraseIndex(prev => (prev + 1) % funnyPhrases.length);
-    }, 4000);
+      setReviewIndex(prev => (prev + 1) % reviews.length);
+    }, 5000);
 
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
@@ -28,9 +67,8 @@ const Home = () => {
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-
     return () => {
-      clearInterval(msgInterval);
+      clearInterval(interval);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     };
   }, []);
@@ -43,19 +81,19 @@ const Home = () => {
     }
   };
 
-  // ✅ Facebook SDK loader
   useEffect(() => {
-    const loadFacebookSDK = () => {
-      if (window.FB) return;
-      const script = document.createElement("script");
-      script.async = true;
-      script.defer = true;
-      script.crossOrigin = "anonymous";
-      script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
-      document.body.appendChild(script);
-    };
-    loadFacebookSDK();
+    const script = document.createElement("script");
+    script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
+    script.async = true;
+    document.body.appendChild(script);
   }, []);
+
+  const featuredDishes = [
+    { img: "chapati 1.jpg", emoji: "🥙", title: "Golden Chapatis", desc: "Soft, flaky, and fresh from the pan." },
+    { img: "fish x chips.jpg", emoji: "🐟", title: "Fish & Chips", desc: "Crispy fries with grilled tilapia." },
+    { img: "cofee.jpg", emoji: "☕", title: "Bold Kenyan Coffee", desc: "Locally brewed, strong & smooth." },
+    { img: "ugali x greens x meat.jpg", emoji: "🍛", title: "Ugali Feast", desc: "Greens, meat & ugali like mama made it." }
+  ];
 
   return (
     <>
@@ -67,10 +105,9 @@ const Home = () => {
         </div>
       )}
 
-      <section className="hero">
-        <video className="bg-video" autoPlay muted loop playsInline preload="auto">
+      <section className="hero glassy">
+        <video className="bg-video" autoPlay muted loop playsInline>
           <source src="/assets/settlers.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
         <div className="hero-content">
           <h2 className="animated-title">Welcome to Settlers Inn</h2>
@@ -81,79 +118,63 @@ const Home = () => {
         </div>
       </section>
 
-      <section>
-        <div className="intro">
-          <p>Located in the heart of the Kenya Highlands, Settlers Inn is a family-owned gem serving authentic dishes, hearty portions, and warm hospitality.</p>
-        </div>
-        <div className="featured">
-          {[
-            { img: "tea.jpg", emoji: "☕", title: "Hot Kenyan Tea", desc: "Strong, smooth, and served the local way." },
-            { img: "chapatis.jpg", emoji: "🥙", title: "Rolled Chapatis", desc: "Freshly made, soft, and golden brown." },
-            { img: "ugali-fish.jpg", emoji: "🍛", title: "Ugali, Fish & Greens", desc: "A classic plate done Settlers-style — hearty & clean." },
-            { img: "coffee.jpg", emoji: "☕", title: "Kenyan Coffee", desc: "Rich aroma, bold flavor. Served hot or iced." }
-          ].map((dish, i) => (
-            <div key={i} className="dish">
-              <img src={`/assets/${dish.img}`} alt={dish.title} />
-              <h3>{dish.emoji} {dish.title}</h3>
-              <p>{dish.desc}</p>
-            </div>
-          ))}
-        </div>
+      <section className="intro glassy">
+        <p>Located in the heart of the Kenya Highlands, Settlers Inn is a family-owned gem serving authentic dishes, hearty portions, and warm hospitality.</p>
       </section>
 
-      <section className="reviews">
-        <h2>💬 What People Are Saying</h2>
-        <div className="review-grid">
-          <div className="review"><p>“Best chapatis I’ve had in years. This place feels like home.”</p><span>— Mercy K.</span></div>
-          <div className="review"><p>“The tea, the vibe, the rooms — everything’s on point!”</p><span>— Brian N.</span></div>
-          <div className="review"><p>“Clean, affordable, and that fish was perfection.”</p><span>— Jane M.</span></div>
-        </div>
-      </section>
-
-      {/* ✅ Facebook Reviews Embed */}
-      <section style={{ margin: '4rem auto', maxWidth: '800px', padding: '2rem 1rem', borderTop: '1px solid #30363d' }}>
-        <h2 style={{ color: '#58a6ff', textAlign: 'center' }}>💬 Facebook Reviews (Live)</h2>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <div
-            className="fb-page"
-            data-href="https://www.facebook.com/settlersinn1/"
-            data-tabs="timeline"
-            data-width="380"
-            data-height="400"
-            data-small-header="false"
-            data-adapt-container-width="true"
-            data-hide-cover="false"
-            data-show-facepile="true"
-          >
-            <blockquote
-              cite="https://www.facebook.com/settlersinn1/"
-              className="fb-xfbml-parse-ignore"
-            >
-              <a href="https://www.facebook.com/settlersinn1/">Settlers Inn</a>
-            </blockquote>
+      <section className="featured glassy">
+        {featuredDishes.map((dish, i) => (
+          <div key={i} className="dish">
+            <img src={`/assets/${dish.img}`} alt={dish.title} />
+            <h3>{dish.emoji} {dish.title}</h3>
+            <p>{dish.desc}</p>
           </div>
+        ))}
+      </section>
+
+      <section className="reviews glassy">
+        <h2>💬 What People Are Saying</h2>
+        <div className="review-rotator">
+          <p className="animated-review">{reviews[reviewIndex]}</p>
+        </div>
+      </section>
+
+      <section className="facebook-reviews">
+        <h2>💬 Facebook Reviews (Live)</h2>
+        <div className="fb-page"
+          data-href="https://www.facebook.com/settlersinn1/"
+          data-tabs="timeline"
+          data-width="380"
+          data-height="400"
+          data-small-header="false"
+          data-adapt-container-width="true"
+          data-hide-cover="false"
+          data-show-facepile="true"
+        >
+          <blockquote cite="https://www.facebook.com/settlersinn1/" className="fb-xfbml-parse-ignore">
+            <a href="https://www.facebook.com/settlersinn1/">Settlers Inn</a>
+          </blockquote>
         </div>
       </section>
 
       <Footer />
 
-      <div className="quick-access">
-        <a href="tel:0748778388" title="Call Us">📞</a>
-        <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank" rel="noreferrer" title="Find Us">🧭</a>
-        <a href="/accommodation" title="Accommodation">🛏️</a>
-        <a href="/gallery" title="Gallery">📷</a>
-        <a href="/menu" title="Menu">🥘</a>
-        <a href="https://wa.me/254748778388" target="_blank" rel="noreferrer" title="Chat on WhatsApp">💬</a>
+      <div className="quick-access glassy">
+        <a href="tel:0748778388">📞</a>
+        <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank">🧭</a>
+        <a href="/accommodation">🛏️</a>
+        <a href="/gallery">📷</a>
+        <a href="/menu">🥘</a>
+        <a href="https://wa.me/254748778388" target="_blank">💬</a>
       </div>
 
-      <p style={{ textAlign: 'center', marginTop: '2rem', color: '#666' }}>
-        &copy; {new Date().getFullYear()}
+      <p style={{ textAlign: 'center', marginTop: '2rem', color: '#aaa' }}>
+        &copy; {new Date().getFullYear()} Settlers Inn — Built by EchoCode
       </p>
     </>
   );
 };
 
-// ✅ Toast Style (mobile-optimized)
 const toastStyle = {
   position: 'fixed',
   bottom: '20px',
@@ -173,7 +194,6 @@ const toastStyle = {
   cursor: 'pointer',
 };
 
-// ✅ Inject keyframes dynamically
 const fadeInOutAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateY(10px); }

@@ -7,24 +7,16 @@ const About = () => {
     const style = document.createElement('style');
     style.innerHTML = `
       @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(4px); }
+        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+      }
+      @keyframes glowBorder {
+        0%, 100% { box-shadow: 0 0 15px rgba(159,239,0, 0.15); }
+        50% { box-shadow: 0 0 30px rgba(159,239,0, 0.3); }
       }
       @keyframes typewriter {
         from { width: 0; }
         to { width: 100%; }
-      }
-      @keyframes pulse {
-        0%, 100% { opacity: 0.5; }
-        50% { opacity: 1; }
-      }
-      @keyframes glowIn {
-        0% { box-shadow: 0 0 0 rgba(159,239,0,0); }
-        100% { box-shadow: 0 0 20px rgba(159,239,0,0.1); }
-      }
-      @keyframes breath {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.01); }
       }
     `;
     document.head.appendChild(style);
@@ -33,58 +25,60 @@ const About = () => {
   const styles = {
     body: {
       fontFamily: "'Fira Code', monospace",
-      backgroundColor: '#0d1117',
+      background: 'radial-gradient(ellipse at top, #0d1117 0%, #050505 100%)',
       color: '#c9d1d9',
-      paddingBottom: '4rem',
+      paddingBottom: '5rem',
+      minHeight: '100vh',
     },
     section: {
-      maxWidth: '900px',
-      margin: '3rem auto',
-      padding: '2rem 1rem',
+      maxWidth: '1000px',
+      margin: '4rem auto',
+      padding: '2rem',
     },
     heading: {
-      fontSize: 'clamp(1.5rem, 5vw, 2.4rem)',
+      fontSize: 'clamp(1.7rem, 6vw, 3rem)',
       color: '#9fef00',
       textAlign: 'center',
-      marginBottom: '2rem',
+      marginBottom: '3rem',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
-      borderRight: '2px solid #9fef00',
-      animation: 'typewriter 3s steps(40, end) 1, pulse 1.5s ease-in-out infinite',
+      borderRight: '3px solid #9fef00',
+      animation: 'typewriter 3.5s steps(50, end) 1',
       width: 'fit-content',
-      maxWidth: '100%',
-      marginLeft: 'auto',
-      marginRight: 'auto',
+      marginInline: 'auto',
     },
     block: {
-      background: '#161b22',
-      borderRadius: '14px',
-      padding: '2rem',
-      marginBottom: '2.5rem',
-      boxShadow: '0 0 12px rgba(88,166,255,0.05)',
-      animation: 'fadeIn 1.2s ease, glowIn 2s ease',
+      backdropFilter: 'blur(8px)',
+      background: 'rgba(22, 27, 34, 0.7)',
+      border: '1px solid rgba(159,239,0,0.15)',
+      borderRadius: '18px',
+      padding: '2.2rem',
+      marginBottom: '3rem',
+      boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
+      animation: 'fadeIn 1.5s ease both, glowBorder 6s ease-in-out infinite',
+      transition: 'transform 0.4s',
     },
     title: {
       color: '#58a6ff',
-      fontSize: '1.3rem',
-      marginBottom: '0.8rem',
-      borderBottom: '1px dashed #30363d',
-      paddingBottom: '0.4rem',
+      fontSize: '1.5rem',
+      marginBottom: '1rem',
+      borderBottom: '1px dashed #2f3136',
+      paddingBottom: '0.5rem',
     },
     text: {
-      fontSize: '1.05rem',
-      lineHeight: '1.8',
-      color: '#c9d1d9',
-      marginBottom: '1.2rem',
-      animation: 'breath 6s ease-in-out infinite',
+      fontSize: '1.1rem',
+      lineHeight: '1.9',
+      color: '#e1e8eb',
+      marginBottom: '1.4rem',
+      textShadow: '0 0 1px rgba(255,255,255,0.05)',
     },
     quote: {
       fontStyle: 'italic',
       color: '#9fef00',
-      fontSize: '1rem',
+      fontSize: '1.05rem',
       textAlign: 'center',
-      marginTop: '2rem',
-      animation: 'pulse 3s ease-in-out infinite',
+      marginTop: '2.2rem',
+      textShadow: '0 0 4px rgba(159,239,0,0.3)',
     },
   };
 

@@ -7,12 +7,37 @@ const Menu = () => {
   const [jokeIndex, setJokeIndex] = useState(0);
 
   const foodJokes = [
-    "😋 Today's vibe: Eat like a king, nap like a goat!",
-    "🤣 Fun fact: Calories at Settlers Inn don't count.",
-    "🍗 Chicken so good, even cows are jealous.",
-    "🍽️ Why wait? Your stomach already RSVP’d.",
-    "☕ Our coffee doesn’t wake you — it hires a band!",
-    "🥘 Chapatis that flirt with your taste buds.",
+    "😋 Eat like royalty, pay like a villager.",
+    "🔥 Our nyama choma speaks fluent Swahili.",
+    "🍽️ Forks up! Time to offend your diet.",
+    "☕ Our tea sees your soul and hugs it.",
+    "🤣 Calories don’t count at Settlers Inn — trust us.",
+    "🍗 Chicken that makes you forget your ex.",
+    "🥘 Our chapatis are soft like your crush's hands.",
+    "💥 Hunger meets its match here.",
+    "🐐 Goat meat so good, it might call you back.",
+    "🎶 Your stomach's playlist: ‘Ugali Anthem Remix’",
+    "🥤 Soda colder than your DMs.",
+    "🚫 Diet starts after this plate... maybe.",
+    "🍛 Food hot enough to slap your worries away.",
+    "😎 This plate? Certified street legend.",
+    "🔥 Mbuzi that burns into your memory.",
+    "🍲 Soup that makes you believe in healing.",
+    "💬 You came for food, stayed for vibes.",
+    "🍖 Our grill guy has beef with bland meat.",
+    "🌶️ Flavor turned up like a Gen Z playlist.",
+    "📸 Too tasty for just one photo.",
+    "🎯 No disappointments — only cravings hit.",
+    "📦 Takeaway that feels like a gift.",
+    "🎉 You + our plate = the best duo since Ugali & Sukuma.",
+    "🍞 Breakfast? More like Bestfast.",
+    "🫶 We season our food with love and legends.",
+    "🎬 Chapati: soft. Mbuzi: wild. You: obsessed.",
+    "🍷 Wine so fine, it whispers sweet nothings.",
+    "🤤 Tastes like home but cooked with ambition.",
+    "🌟 Meals that make your phone forget Instagram.",
+    "💡 Idea: Eat now. Regret never.",
+    "📞 Your stomach called. It said, 'Settlers, now!'",
   ];
 
   useEffect(() => {
@@ -28,6 +53,11 @@ const Menu = () => {
     const message = `Hi Settlers Inn, I want to order: ${foodName}`;
     const url = `https://wa.me/254748778388?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+  };
+
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
   };
 
   const styles = {
@@ -52,23 +82,25 @@ const Menu = () => {
       textAlign: 'center',
       marginBottom: '3rem',
     },
-   h2: {
-  color: '#9fef00',
-  fontSize: '1.5rem',
-  marginBottom: '0.6rem',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  maxWidth: '100%',
-  display: 'block',
-  animation: 'typewriter 3s steps(40, end) 1 normal both',
-},
-
+    h2: {
+      color: '#9fef00',
+      fontSize: '1.5rem',
+      marginBottom: '0.6rem',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      maxWidth: '100%',
+      display: 'block',
+      animation: 'typewriter 3s steps(40, end) 1 normal both',
+    },
     p: {
-      color: '#8b949e',
+      color: '#d0ff87',
       marginBottom: '1rem',
       minHeight: '24px',
-      animation: 'pulse 3s ease-in-out infinite',
+      fontWeight: 'bold',
+      animation: 'glow 3s ease-in-out infinite, pulse 3s ease-in-out infinite',
+      textAlign: 'center',
+      fontSize: '1rem',
     },
     form: {
       display: 'flex',
@@ -133,65 +165,46 @@ const Menu = () => {
       zIndex: 999,
       textDecoration: 'none',
     },
+    quickAccess: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '0.5rem',
+      justifyContent: 'center',
+      marginBottom: '2rem',
+      fontSize: '0.85rem',
+    },
+    quickButton: {
+      background: '#21262d',
+      color: '#9fef00',
+      padding: '0.4rem 0.8rem',
+      border: '1px solid #30363d',
+      borderRadius: '6px',
+      cursor: 'pointer',
+    },
   };
 
   const categories = [
-    {
-      title: '🌅 Breakfast',
-      items: [
-        ['Highland Breakfast (eggs, toast, sausage)', 'KES 450'],
-        ['Porridge with Sweet Potatoes', 'KES 300'],
-      ],
-    },
-    {
-      title: '🍛 Lunch',
-      items: [
-        ['Grilled Steak with Fries', 'KES 850'],
-        ['Beef Stew + Rice', 'KES 700'],
-        ['Ugali & Fish', 'KES 750'],
-      ],
-    },
-    {
-      title: '🌇 Dinner',
-      items: [
-        ['Chicken Stir Fry', 'KES 800'],
-        ['Nyama Choma (per plate)', 'KES 950'],
-      ],
-    },
-    {
-      title: '🍹 Drinks',
-      items: [
-        ['Fresh Passion Juice', 'KES 200'],
-        ['Chai ya Maziwa', 'KES 100'],
-        ['Kenyan Coffee', 'KES 180'],
-      ],
-    },
+    { id: 'breakfast', title: '🌅 Breakfast', items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 450'], ['Porridge with Sweet Potatoes', 'KES 300']] },
+    { id: 'lunch', title: '🍛 Lunch & Dinner', items: [['Whole Fish', 'KES 700KG'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'], ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'], ['Mbuzi 1/4KG', 'KES 350'], ['Mbuzi 1/2KG', 'KES 700'], ['Ng`ombe 1/4KG', 'KES 300'], ['Ng`ombe 1/2KG', 'KES 600'], ['Pork 1/4KG', 'KES 350'], ['Pork 1/2KG', 'KES 700']] },
+    { id: 'dinner', title: '🌇 Dinner Special', items: [['Chicken Stir Fry', 'KES 800'], ['Nyama Choma (per plate)', 'KES 950']] },
+    { id: 'matumbo', title: '🥠 Matumbo Zone', items: [['Matumbo Mbuzi 1/4KG', 'KES 300'], ['Matumbo Mbuzi 1/2KG', 'KES 600'], ['Matumbo Ng`ombe 1/4KG', 'KES 250'], ['Matumbo Ng`ombe 1/2KG', 'KES 500']] },
+    { id: 'sides', title: '🍽️ Side Orders', items: [['White Ugali', 'KES 70'], ['Ugali Wimbi', 'KES 100'], ['Ugali Sorghum', 'KES 100'], ['White Rice', 'KES 120'], ['Stir Fried', 'KES 150'], ['Mboga Kienyeji', 'KES 100'], ['Sukuma wiki/Cabbage/spinach', 'KES 50'], ['Kachumbari', 'KES 100'], ['Beans Plain', 'KES 100']] },
+    { id: 'soft', title: '🍹 Soft Beverages', items: [['Dasani 500ML', 'KES 50'], ['Dasani 1L', 'KES 100'], ['Plastic Soda 350ML', 'KES 50'], ['Dawa (take away)', 'KES 130'], ['Monster', 'KES 250'], ['Plastic Soda 500ML', 'KES 80'], ['Plastic Soda 1.25ML', 'KES 150'], ['Plastic Soda 1L', 'KES 130'], ['Plastic Soda 2L', 'KES 200'], ['Bottled Soda 300ML', 'KES 60'], ['Minute Maid 400ML', 'KES 80'], ['Minute Maid 1L', 'KES 150'], ['Yoghurt 500ML', 'KES 130'], ['Yatta Juice 1L', 'KES 350'], ['Redbull', 'KES 250'], ['Predator', 'KES 70'], ['Powerplay', 'KES 70'], ['Orchid Valley', 'KES 350'], ['Pep Juice', 'KES 100']] },
+    { id: 'cake', title: '🍰 Cakes & Desserts', items: [['Vanilla 1KG', 'KES 1300'], ['Black Forest', 'KES 1500'], ['Marble 1KG', 'KES 1500'], ['Cake Slice', 'KES 100']] },
+    { id: 'beer', title: '🍺 Beer', items: [['Beer Cans', 'KES 300'], ['Bottled Beer', 'KES 700']] },
+    { id: 'wine', title: '🍷 Wines', items: [['Caprice', 'KES 1000'], ['Four Cousins', 'KES 1600'], ['4th Street', 'KES 1600']] },
   ];
 
   useEffect(() => {
-    if (typeof document !== "undefined") {
-      const style = document.createElement("style");
-      style.innerHTML = `
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes typewriter {
-          from { width: 0; }
-          to { width: 100%; }
-        }
-        @keyframes pulse {
-          0% { opacity: 0.5; }
-          50% { opacity: 1; }
-          100% { opacity: 0.5; }
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes typewriter { from { width: 0; } to { width: 100%; } }
+      @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+      @keyframes glow { 0% { text-shadow: 0 0 5px #9fef00; } 50% { text-shadow: 0 0 15px #9fef00; } 100% { text-shadow: 0 0 5px #9fef00; } }
+    `;
+    document.head.appendChild(style);
   }, []);
 
   return (
@@ -214,10 +227,18 @@ const Menu = () => {
           </form>
         </div>
 
+        <div style={styles.quickAccess}>
+          {categories.map(cat => (
+            <button key={cat.id} onClick={() => scrollToSection(cat.id)} style={styles.quickButton}>
+              {cat.title}
+            </button>
+          ))}
+        </div>
+
         <div style={styles.menuSection}>
           <h2 style={styles.h2}>🍽️ Our Menu</h2>
           {categories.map((cat, i) => (
-            <div key={i} style={styles.category}>
+            <div key={i} id={cat.id} style={styles.category}>
               <h3 style={styles.categoryTitle}>{cat.title}</h3>
               {cat.items.map(([name, price], j) => (
                 <div key={j} style={styles.menuItem}>
