@@ -13,41 +13,48 @@ const Home = () => {
   ];
 
   const reviews = [
-  "“The best hangout in Kericho hands down!” — Mercy K.",
-  "“That coffee hit different... felt like Nairobi!” — Brian N.",
-  "“Clean, affordable, and that fish was perfection.” — Jane M.",
-  "“Chapo x sausage combo is undefeated.🔥” — Kiprotich L.",
-  "“That conference hall is 🔥 and the food... top tier!” — Ivy W.",
-  "“I’d come back just for the egg pancakes.🤤” — Moffat M.",
-  "“Service with a smile every single time.” — Susan W.",
-  "“I loved the quiet upstairs room with the morning view.” — Dennis K.",
-  "“Settlers is the reason I stopped cooking at home 😂” — Terry N.",
-  "“That nyama stew and ugali combo? Blessings!” — Juma B.",
-  "“My Sunday chill spot always. Cold Fanta and good vibes.” — Ruth M.",
-  "“Had our meeting there — WiFi, coffee, and comfort!” — Felix M.",
-  "“Their ‘Chapo X Ndazi’ plate is addictive 😅” — Lorraine W.",
-  "“Everytime I visit, there’s something new on the menu 👏” — Davis T.",
-  "“Kinda miss it when I’m away. Feels like home.” — Sharon A.",
-  "“Chips kuku never misses. Portions are crazy good.” — Kibet R.",
-  "“Late night tea + campus convos = Settlers magic!” — Alvin M.",
-  "“We came for lunch and stayed until sunset 😍” — Rose C.",
-  "“The cake? Moist. The icing? Just wow.” — Sylvia L.",
-  "“They even remembered my order from last time. Mad service!” — Kelvin N.",
-  "“Perfect stopover on our way to Narok.” — Sammy K.",
-  "“Bar section’s under construction but vibes already loaded.” — Winnie T.",
-  "“Samosas crispy. Soda cold. Prices fair. 5/5.” — Arnold M.",
-  "“Room service was fast and friendly.” — Carol W.",
-  "“I posted their food on IG — got 100+ likes 🤩” — Vicky J.",
-  "“I’ve done breakfast, lunch, AND dinner here. Never disappoints.” — George M.",
-  "“No cap, those chapos are elite level.” — Mike O.",
-  "“Took my parents here — even mum was impressed!” — Lydia N.",
-  "“They play soft R&B and gospel in the mornings. Mood✅” — Sheila M.",
-  "“Outdoor chill zone is peaceful. Just birds and vibes.” — Leon L.",
-  "“They even added a kids’ play area — thoughtful!” — Tabitha K.",
-  "“The security guy greeted us by name. Felt special.” — Jared B.",
-  "“I’m recommending Settlers to all my Nairobi people.” — Steve W.",
-  "“They let me charge my phone. Small kindness, big respect.” — Elsie G."
-];
+    "“The best hangout in Kericho hands down!” — Mercy K.",
+    "“That coffee hit different... felt like Nairobi!” — Brian N.",
+    "“Clean, affordable, and that fish was perfection.” — Jane M.",
+    "“Chapo x sausage combo is undefeated.🔥” — Kiprotich L.",
+    "“That conference hall is 🔥 and the food... top tier!” — Ivy W.",
+    "“I’d come back just for the egg pancakes.🤤” — Moffat M.",
+    "“Service with a smile every single time.” — Susan W.",
+    "“I loved the quiet upstairs room with the morning view.” — Dennis K.",
+    "“Settlers is the reason I stopped cooking at home 😂” — Terry N.",
+    "“That nyama stew and ugali combo? Blessings!” — Juma B.",
+    "“My Sunday chill spot always. Cold Fanta and good vibes.” — Ruth M.",
+    "“Had our meeting there — WiFi, coffee, and comfort!” — Felix M.",
+    "“Their ‘Chapo X Ndazi’ plate is addictive 😅” — Lorraine W.",
+    "“Every time I visit, there’s something new on the menu 👏” — Davis T.",
+    "“Kinda miss it when I’m away. Feels like home.” — Sharon A.",
+    "“Chips kuku never misses. Portions are crazy good.” — Kibet R.",
+    "“Late night tea + campus convos = Settlers magic!” — Alvin M.",
+    "“We came for lunch and stayed until sunset 😍” — Rose C.",
+    "“The cake? Moist. The icing? Just wow.” — Sylvia L.",
+    "“They even remembered my order from last time. Mad service!” — Kelvin N.",
+    "“Perfect stopover on our way to Narok.” — Sammy K.",
+    "“Bar section’s under construction but vibes already loaded.” — Winnie T.",
+    "“Samosas crispy. Soda cold. Prices fair. 5/5.” — Arnold M.",
+    "“Room service was fast and friendly.” — Carol W.",
+    "“I posted their food on IG — got 100+ likes 🤩” — Vicky J.",
+    "“I’ve done breakfast, lunch, AND dinner here. Never disappoints.” — George M.",
+    "“No cap, those chapos are elite level.” — Mike O.",
+    "“Took my parents here — even mum was impressed!” — Lydia N.",
+    "“They play soft R&B and gospel in the mornings. Mood✅” — Sheila M.",
+    "“Outdoor chill zone is peaceful. Just birds and vibes.” — Leon L.",
+    "“They even added a kids’ play area — thoughtful!” — Tabitha K.",
+    "“The security guy greeted us by name. Felt special.” — Jared B.",
+    "“I’m recommending Settlers to all my Nairobi people.” — Steve W.",
+    "“They let me charge my phone. Small kindness, big respect.” — Elsie G."
+  ];
+
+  const featuredDishes = [
+    { img: "chapati 1.jpg", emoji: "🥙", title: "Golden Chapatis", desc: "Soft, flaky, and fresh from the pan." },
+    { img: "fish x chips.jpg", emoji: "🐟", title: "Fish & Chips", desc: "Crispy fries with grilled tilapia." },
+    { img: "cofee.jpg", emoji: "☕", title: "Bold Kenyan Coffee", desc: "Locally brewed, strong & smooth." },
+    { img: "ugali x greens x meat.jpg", emoji: "🍛", title: "Ugali Feast", desc: "Greens, meat & ugali like mama made it." }
+  ];
 
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [reviewIndex, setReviewIndex] = useState(0);
@@ -81,19 +88,16 @@ const Home = () => {
     }
   };
 
+  // Facebook SDK (only once)
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
-    script.async = true;
-    document.body.appendChild(script);
+    if (!window.FB) {
+      const script = document.createElement("script");
+      script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    }
   }, []);
-
-  const featuredDishes = [
-    { img: "chapati 1.jpg", emoji: "🥙", title: "Golden Chapatis", desc: "Soft, flaky, and fresh from the pan." },
-    { img: "fish x chips.jpg", emoji: "🐟", title: "Fish & Chips", desc: "Crispy fries with grilled tilapia." },
-    { img: "cofee.jpg", emoji: "☕", title: "Bold Kenyan Coffee", desc: "Locally brewed, strong & smooth." },
-    { img: "ugali x greens x meat.jpg", emoji: "🍛", title: "Ugali Feast", desc: "Greens, meat & ugali like mama made it." }
-  ];
 
   return (
     <>
@@ -106,7 +110,7 @@ const Home = () => {
       )}
 
       <section className="hero glassy">
-        <video className="bg-video" autoPlay muted loop playsInline>
+        <video className="bg-video" autoPlay muted loop playsInline preload="none">
           <source src="/assets/settlers.mp4" type="video/mp4" />
         </video>
         <div className="hero-content">
@@ -125,7 +129,7 @@ const Home = () => {
       <section className="featured glassy">
         {featuredDishes.map((dish, i) => (
           <div key={i} className="dish">
-            <img src={`/assets/${dish.img}`} alt={dish.title} />
+            <img src={`/assets/${dish.img}`} alt={dish.title} loading="lazy" />
             <h3>{dish.emoji} {dish.title}</h3>
             <p>{dish.desc}</p>
           </div>
@@ -161,11 +165,11 @@ const Home = () => {
 
       <div className="quick-access glassy">
         <a href="tel:0748778388">📞</a>
-        <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank">🧭</a>
+        <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank" rel="noreferrer">🧭</a>
         <a href="/accommodation">🛏️</a>
         <a href="/gallery">📷</a>
         <a href="/menu">🥘</a>
-        <a href="https://wa.me/254748778388" target="_blank">💬</a>
+        <a href="https://wa.me/254748778388" target="_blank" rel="noreferrer">💬</a>
       </div>
 
       <p style={{ textAlign: 'center', marginTop: '2rem', color: '#aaa' }}>
@@ -175,6 +179,7 @@ const Home = () => {
   );
 };
 
+// Install prompt style
 const toastStyle = {
   position: 'fixed',
   bottom: '20px',
@@ -194,6 +199,7 @@ const toastStyle = {
   cursor: 'pointer',
 };
 
+// Animation for toast
 const fadeInOutAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateY(10px); }

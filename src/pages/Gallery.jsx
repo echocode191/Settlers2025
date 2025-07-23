@@ -4,12 +4,12 @@ import Footer from '../components/Footer';
 
 const Gallery = () => {
   const [popupMedia, setPopupMedia] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') setPopupMedia(null);
-    };
+    const handleEsc = (e) => e.key === 'Escape' && setPopupMedia(null);
     window.addEventListener('keydown', handleEsc);
+    setIsMobile(window.innerWidth < 768);
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
@@ -127,16 +127,6 @@ const Gallery = () => {
       transition: 'transform 0.3s ease',
       cursor: 'pointer',
     },
-    video: {
-      width: '100%',
-      height: '160px',
-      objectFit: 'cover',
-      borderRadius: '10px',
-      border: '1px solid #30363d',
-      boxShadow: '0 4px 14px rgba(0, 255, 120, 0.08)',
-      transition: 'transform 0.3s ease',
-      cursor: 'pointer',
-    },
     overlay: {
       position: 'fixed',
       top: 0,
@@ -174,16 +164,18 @@ const Gallery = () => {
                 alt={`Gallery ${index}`}
                 style={styles.item}
                 onClick={() => setPopupMedia(item)}
+                loading="lazy"
               />
             ) : (
               <video
                 key={index}
                 src={item.src}
-                style={styles.video}
+                style={styles.item}
                 onClick={() => setPopupMedia(item)}
                 muted
-                autoPlay
+                autoPlay={!isMobile && index === 0}
                 loop
+                preload="none"
               />
             )
           )}
