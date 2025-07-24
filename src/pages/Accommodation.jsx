@@ -4,25 +4,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-// ✅ M-PESA PAYMENT BLOCK
 const MpesaPayment = ({ amount = '', item = 'booking' }) => {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
 
   const sendToWhatsApp = () => {
     if (!phone || !code) return;
-
-    const message = `🌍 Settlers Inn Payment Confirmation
-
-📦 Item: ${item}
-💰 Amount: KES ${amount}
-📞 Phone: ${phone}
-✅ Mpesa Code: ${code}
-📌 Paybill: 522533
-🧾 Account: 5936175
-
-Please confirm this payment.`;
-
+    const message = `🌍 Settlers Inn Payment Confirmation\n\n📦 Item: ${item}\n💰 Amount: KES ${amount}\n📞 Phone: ${phone}\n✅ Mpesa Code: ${code}\n📌 Paybill: 522533\n🧾 Account: 5936175\n\nPlease confirm this payment.`;
     const url = `https://wa.me/254748778388?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
@@ -55,7 +43,10 @@ const Accommodation = () => {
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
-      @keyframes popIn { from {opacity: 0; transform: scale(0.95);} to {opacity: 1; transform: scale(1);} }
+      @keyframes popIn {
+        from {opacity: 0; transform: scale(0.95);}
+        to {opacity: 1; transform: scale(1);}
+      }
       .react-datepicker {
         background-color: #161b22;
         border: 1px solid #30363d;
@@ -65,6 +56,18 @@ const Accommodation = () => {
       .react-datepicker__day--keyboard-selected {
         background-color: #9fef00 !important;
         color: #000 !important;
+      }
+
+      @media (max-width: 600px) {
+        .media-scroll {
+          gap: 0.5rem !important;
+        }
+        .media-scroll > div {
+          width: 160px !important;
+        }
+        .room-card {
+          padding: 1rem !important;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -134,7 +137,7 @@ const Accommodation = () => {
         : '/assets/conference1.jpg';
 
     return (
-      <div style={roomCardStyle}>
+      <div className="room-card" style={roomCardStyle}>
         <img src={image} alt={title} style={imageStyle} />
         <h3 style={titleStyle}>{title}</h3>
 
@@ -222,11 +225,17 @@ const Accommodation = () => {
           ✅ Then enter the M-PESA Code below to confirm, or skip to pay later.
         </div>
 
-        <div style={{ display: 'flex', overflowX: 'auto', gap: '1rem', paddingBottom: '1rem' }}>
+        <div className="media-scroll" style={{
+          display: 'flex',
+          overflowX: 'auto',
+          gap: '1rem',
+          paddingBottom: '1rem',
+          scrollSnapType: 'x mandatory'
+        }}>
           {mediaItems.map((src, i) => {
             const isVideo = src.endsWith('.mp4');
             return (
-              <div key={i} style={{ flex: '0 0 auto', width: '220px' }}>
+              <div key={i} style={{ flex: '0 0 auto', width: '220px', scrollSnapAlign: 'start' }}>
                 {isVideo ? (
                   <video src={src} style={imageStyle} autoPlay loop muted playsInline />
                 ) : (
