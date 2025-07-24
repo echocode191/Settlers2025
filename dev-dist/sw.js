@@ -79,7 +79,7 @@ define(['./workbox-c5f6b949'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "index.html",
-    "revision": "0.3bok94l935o"
+    "revision": "0.iqgrasp99og"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
@@ -88,10 +88,10 @@ define(['./workbox-c5f6b949'], (function (workbox) { 'use strict';
   workbox.registerRoute(({
     request
   }) => request.destination === "image", new workbox.CacheFirst({
-    "cacheName": "images-cache",
+    "cacheName": "image-cache",
     plugins: [new workbox.ExpirationPlugin({
-      maxEntries: 100,
-      maxAgeSeconds: 2592000
+      maxEntries: 50,
+      maxAgeSeconds: 1296000
     })]
   }), 'GET');
   workbox.registerRoute(({
@@ -99,6 +99,15 @@ define(['./workbox-c5f6b949'], (function (workbox) { 'use strict';
   }) => ["style", "script", "worker"].includes(request.destination), new workbox.StaleWhileRevalidate({
     "cacheName": "static-resources",
     plugins: []
+  }), 'GET');
+  workbox.registerRoute(({
+    url
+  }) => url.pathname.startsWith("/assets/"), new workbox.CacheFirst({
+    "cacheName": "asset-cache",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 30,
+      maxAgeSeconds: 604800
+    })]
   }), 'GET');
 
 }));

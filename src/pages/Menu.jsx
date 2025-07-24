@@ -5,6 +5,10 @@ import Footer from '../components/Footer';
 const Menu = () => {
   const [foodName, setFoodName] = useState('');
   const [jokeIndex, setJokeIndex] = useState(0);
+  const [orderType, setOrderType] = useState('pickup');
+  const [location, setLocation] = useState('');
+  const [paymentOption, setPaymentOption] = useState('arrival');
+  const [phone, setPhone] = useState('');
 
   const foodJokes = [
     "😋 Eat like royalty, pay like a villager.",
@@ -49,8 +53,20 @@ const Menu = () => {
 
   const sendOrder = (e) => {
     e.preventDefault();
-    if (!foodName.trim()) return;
-    const message = `Hi Settlers Inn, I want to order: ${foodName}`;
+
+    if (!foodName.trim()) return alert('Please enter your order.');
+    if (orderType === 'delivery' && !location.trim()) return alert('Enter delivery location.');
+    if (paymentOption === 'mpesa' && (!phone || phone.length < 10)) return alert('Enter a valid Mpesa phone number.');
+
+    const message = `Hi Settlers Inn 👋, I want to order: ${foodName}
+
+Order Type: ${orderType === 'pickup' ? '🛍 Pickup' : orderType === 'eat' ? '🍽 Eat Here' : '🛵 Delivery'}
+${orderType === 'delivery' ? `Location: ${location}` : ''}
+Payment Method: ${paymentOption === 'arrival' ? '💰 Pay on Arrival' : `📲 Mpesa (${phone})`}
+
+${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer will pay on delivery/pickup.'}
+`;
+
     const url = `https://wa.me/254748778388?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
@@ -60,6 +76,19 @@ const Menu = () => {
     if (section) section.scrollIntoView({ behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes typewriter { from { width: 0; } to { width: 100%; } }
+      @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+      @keyframes glow { 0% { text-shadow: 0 0 5px #9fef00; } 50% { text-shadow: 0 0 15px #9fef00; } 100% { text-shadow: 0 0 5px #9fef00; } }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
+  // ----- JSX Styles (inline for simplicity) -----
   const styles = {
     body: {
       fontFamily: "'Fira Code', monospace",
@@ -89,8 +118,6 @@ const Menu = () => {
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-      maxWidth: '100%',
-      display: 'block',
       animation: 'typewriter 3s steps(40, end) 1 normal both',
     },
     p: {
@@ -115,7 +142,6 @@ const Menu = () => {
       border: '1px solid #30363d',
       borderRadius: '8px',
       color: '#c9d1d9',
-      fontFamily: 'Fira Code',
       minWidth: '220px',
       flex: '1',
     },
@@ -125,10 +151,38 @@ const Menu = () => {
       color: '#0d1117',
       border: 'none',
       borderRadius: '8px',
-      fontFamily: 'Fira Code',
       cursor: 'pointer',
       fontWeight: 'bold',
       flexShrink: 0,
+    },
+    quickAccess: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '0.5rem',
+      justifyContent: 'center',
+      marginBottom: '2rem',
+      fontSize: '0.85rem',
+    },
+    quickButton: {
+      background: '#21262d',
+      color: '#9fef00',
+      padding: '0.4rem 0.8rem',
+      border: '1px solid #30363d',
+      borderRadius: '6px',
+      cursor: 'pointer',
+    },
+    floatBtn: {
+      position: 'fixed',
+      bottom: 25,
+      right: 20,
+      background: '#25D366',
+      color: 'white',
+      fontSize: '1.5rem',
+      padding: '0.7rem 0.85rem',
+      borderRadius: '50%',
+      boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+      zIndex: 999,
+      textDecoration: 'none',
     },
     menuSection: {
       paddingTop: '1rem',
@@ -152,60 +206,68 @@ const Menu = () => {
       borderBottom: '1px dashed #30363d',
       fontSize: '0.95rem',
     },
-    floatBtn: {
-      position: 'fixed',
-      bottom: 25,
-      right: 20,
-      background: '#25D366',
-      color: 'white',
-      fontSize: '1.5rem',
-      padding: '0.7rem 0.85rem',
-      borderRadius: '50%',
-      boxShadow: '0 0 10px rgba(0,0,0,0.3)',
-      zIndex: 999,
-      textDecoration: 'none',
-    },
-    quickAccess: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '0.5rem',
-      justifyContent: 'center',
-      marginBottom: '2rem',
-      fontSize: '0.85rem',
-    },
-    quickButton: {
-      background: '#21262d',
-      color: '#9fef00',
-      padding: '0.4rem 0.8rem',
-      border: '1px solid #30363d',
-      borderRadius: '6px',
-      cursor: 'pointer',
-    },
   };
 
   const categories = [
-    { id: 'breakfast', title: '🌅 Breakfast', items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 500']] },
-    { id: 'lunch', title: '🍛 Lunch & Dinner', items: [['Whole Fish', 'KES 700KG'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'], ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'], ['Mbuzi 1/4KG', 'KES 350'], ['Mbuzi 1/2KG', 'KES 700'], ['Ng`ombe 1/4KG', 'KES 300'], ['Ng`ombe 1/2KG', 'KES 600'], ['Pork 1/4KG', 'KES 350'], ['Pork 1/2KG', 'KES 700']] },
-    { id: 'dinner', title: '🌇 Dinner Special', items: [['Chicken Stir Fry', 'KES 800'], ['Nyama Choma (per plate)', 'KES 950']] },
-    { id: 'matumbo', title: '🥠 Matumbo Zone', items: [['Matumbo Mbuzi 1/4KG', 'KES 300'], ['Matumbo Mbuzi 1/2KG', 'KES 600'], ['Matumbo Ng`ombe 1/4KG', 'KES 250'], ['Matumbo Ng`ombe 1/2KG', 'KES 500']] },
-    { id: 'sides', title: '🍽️ Side Orders', items: [['White Ugali', 'KES 70'], ['Ugali Wimbi', 'KES 100'], ['Ugali Sorghum', 'KES 100'], ['White Rice', 'KES 120'], ['Stir Fried', 'KES 150'], ['Mboga Kienyeji', 'KES 100'], ['Sukuma wiki/Cabbage/spinach', 'KES 50'], ['Kachumbari', 'KES 100'], ['Beans Plain', 'KES 100']] },
-    { id: 'soft', title: '🍹 Soft Beverages', items: [['Dasani 500ML', 'KES 50'], ['Dasani 1L', 'KES 100'], ['Plastic Soda 350ML', 'KES 50'], ['Dawa (take away)', 'KES 130'], ['Monster', 'KES 250'], ['Plastic Soda 500ML', 'KES 80'], ['Plastic Soda 1.25ML', 'KES 150'], ['Plastic Soda 1L', 'KES 130'], ['Plastic Soda 2L', 'KES 200'], ['Bottled Soda 300ML', 'KES 60'], ['Minute Maid 400ML', 'KES 80'], ['Minute Maid 1L', 'KES 150'], ['Yoghurt 500ML', 'KES 130'], ['Yatta Juice 1L', 'KES 350'], ['Redbull', 'KES 250'], ['Predator', 'KES 70'], ['Powerplay', 'KES 70'], ['Orchid Valley', 'KES 350'], ['Pep Juice', 'KES 100']] },
-    { id: 'cake', title: '🍰 Cakes & Desserts', items: [['Vanilla 1KG', 'KES 1300'], ['Black Forest', 'KES 1500'], ['Marble 1KG', 'KES 1500'], ['Cake Slice', 'KES 100']] },
-    { id: 'beer', title: '🍺 Beer', items: [['Beer Cans', 'KES 350'], ['Bottled Beer', 'KES 300']] },
-    { id: 'wine', title: '🍷 Wines', items: [['Caprice', 'KES 1000'], ['Four Cousins', 'KES 1600'], ['4th Street', 'KES 1600']] },
+    {
+      id: 'breakfast', title: '🌅 Breakfast',
+      items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 500']]
+    },
+    {
+      id: 'lunch', title: '🍛 Lunch & Dinner',
+      items: [
+        ['Whole Fish', 'KES 700KG'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'],
+        ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'],
+        ['Mbuzi 1/4KG', 'KES 350'], ['Mbuzi 1/2KG', 'KES 700'],
+        ['Ng`ombe 1/4KG', 'KES 300'], ['Ng`ombe 1/2KG', 'KES 600'],
+        ['Pork 1/4KG', 'KES 350'], ['Pork 1/2KG', 'KES 700']
+      ]
+    },
+    {
+      id: 'dinner', title: '🌇 Dinner Special',
+      items: [['Chicken Stir Fry', 'KES 800'], ['Nyama Choma (per plate)', 'KES 950']]
+    },
+    {
+      id: 'matumbo', title: '🥠 Matumbo Zone',
+      items: [
+        ['Matumbo Mbuzi 1/4KG', 'KES 300'], ['Matumbo Mbuzi 1/2KG', 'KES 600'],
+        ['Matumbo Ng`ombe 1/4KG', 'KES 250'], ['Matumbo Ng`ombe 1/2KG', 'KES 500']
+      ]
+    },
+    {
+      id: 'sides', title: '🍽️ Side Orders',
+      items: [
+        ['White Ugali', 'KES 70'], ['Ugali Wimbi', 'KES 100'], ['Ugali Sorghum', 'KES 100'],
+        ['White Rice', 'KES 120'], ['Stir Fried', 'KES 150'],
+        ['Mboga Kienyeji', 'KES 100'], ['Sukuma wiki/Cabbage/spinach', 'KES 50'],
+        ['Kachumbari', 'KES 100'], ['Beans Plain', 'KES 100']
+      ]
+    },
+    {
+      id: 'soft', title: '🍹 Soft Beverages',
+      items: [
+        ['Dasani 500ML', 'KES 50'], ['Dasani 1L', 'KES 100'],
+        ['Plastic Soda 350ML', 'KES 50'], ['Plastic Soda 500ML', 'KES 80'],
+        ['Plastic Soda 1.25ML', 'KES 150'], ['Plastic Soda 1L', 'KES 130'], ['Plastic Soda 2L', 'KES 200'],
+        ['Bottled Soda 300ML', 'KES 60'], ['Minute Maid 400ML', 'KES 80'], ['Minute Maid 1L', 'KES 150'],
+        ['Yoghurt 500ML', 'KES 130'], ['Yatta Juice 1L', 'KES 350'],
+        ['Dawa (take away)', 'KES 130'], ['Monster', 'KES 250'], ['Redbull', 'KES 250'],
+        ['Predator', 'KES 70'], ['Powerplay', 'KES 70'], ['Orchid Valley', 'KES 350'], ['Pep Juice', 'KES 100']
+      ]
+    },
+    {
+      id: 'cake', title: '🍰 Cakes & Desserts',
+      items: [['Vanilla 1KG', 'KES 1300'], ['Black Forest', 'KES 1500'], ['Marble 1KG', 'KES 1500'], ['Cake Slice', 'KES 100']]
+    },
+    {
+      id: 'beer', title: '🍺 Beer',
+      items: [['Beer Cans', 'KES 350'], ['Bottled Beer', 'KES 300']]
+    },
+    {
+      id: 'wine', title: '🍷 Wines',
+      items: [['Caprice', 'KES 1000'], ['Four Cousins', 'KES 1600'], ['4th Street', 'KES 1600']]
+    },
   ];
-
-  useEffect(() => {
-    const style = document.createElement("style");
-    style.innerHTML = `
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes typewriter { from { width: 0; } to { width: 100%; } }
-      @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-      @keyframes glow { 0% { text-shadow: 0 0 5px #9fef00; } 50% { text-shadow: 0 0 15px #9fef00; } 100% { text-shadow: 0 0 5px #9fef00; } }
-    `;
-    document.head.appendChild(style);
-  }, []);
 
   return (
     <div style={styles.body}>
@@ -223,6 +285,66 @@ const Menu = () => {
               required
               style={styles.input}
             />
+
+            {/* Order Type */}
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {['pickup', 'eat', 'delivery'].map((type) => (
+                <label key={type} style={{ color: '#c9d1d9', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <input
+                    type="radio"
+                    value={type}
+                    checked={orderType === type}
+                    onChange={(e) => setOrderType(e.target.value)}
+                  />
+                  {type === 'pickup' ? '🛍 Pickup' : type === 'eat' ? '🍽 Eat Here' : '🛵 Delivery'}
+                </label>
+              ))}
+            </div>
+
+            {orderType === 'delivery' && (
+              <input
+                type="text"
+                placeholder="Delivery location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                required
+                style={styles.input}
+              />
+            )}
+
+            {/* Payment */}
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+              <label style={{ color: '#c9d1d9' }}>
+                <input
+                  type="radio"
+                  value="arrival"
+                  checked={paymentOption === 'arrival'}
+                  onChange={(e) => setPaymentOption(e.target.value)}
+                />
+                💰 Pay on Arrival
+              </label>
+              <label style={{ color: '#c9d1d9' }}>
+                <input
+                  type="radio"
+                  value="mpesa"
+                  checked={paymentOption === 'mpesa'}
+                  onChange={(e) => setPaymentOption(e.target.value)}
+                />
+                📲 Pay with Mpesa
+              </label>
+            </div>
+
+            {paymentOption === 'mpesa' && (
+              <input
+                type="tel"
+                placeholder="Mpesa Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                style={styles.input}
+                required
+              />
+            )}
+
             <button type="submit" style={styles.button}>📲 WhatsApp Us</button>
           </form>
         </div>
@@ -260,6 +382,7 @@ const Menu = () => {
       >
         💬
       </a>
+
       <Footer />
     </div>
   );
