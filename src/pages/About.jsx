@@ -33,7 +33,7 @@ const About = () => {
     section: {
       maxWidth: '1000px',
       margin: '4rem auto',
-      padding: '2rem',
+      padding: '2rem clamp(1rem, 5vw, 3rem)',
     },
     heading: {
       fontSize: 'clamp(1.7rem, 6vw, 3rem)',
@@ -52,7 +52,7 @@ const About = () => {
       background: 'rgba(22, 27, 34, 0.7)',
       border: '1px solid rgba(159,239,0,0.15)',
       borderRadius: '18px',
-      padding: '2.2rem',
+      padding: 'clamp(1.5rem, 4vw, 2.5rem)',
       marginBottom: '3rem',
       boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
       animation: 'fadeIn 1.5s ease both, glowBorder 6s ease-in-out infinite',
@@ -60,13 +60,13 @@ const About = () => {
     },
     title: {
       color: '#58a6ff',
-      fontSize: '1.5rem',
+      fontSize: 'clamp(1.2rem, 4vw, 1.5rem)',
       marginBottom: '1rem',
       borderBottom: '1px dashed #2f3136',
       paddingBottom: '0.5rem',
     },
     text: {
-      fontSize: '1.1rem',
+      fontSize: 'clamp(1rem, 2.5vw, 1.1rem)',
       lineHeight: '1.9',
       color: '#e1e8eb',
       marginBottom: '1.4rem',
@@ -75,7 +75,7 @@ const About = () => {
     quote: {
       fontStyle: 'italic',
       color: '#9fef00',
-      fontSize: '1.05rem',
+      fontSize: 'clamp(1rem, 2.5vw, 1.1rem)',
       textAlign: 'center',
       marginTop: '2.2rem',
       textShadow: '0 0 4px rgba(159,239,0,0.3)',
@@ -119,7 +119,6 @@ const About = () => {
           <p style={styles.text}>
             Because long after the meal is gone, the feeling stays. And long after the trip ends, the story lives on in you.
           </p>
-
           <p style={styles.quote}>
             "We aren’t just a stop along the way. We are the reason you remember the journey."
           </p>

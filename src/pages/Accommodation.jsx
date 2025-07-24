@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -89,13 +89,13 @@ const Accommodation = () => {
     },
     video: {
       width: '100%',
-      height: '160px', // ✅ Smaller video
+      height: '160px',
       objectFit: 'cover',
       display: 'block',
     },
     roomGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
       gap: '2rem',
     },
     roomCard: {
@@ -104,36 +104,45 @@ const Accommodation = () => {
       borderRadius: '12px',
       padding: '1.5rem',
       boxShadow: '0 0 15px rgba(88,166,255,0.15)',
-    },
-    roomImage: {
-      width: '100%',
-      borderRadius: '10px',
-      marginBottom: '0.8rem',
-      border: '1px solid #30363d',
+      textAlign: 'left',
     },
     roomTitle: {
       color: '#58a6ff',
-      marginBottom: '0.4rem',
       fontSize: '1.2rem',
+      marginBottom: '0.5rem',
     },
     roomDesc: {
       fontSize: '0.9rem',
       color: '#8b949e',
       marginBottom: '0.8rem',
     },
-    roomPrice: {
+    formGroup: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.5rem',
+      marginBottom: '1rem',
+    },
+    input: {
+      background: '#0d1117',
+      color: '#fff',
+      padding: '0.4rem 0.6rem',
+      borderRadius: '6px',
+      border: '1px solid #30363d',
+    },
+    price: {
       color: '#9fef00',
       fontWeight: 'bold',
-      marginBottom: '1.2rem',
+      marginBottom: '1rem',
     },
     bookBtn: {
-      display: 'inline-block',
       background: '#25d366',
       color: '#fff',
       padding: '0.6rem 1.2rem',
       borderRadius: '8px',
       textDecoration: 'none',
       fontWeight: 'bold',
+      textAlign: 'center',
+      display: 'inline-block',
     },
   };
 
@@ -149,29 +158,103 @@ const Accommodation = () => {
     '/assets/bar under construction.mp4',
   ];
 
-  const rooms = [
-    {
-      title: 'Standard Room',
-      img: '/assets/room1.jpg',
-      desc: 'Simple. Clean. Safe. Like a Netflix opening scene before everything goes perfectly right.',
-      price: 'KES 1,800 / night',
-      msg: "Hi Settlers Inn! I'd love to book the Standard Room — solo traveler vibes 🧳🛏️",
-    },
-    {
-      title: 'Family Room',
-      img: '/assets/room2.jpg',
-      desc: 'Big enough for your squad. Cozy enough for family drama. The happy kind. Mostly.',
-      price: 'KES 2,500 / night',
-      msg: "Hi Settlers Inn! I'd love to book the Family Room — it's time to reunite the crew 👨‍👩‍👧‍👦✨",
-    },
-    {
-      title: 'Conference Room',
-      img: '/assets/conference1.jpg',
-      desc: 'Equipped for meetings, trainings & strategy sessions. Power up your plans with Wi-Fi, coffee, and space to think.',
-      price: 'KES 3,500 / session',
-      msg: "Hello Settlers Inn! I'd like to reserve the Conference Room for a team session 💼🖥️. Please share availability.",
-    },
-  ];
+  const RoomCard = ({ type }) => {
+    const [guests, setGuests] = useState(1);
+    const [breakfast, setBreakfast] = useState(false);
+    const [sessionType, setSessionType] = useState('half');
+
+    let basePrice = 0;
+    if (type === 'standard') basePrice = 1500;
+    if (type === 'family') basePrice = 2000;
+    if (type === 'conference') basePrice = sessionType === 'full' ? 5000 : 2000;
+
+    const total =
+      type === 'conference'
+        ? basePrice
+        : basePrice + (breakfast ? 500 * guests : 0);
+
+    const message = encodeURIComponent(
+      type === 'conference'
+        ? `Hello Settlers Inn! I'd like to book the Conference Room for a ${sessionType === 'full' ? 'Full Day' : 'Half Day'} session.\nTotal Budget: KES ${total}\nPlease confirm availability.`
+        : `Hi Settlers Inn! I’d like to book the ${type === 'standard' ? 'Standard Room' : 'Family Room'} for ${guests} guest(s).\nBreakfast: ${breakfast ? 'Yes' : 'No'}\nTotal Budget: KES ${total}`
+    );
+
+    const image = type === 'standard'
+      ? '/assets/room1.jpg'
+      : type === 'family'
+      ? '/assets/room2.jpg'
+      : '/assets/conference1.jpg';
+
+    const title =
+      type === 'standard'
+        ? 'Standard Room'
+        : type === 'family'
+        ? 'Family Room'
+        : 'Conference Room';
+
+    const desc =
+      type === 'standard'
+        ? 'Simple. Clean. Safe. Like a Netflix opening scene before everything goes right.'
+        : type === 'family'
+        ? 'Big enough for your squad. Cozy enough for family drama. The good kind.'
+        : 'Equipped for meetings, trainings & strategy. Includes Wi-Fi, coffee & space to think.';
+
+    return (
+      <div style={styles.roomCard}>
+        <img src={image} alt={title} style={{ width: '100%', borderRadius: '8px', marginBottom: '1rem' }} />
+        <h3 style={styles.roomTitle}>{title}</h3>
+        <p style={styles.roomDesc}>{desc}</p>
+
+        <div style={styles.formGroup}>
+          {type !== 'conference' && (
+            <>
+              <label>Guests:</label>
+              <input
+                type="number"
+                value={guests}
+                onChange={(e) => setGuests(parseInt(e.target.value))}
+                min={1}
+                style={styles.input}
+              />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={breakfast}
+                  onChange={(e) => setBreakfast(e.target.checked)}
+                />{' '}
+                Add Breakfast (KES 500 per person)
+              </label>
+            </>
+          )}
+
+          {type === 'conference' && (
+            <>
+              <label>Session Type:</label>
+              <select
+                value={sessionType}
+                onChange={(e) => setSessionType(e.target.value)}
+                style={styles.input}
+              >
+                <option value="half">Half Day - KES 2000</option>
+                <option value="full">Full Day - KES 5000</option>
+              </select>
+            </>
+          )}
+        </div>
+
+        <p style={styles.price}>Total: KES {total}</p>
+
+        <a
+          href={`https://wa.me/254748778388?text=${message}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.bookBtn}
+        >
+          📲 Book on WhatsApp
+        </a>
+      </div>
+    );
+  };
 
   return (
     <div style={styles.page}>
@@ -179,10 +262,10 @@ const Accommodation = () => {
       <section style={styles.section}>
         <h2 style={styles.title}>🏨 Heaven Found: Settlers Stays</h2>
         <p style={styles.subtitle}>
-          You don't just sleep here. You reset. You reconnect. You <i>recharge like royalty.</i>
+          Not just a place to stay. A place to feel alive again.
         </p>
         <p style={styles.thriller}>
-          🎬 "3 rooms. 1 legacy. Comfort is calling…" 📞
+          🎬 “3 rooms. 1 legacy. Comfort is calling…” 📞
         </p>
 
         <div className="scroll-container" style={styles.scrollGallery}>
@@ -208,22 +291,9 @@ const Accommodation = () => {
         </div>
 
         <div style={styles.roomGrid}>
-          {rooms.map((room, i) => (
-            <div key={i} style={styles.roomCard}>
-              <img src={room.img} alt={room.title} style={styles.roomImage} />
-              <h3 style={styles.roomTitle}>{room.title}</h3>
-              <p style={styles.roomDesc}>{room.desc}</p>
-              <p style={styles.roomPrice}>{room.price}</p>
-              <a
-                href={`https://wa.me/254748778388?text=${encodeURIComponent(room.msg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={styles.bookBtn}
-              >
-                📲 Book on WhatsApp
-              </a>
-            </div>
-          ))}
+          <RoomCard type="standard" />
+          <RoomCard type="family" />
+          <RoomCard type="conference" />
         </div>
       </section>
       <Footer />
