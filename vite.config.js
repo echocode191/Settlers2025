@@ -12,7 +12,7 @@ export default defineConfig({
       includeAssets: [
         'favicon.ico',
         'apple-touch-icon.png',
-        'assets/logo.png' // only critical images
+        'assets/logo.png'
       ],
       manifest: {
         name: 'Settlers Inn',
@@ -35,13 +35,35 @@ export default defineConfig({
             type: 'image/png',
             purpose: 'any maskable',
           },
+          {
+            src: 'favicon.ico',
+            sizes: '48x48',
+            type: 'image/x-icon'
+          }
         ],
+        lang: 'en-KE',
+        dir: 'ltr',
+        orientation: 'portrait',
+        scope: '/',
+        categories: ['food', 'hospitality', 'restaurant', 'hotel'],
+        screenshots: [
+          {
+            src: 'assets/preview1.png',
+            sizes: '540x720',
+            type: 'image/png'
+          },
+          {
+            src: 'assets/preview2.png',
+            sizes: '540x720',
+            type: 'image/png'
+          }
+        ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,svg}'], // ✅ Don't precache any images
+        globPatterns: ['**/*.{js,css,html,ico,svg}'],
         globIgnores: [
           '**/assets/settlers.mp4',
-          '**/*.{jpg,jpeg,png,webp,gif}' // ✅ ignore all image formats in precache
+          '**/*.{jpg,jpeg,png,webp,gif}'
         ],
         maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
         runtimeCaching: [
@@ -52,7 +74,7 @@ export default defineConfig({
               cacheName: 'image-cache',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 15, // 15 Days
+                maxAgeSeconds: 60 * 60 * 24 * 15,
               },
             },
           },
@@ -71,7 +93,7 @@ export default defineConfig({
               cacheName: 'asset-cache',
               expiration: {
                 maxEntries: 30,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 Days
+                maxAgeSeconds: 60 * 60 * 24 * 7,
               },
             },
           },
