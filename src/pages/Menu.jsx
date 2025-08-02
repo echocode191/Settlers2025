@@ -216,7 +216,7 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
     {
       id: 'lunch', title: '🍛 Lunch & Dinner',
       items: [
-        ['Whole Fish', 'KES 700KG'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'],
+        ['Whole Fish', 'KES 700'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'],
         ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'],
         ['Mbuzi 1/4KG', 'KES 350'], ['Mbuzi 1/2KG', 'KES 700'],
         ['Ng`ombe 1/4KG', 'KES 300'], ['Ng`ombe 1/2KG', 'KES 600'],
@@ -225,7 +225,7 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
     },
     {
       id: 'dinner', title: '🌇 Dinner Special',
-      items: [['Chicken Stir Fry', 'KES 800'], ['Nyama Choma (per plate)', 'KES 950']]
+      items: [['Chicken Stir Fry', 'KES 800'],]
     },
     {
       id: 'matumbo', title: '🥠 Matumbo Zone',
@@ -390,3 +390,4 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
 };
 
 export default Menu;
+
