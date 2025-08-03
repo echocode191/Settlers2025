@@ -15,12 +15,12 @@ const Location = () => {
   const [nearbyPlaces, setNearbyPlaces] = useState([]);
   const [visitorCount, setVisitorCount] = useState(0);
   const [routingLoaded, setRoutingLoaded] = useState(false);
-  const [mapInitialized, setMapInitialized] = useState(false);
   
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const userMarkerRef = useRef(null);
   const routeLineRef = useRef(null);
+  const isMountedRef = useRef(true);
   
   const jokes = [
     "The shortest route to great food!",
@@ -59,14 +59,21 @@ const Location = () => {
     // Dynamically load leaflet-routing-machine
     if (typeof window !== 'undefined' && !window.L?.Routing) {
       import('leaflet-routing-machine').then(() => {
-        setRoutingLoaded(true);
+        if (isMountedRef.current) {
+          setRoutingLoaded(true);
+        }
       });
     } else if (typeof window !== 'undefined' && window.L?.Routing) {
       setRoutingLoaded(true);
     }
     
-    // Initialize map only once
-    if (!mapRef.current || mapInitialized) return;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (!mapRef.current || mapInstanceRef.current) return;
     
     try {
       mapInstanceRef.current = L.map(mapRef.current, {
@@ -91,19 +98,34 @@ const Location = () => {
         .addTo(mapInstanceRef.current)
         .bindPopup('Settlers Inn')
         .openPopup();
-      
-      setMapInitialized(true);
     } catch (error) {
       console.error("Error initializing map:", error);
     }
     
     return () => {
       if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        setMapInitialized(false);
+        try {
+          // Clean up routing control if it exists
+          if (routeLineRef.current) {
+            mapInstanceRef.current.removeControl(routeLineRef.current);
+            routeLineRef.current = null;
+          }
+          
+          // Clean up user marker if it exists
+          if (userMarkerRef.current) {
+            mapInstanceRef.current.removeLayer(userMarkerRef.current);
+            userMarkerRef.current = null;
+          }
+          
+          // Remove the map
+          mapInstanceRef.current.remove();
+          mapInstanceRef.current = null;
+        } catch (error) {
+          console.error("Error cleaning up map:", error);
+        }
       }
     };
-  }, [mapInitialized]);
+  }, []);
   
   const locateMe = () => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
@@ -116,13 +138,20 @@ const Location = () => {
       const coords = [pos.coords.latitude, pos.coords.longitude];
       setUserCoords(coords);
       
-      if (userMarkerRef.current && mapInstanceRef.current) {
+      if (!mapInstanceRef.current) return;
+      
+      // Clean up existing user marker and route
+      if (userMarkerRef.current) {
         mapInstanceRef.current.removeLayer(userMarkerRef.current);
-      }
-      if (routeLineRef.current && mapInstanceRef.current) {
-        mapInstanceRef.current.removeControl(routeLineRef.current);
+        userMarkerRef.current = null;
       }
       
+      if (routeLineRef.current) {
+        mapInstanceRef.current.removeControl(routeLineRef.current);
+        routeLineRef.current = null;
+      }
+      
+      // Add new user marker
       userMarkerRef.current = L.marker(coords, {
         icon: L.divIcon({
           className: 'user-marker',
@@ -130,16 +159,12 @@ const Location = () => {
           iconSize: [28, 28],
           iconAnchor: [14, 14],
         }),
-      });
+      }).addTo(mapInstanceRef.current)
+        .bindPopup("Your location")
+        .openPopup();
       
-      if (mapInstanceRef.current) {
-        userMarkerRef.current
-          .addTo(mapInstanceRef.current)
-          .bindPopup("Your location")
-          .openPopup();
-      }
-      
-      if (routingLoaded && window.L?.Routing && mapInstanceRef.current) {
+      // Add routing if loaded
+      if (routingLoaded && window.L?.Routing) {
         try {
           const routingControl = window.L.Routing.control({
             waypoints: [L.latLng(coords), L.latLng(settlersCoords)],
@@ -153,10 +178,13 @@ const Location = () => {
           
           routeLineRef.current = routingControl;
           
-          mapInstanceRef.current.fitBounds(
-            routingControl.getPlan().getWaypoints().map((w) => w.latLng),
-            { padding: [50, 50] }
-          );
+          // Fit map to show both points
+          const group = new L.featureGroup([
+            userMarkerRef.current,
+            L.marker(settlersCoords)
+          ]);
+          
+          mapInstanceRef.current.fitBounds(group.getBounds().pad(0.1));
         } catch (error) {
           console.error("Error creating route:", error);
         }
@@ -175,10 +203,14 @@ const Location = () => {
   
   const flyToSettlers = () => {
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo(settlersCoords, 17, {
-        animate: true,
-        duration: 2,
-      });
+      try {
+        mapInstanceRef.current.flyTo(settlersCoords, 17, {
+          animate: true,
+          duration: 2,
+        });
+      } catch (error) {
+        console.error("Error flying to location:", error);
+      }
     }
   };
   
