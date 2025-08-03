@@ -15,32 +15,32 @@ const Home = () => {
   const [activeDish, setActiveDish] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  const funnyPhrases = [
-    "🍲 Come hungry. Leave like a king!",
-    "😋 Our chapatis might flirt with your taste buds!",
-    "🛏️ Rooms so cozy, you'll extend your stay accidentally.",
-    "☕ Warning: Our tea may cause sudden smiles.",
-    "🚀 Settlers — where your stomach settles happy!"
+  const welcomingPhrases = [
+    "🍲 Authentic flavors, memorable experiences",
+    "😋 Where local cuisine meets warm hospitality",
+    "🛏️ Your comfortable retreat in the highlands",
+    "☕ Savor moments that matter",
+    "🚀 Settlers Inn — your home away from home"
   ];
   
   const reviews = [
-    "“The best hangout in Kericho hands down!” — Mercy K.",
-    "“That coffee hit different... felt like Nairobi!” — Brian N.",
-    "“Clean, affordable, and that fish was perfection.” — Jane M.",
-    "“Chapo x sausage combo is undefeated.🔥” — Kiprotich L.",
-    "“That conference hall is 🔥 and the food... top tier!” — Ivy W.",
-    "“I'd come back just for the egg pancakes.🤤” — Moffat M.",
-    "“Service with a smile every single time.” — Susan W.",
-    "“I loved the quiet upstairs room with the morning view.” — Dennis K.",
-    "“Settlers is the reason I stopped cooking at home 😂” — Terry N.",
-    "“That nyama stew and ugali combo? Blessings!” — Juma B."
+    "The perfect spot for a weekend getaway in Kericho. — Mercy K.",
+    "Their coffee is exceptional — reminds me of Nairobi's best cafes. — Brian N.",
+    "Clean rooms, friendly staff, and delicious food. Highly recommend. — Jane M.",
+    "The chapati and sausage combo is my go-to breakfast. — Kiprotich L.",
+    "Impressed by their conference facilities and catering service. — Ivy W.",
+    "The egg pancakes are a must-try! Will definitely come back. — Moffat M.",
+    "Consistently great service every time I visit. — Susan W.",
+    "Loved the peaceful room with the beautiful morning view. — Dennis K.",
+    "Settlers Inn has become my regular dining spot. — Terry N.",
+    "Their nyama stew and ugali combo is absolutely delicious. — Juma B."
   ];
   
   const featuredDishes = [
-    { img: "chapati 1.jpg", emoji: "🥙", title: "Golden Chapatis", desc: "Soft, flaky, and fresh from the pan." },
-    { img: "fish x chips.jpg", emoji: "🐟", title: "Fish & Chips", desc: "Crispy fries with grilled tilapia." },
-    { img: "cofee.jpg", emoji: "☕", title: "Bold Kenyan Coffee", desc: "Locally brewed, strong & smooth." },
-    { img: "ugali x greens x meat.jpg", emoji: "🍛", title: "Ugali Feast", desc: "Greens, meat & ugali like mama made it." }
+    { img: "chapati 1.jpg", emoji: "🥙", title: "Fresh Chapatis", desc: "Soft, flaky, and made to order daily." },
+    { img: "fish x chips.jpg", emoji: "🐟", title: "Fish & Chips", desc: "Fresh tilapia with crispy seasoned fries." },
+    { img: "cofee.jpg", emoji: "☕", title: "Highland Coffee", desc: "Premium Kenyan coffee, locally sourced." },
+    { img: "ugali x greens x meat.jpg", emoji: "🍛", title: "Traditional Platter", desc: "Ugali with sukuma wiki and nyama choma." }
   ];
   
   useEffect(() => {
@@ -52,7 +52,7 @@ const Home = () => {
       "Chef's Choice: Beef Stew with Rice - KES 650"
     ];
     setDailySpecial(specials[Math.floor(Math.random() * specials.length)]);
-    setVisitorCount(Math.floor(Math.random() * 500) + 1200);
+    setVisitorCount(Math.floor(Math.random() * 300) + 800);
     
     // Update time
     const updateTime = () => {
@@ -64,24 +64,24 @@ const Home = () => {
     
     // Rotate content
     const interval = setInterval(() => {
-      setPhraseIndex(prev => (prev + 1) % funnyPhrases.length);
+      setPhraseIndex(prev => (prev + 1) % welcomingPhrases.length);
       setReviewIndex(prev => (prev + 1) % reviews.length);
-    }, 5000);
+    }, 7000);
     
     // Simulate new content being added
     const contentInterval = setInterval(() => {
       setNewContentCount(prev => prev + 1);
-    }, 30000); // Every 30 seconds
+    }, 45000);
     
     // Rotate featured dishes
     const dishInterval = setInterval(() => {
       setActiveDish(prev => (prev + 1) % featuredDishes.length);
-    }, 8000);
+    }, 10000);
     
     // Simulate online status
     const onlineInterval = setInterval(() => {
-      setIsOnline(Math.random() > 0.2); // 80% chance of being online
-    }, 30000);
+      setIsOnline(Math.random() > 0.15);
+    }, 45000);
     
     // Scroll detection for animations
     const handleScroll = () => {
@@ -98,7 +98,7 @@ const Home = () => {
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     
     // Facebook SDK
-    if (!window.FB) {
+    if (typeof window !== 'undefined' && !window.FB) {
       const script = document.createElement("script");
       script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
       script.async = true;
@@ -107,36 +107,34 @@ const Home = () => {
     }
     
     // Add keyframe animations to document head
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes fadeInOut {
-        0% { opacity: 0; transform: translateY(10px); }
-        10% { opacity: 1; transform: translateY(0); }
-        90% { opacity: 1; }
-        100% { opacity: 0; transform: translateY(10px); }
-      }
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-      }
-      @keyframes shimmer {
-        0% { background-position: -200px 0; }
-        100% { background-position: calc(200px + 100%) 0; }
-      }
-      @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-      }
-      @keyframes typewriter {
-        from { width: 0; }
-        to { width: 100%; }
-      }
-    `;
-    document.head.appendChild(style);
+    if (typeof document !== 'undefined') {
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes fadeInOut {
+          0% { opacity: 0; transform: translateY(10px); }
+          15% { opacity: 1; transform: translateY(0); }
+          85% { opacity: 1; }
+          100% { opacity: 0; transform: translateY(10px); }
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtlePulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.85; }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200px 0; }
+          100% { background-position: calc(200px + 100%) 0; }
+        }
+        @keyframes gentleFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
     
     return () => {
       clearInterval(interval);
@@ -157,29 +155,31 @@ const Home = () => {
     }
   };
   
-  // Inline styles
+  // Inline styles with modern glassy design
   const toastStyle = {
     position: 'fixed',
     bottom: '20px',
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: '#111',
-    color: '#fff',
-    padding: '12px 20px',
+    background: 'rgba(30, 41, 59, 0.85)',
+    color: '#f1f5f9',
+    padding: '14px 24px',
     borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
     fontSize: '14px',
     zIndex: 10000,
     maxWidth: '90%',
     textAlign: 'center',
-    animation: 'fadeInOut 6s ease-in-out',
+    animation: 'fadeInOut 7s ease-in-out',
     lineHeight: '1.5',
     cursor: 'pointer',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   };
   
   const heroStyle = {
     position: 'relative',
-    height: '100vh',
+    height: '90vh',
     minHeight: '600px',
     display: 'flex',
     alignItems: 'center',
@@ -202,77 +202,81 @@ const Home = () => {
   const heroContentStyle = {
     position: 'relative',
     zIndex: '2',
-    padding: '0 20px',
+    padding: '2rem',
     maxWidth: '800px',
-    background: 'rgba(0, 0, 0, 0.6)',
-    backdropFilter: 'blur(5px)',
-    borderRadius: '16px',
-
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+    background: 'rgba(15, 23, 42, 0.7)',
+    backdropFilter: 'blur(12px)',
+    borderRadius: '20px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   };
   
   const titleStyle = {
-    fontSize: 'clamp(2rem, 8vw, 4rem)',
-    marginBottom: '1rem',
-    color: '#9fef00',
-    textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
-    animation: 'fadeInUp 1s ease',
+    fontSize: 'clamp(2.2rem, 8vw, 4rem)',
+    marginBottom: '1.2rem',
+    color: '#e2e8f0',
+    textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
+    animation: 'fadeInUp 1.2s ease',
+    fontWeight: '600',
   };
   
   const phraseStyle = {
-    fontSize: 'clamp(1.2rem, 4vw, 1.8rem)',
-    marginBottom: '1rem',
-    color: '#fff',
-    animation: 'pulse 3s infinite',
+    fontSize: 'clamp(1.2rem, 4vw, 1.6rem)',
+    marginBottom: '1.5rem',
+    color: '#cbd5e1',
+    animation: 'subtlePulse 4s infinite',
     minHeight: '2.5rem',
   };
   
   const subtitleStyle = {
     fontSize: 'clamp(1rem, 3vw, 1.3rem)',
-    marginBottom: '2rem',
-    color: '#e1e8eb',
+    marginBottom: '2.5rem',
+    color: '#94a3b8',
+    fontWeight: '300',
   };
   
   const buttonsContainerStyle = {
     display: 'flex',
     flexDirection: 'row',
-    gap: '1rem',
+    gap: '1.2rem',
     justifyContent: 'center',
     flexWrap: 'wrap',
   };
   
   const buttonStyle = {
     display: 'inline-block',
-    padding: '12px 24px',
-    background: '#9fef00',
-    color: '#0d1117',
+    padding: '14px 28px',
+    background: 'rgba(56, 189, 248, 0.9)',
+    color: '#0f172a',
     borderRadius: '30px',
     textDecoration: 'none',
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: '1rem',
     transition: 'all 0.3s ease',
-    boxShadow: '0 4px 15px rgba(159, 239, 0, 0.3)',
+    boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
+    backdropFilter: 'blur(4px)',
   };
   
   const bookButtonStyle = {
     ...buttonStyle,
-    background: '#58a6ff',
-    boxShadow: '0 4px 15px rgba(88, 166, 255, 0.3)',
+    background: 'rgba(139, 92, 246, 0.9)',
+    boxShadow: '0 4px 15px rgba(139, 92, 246, 0.25)',
   };
   
   const statsContainerStyle = {
     position: 'absolute',
-    bottom: '20px',
+    bottom: '30px',
     left: '0',
     right: '0',
     display: 'flex',
     justifyContent: 'space-around',
-    background: 'rgba(0, 0, 0, 0.5)',
-    backdropFilter: 'blur(5px)',
-    padding: '15px',
+    background: 'rgba(15, 23, 42, 0.7)',
+    backdropFilter: 'blur(10px)',
+    padding: '18px',
     borderRadius: '16px',
     margin: '0 20px',
     zIndex: '3',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   };
   
   const statItemStyle = {
@@ -281,13 +285,13 @@ const Home = () => {
   
   const statNumberStyle = {
     fontSize: '1.5rem',
-    fontWeight: 'bold',
-    color: '#9fef00',
+    fontWeight: '600',
+    color: '#38bdf8',
   };
   
   const statLabelStyle = {
     fontSize: '0.9rem',
-    color: '#e1e8eb',
+    color: '#cbd5e1',
   };
   
   const sectionStyle = {
@@ -298,32 +302,34 @@ const Home = () => {
   
   const introStyle = {
     ...sectionStyle,
-    background: 'rgba(22, 27, 34, 0.7)',
+    background: 'rgba(30, 41, 59, 0.7)',
     backdropFilter: 'blur(10px)',
-    borderRadius: '16px',
-    padding: '2rem',
-    marginBottom: '2rem',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+    borderRadius: '20px',
+    padding: '2.5rem',
+    marginBottom: '3rem',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
     textAlign: 'center',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   };
   
   const specialBannerStyle = {
-    background: 'linear-gradient(90deg, #9fef00, #58a6ff)',
-    color: '#0d1117',
-    padding: '10px 20px',
+    background: 'linear-gradient(90deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.9))',
+    color: '#0f172a',
+    padding: '12px 24px',
     borderRadius: '30px',
-    fontWeight: 'bold',
+    fontWeight: '600',
     display: 'inline-block',
-    marginBottom: '1.5rem',
-    animation: 'shimmer 2s infinite',
+    marginBottom: '1.8rem',
+    animation: 'shimmer 3s infinite',
     backgroundSize: '200px 100%',
-    boxShadow: '0 4px 15px rgba(159, 239, 0, 0.3)',
+    boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
+    backdropFilter: 'blur(4px)',
   };
   
   const introTextStyle = {
     fontSize: '1.1rem',
-    lineHeight: '1.6',
-    color: '#e1e8eb',
+    lineHeight: '1.7',
+    color: '#e2e8f0',
     maxWidth: '800px',
     margin: '0 auto',
   };
@@ -331,25 +337,27 @@ const Home = () => {
   const featuredStyle = {
     ...sectionStyle,
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '2rem',
-    marginBottom: '2rem',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '2.5rem',
+    marginBottom: '3rem',
   };
   
-  const dishStyle = {
-    background: 'rgba(22, 27, 34, 0.7)',
+  const dishStyle = (index) => ({
+    background: 'rgba(30, 41, 59, 0.7)',
     backdropFilter: 'blur(10px)',
-    borderRadius: '16px',
+    borderRadius: '20px',
     overflow: 'hidden',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     border: '1px solid rgba(255, 255, 255, 0.1)',
-    animation: activeDish === 0 ? 'float 6s ease-in-out infinite' : 'none',
-  };
+    animation: activeDish === index ? 'gentleFloat 8s ease-in-out infinite' : 'none',
+    transform: activeDish === index ? 'translateY(-5px)' : 'none',
+    boxShadow: activeDish === index ? '0 12px 40px rgba(0, 0, 0, 0.2)' : '0 8px 32px rgba(0, 0, 0, 0.15)',
+  });
   
   const dishImageContainerStyle = {
     position: 'relative',
-    height: '200px',
+    height: '220px',
     overflow: 'hidden',
   };
   
@@ -362,48 +370,52 @@ const Home = () => {
   
   const newBadgeStyle = {
     position: 'absolute',
-    top: '10px',
-    right: '10px',
-    background: '#ff3e3e',
+    top: '15px',
+    right: '15px',
+    background: 'rgba(239, 68, 68, 0.9)',
     color: 'white',
-    padding: '4px 10px',
+    padding: '6px 12px',
     borderRadius: '20px',
     fontSize: '0.8rem',
-    fontWeight: 'bold',
-    boxShadow: '0 2px 8px rgba(255, 62, 62, 0.4)',
-    animation: 'pulse 2s infinite',
+    fontWeight: '600',
+    boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
+    animation: 'subtlePulse 3s infinite',
+    backdropFilter: 'blur(4px)',
   };
   
   const dishContentStyle = {
-    padding: '1.5rem',
+    padding: '1.8rem',
   };
   
   const dishTitleStyle = {
-    fontSize: '1.3rem',
-    marginBottom: '0.5rem',
-    color: '#9fef00',
+    fontSize: '1.4rem',
+    marginBottom: '0.8rem',
+    color: '#e2e8f0',
+    fontWeight: '600',
   };
   
   const dishDescStyle = {
-    color: '#e1e8eb',
-    lineHeight: '1.5',
+    color: '#cbd5e1',
+    lineHeight: '1.6',
   };
   
   const reviewsStyle = {
     ...sectionStyle,
-    background: 'rgba(22, 27, 34, 0.7)',
+    background: 'rgba(30, 41, 59, 0.7)',
     backdropFilter: 'blur(10px)',
-    borderRadius: '16px',
-    padding: '2rem',
-    marginBottom: '2rem',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+    borderRadius: '20px',
+    padding: '2.5rem',
+    marginBottom: '3rem',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
     textAlign: 'center',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   };
   
   const reviewsTitleStyle = {
-    fontSize: '2rem',
-    marginBottom: '1.5rem',
-    color: '#9fef00',
+    fontSize: '2.2rem',
+    marginBottom: '2rem',
+    color: '#e2e8f0',
+    fontWeight: '600',
   };
   
   const reviewRotatorStyle = {
@@ -416,23 +428,24 @@ const Home = () => {
   const reviewStyle = {
     fontSize: '1.2rem',
     fontStyle: 'italic',
-    color: '#e1e8eb',
-    lineHeight: '1.6',
+    color: '#e2e8f0',
+    lineHeight: '1.7',
     maxWidth: '800px',
     margin: '0 auto',
-    animation: 'fadeInUp 1s ease',
+    animation: 'fadeInUp 1.2s ease',
   };
   
   const facebookStyle = {
     ...sectionStyle,
     textAlign: 'center',
-    marginBottom: '2rem',
+    marginBottom: '3rem',
   };
   
   const facebookTitleStyle = {
-    fontSize: '2rem',
-    marginBottom: '1.5rem',
-    color: '#9fef00',
+    fontSize: '2.2rem',
+    marginBottom: '2rem',
+    color: '#e2e8f0',
+    fontWeight: '600',
   };
   
   const facebookContainerStyle = {
@@ -443,30 +456,31 @@ const Home = () => {
   
   const quickAccessStyle = {
     position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    background: 'rgba(22, 27, 34, 0.8)',
+    bottom: '25px',
+    right: '25px',
+    background: 'rgba(30, 41, 59, 0.8)',
     backdropFilter: 'blur(10px)',
     borderRadius: '50px',
-    padding: '10px',
+    padding: '12px',
     display: 'flex',
-    gap: '10px',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+    gap: '12px',
+    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.25)',
     zIndex: '100',
     transition: 'transform 0.3s ease, opacity 0.3s ease',
     transform: isScrolled ? 'translateY(0)' : 'translateY(100px)',
     opacity: isScrolled ? '1' : '0',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
   };
   
   const quickLinkStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '40px',
-    height: '40px',
+    width: '44px',
+    height: '44px',
     borderRadius: '50%',
     background: 'rgba(255, 255, 255, 0.1)',
-    color: '#9fef00',
+    color: '#38bdf8',
     textDecoration: 'none',
     fontSize: '1.2rem',
     transition: 'all 0.2s ease',
@@ -474,8 +488,8 @@ const Home = () => {
   
   const footerTextStyle = {
     textAlign: 'center',
-    marginTop: '2rem',
-    color: '#8b949e',
+    marginTop: '3rem',
+    color: '#64748b',
     fontSize: '0.9rem',
     padding: '0 1rem',
   };
@@ -484,31 +498,51 @@ const Home = () => {
     position: 'fixed',
     top: '80px',
     right: '20px',
-    background: 'linear-gradient(90deg, #ff3e3e, #ff9e3e)',
+    background: 'linear-gradient(90deg, rgba(239, 68, 68, 0.9), rgba(245, 158, 11, 0.9))',
     color: 'white',
-    padding: '8px 16px',
+    padding: '10px 18px',
     borderRadius: '20px',
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: '0.9rem',
-    boxShadow: '0 4px 15px rgba(255, 62, 62, 0.3)',
+    boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)',
     zIndex: '100',
-    animation: 'pulse 2s infinite',
+    animation: 'subtlePulse 3s infinite',
     transform: newContentCount > 0 ? 'translateX(0)' : 'translateX(200px)',
     transition: 'transform 0.5s ease',
+    backdropFilter: 'blur(4px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   };
-
+  
+  const closeButtonStyle = {
+    background: 'none',
+    border: 'none',
+    color: 'white',
+    fontSize: '1.2rem',
+    cursor: 'pointer',
+    marginLeft: '10px',
+    lineHeight: 1,
+  };
+  
   return (
     <>
       <Navbar />
       {showInstallToast && (
         <div style={toastStyle} onClick={handleInstallClick}>
-          🧠 Tip: Tap here to <strong>install Settlers Inn</strong> as an app!
+          💡 Tip: Tap here to <strong>install Settlers Inn</strong> as an app!
         </div>
       )}
       
       {newContentCount > 0 && (
         <div style={newContentBannerStyle}>
-          🆕 {newContentCount} new updates!
+          <span>🆕 {newContentCount} new updates!</span>
+          <button 
+            style={closeButtonStyle}
+            onClick={() => setNewContentCount(0)}
+          >
+            ×
+          </button>
         </div>
       )}
       
@@ -525,12 +559,12 @@ const Home = () => {
         </video>
         
         <div style={heroContentStyle}>
-          <h2 style={titleStyle}>Welcome to Settlers Inn</h2>
-          <p style={phraseStyle}>{funnyPhrases[phraseIndex]}</p>
-          <p style={subtitleStyle}>Where Settlers Still Eat Like Kings.</p>
+          <h2 style={titleStyle}>Settlers Inn</h2>
+          <p style={phraseStyle}>{welcomingPhrases[phraseIndex]}</p>
+          <p style={subtitleStyle}>Established 2021 | Kericho Highlands</p>
           
           <div style={buttonsContainerStyle}>
-            <a href="/menu" style={buttonStyle}>🍽️ View Our Menu</a>
+            <a href="/menu" style={buttonStyle}>🍽️ Our Menu</a>
             <a href="/accommodation" style={bookButtonStyle}>🛏️ Book a Room</a>
           </div>
         </div>
@@ -538,14 +572,14 @@ const Home = () => {
         <div style={statsContainerStyle}>
           <div style={statItemStyle}>
             <div style={statNumberStyle}>{visitorCount}+</div>
-            <div style={statLabelStyle}>Happy Guests</div>
+            <div style={statLabelStyle}>Guests Since 2021</div>
           </div>
           <div style={statItemStyle}>
             <div style={statNumberStyle}>{currentTime}</div>
             <div style={statLabelStyle}>Local Time</div>
           </div>
           <div style={statItemStyle}>
-            <div style={statNumberStyle}>{isOnline ? 'Online' : 'Away'}</div>
+            <div style={statNumberStyle}>{isOnline ? 'Open' : 'Busy'}</div>
             <div style={statLabelStyle}>Status</div>
           </div>
         </div>
@@ -556,7 +590,9 @@ const Home = () => {
           🌟 {dailySpecial} 🌟
         </div>
         <p style={introTextStyle}>
-          Located in the heart of the Kenya Highlands, Settlers Inn is a family-owned gem serving authentic dishes, hearty portions, and warm hospitality.
+          Nestled in the heart of Kenya's highlands, Settlers Inn offers a perfect blend of comfort, 
+          cuisine, and hospitality. Since our opening in 2021, we've been dedicated to providing 
+          authentic experiences and memorable meals for our guests.
         </p>
       </section>
       
@@ -564,11 +600,7 @@ const Home = () => {
         {featuredDishes.map((dish, i) => (
           <div 
             key={i} 
-            style={{
-              ...dishStyle,
-              transform: activeDish === i ? 'translateY(-5px)' : 'none',
-              boxShadow: activeDish === i ? '0 12px 40px rgba(0, 0, 0, 0.3)' : '0 8px 32px rgba(0, 0, 0, 0.2)',
-            }}
+            style={dishStyle(i)}
             onMouseEnter={() => setActiveDish(i)}
           >
             <div style={dishImageContainerStyle}>
@@ -589,14 +621,14 @@ const Home = () => {
       </section>
       
       <section style={reviewsStyle}>
-        <h2 style={reviewsTitleStyle}>💬 What People Are Saying</h2>
+        <h2 style={reviewsTitleStyle}>💬 Guest Experiences</h2>
         <div style={reviewRotatorStyle}>
           <p style={reviewStyle}>{reviews[reviewIndex]}</p>
         </div>
       </section>
       
       <section style={facebookStyle}>
-        <h2 style={facebookTitleStyle}>💬 Facebook Reviews (Live)</h2>
+        <h2 style={facebookTitleStyle}>💬 Facebook Reviews</h2>
         <div style={facebookContainerStyle}>
           <div 
             className="fb-page"
@@ -628,7 +660,7 @@ const Home = () => {
       </div>
       
       <p style={footerTextStyle}>
-        &copy; {new Date().getFullYear()} Settlers Inn — Built by EchoCode
+        &copy; {new Date().getFullYear()} Settlers Inn — Established 2021 | Built by EchoCode
       </p>
     </>
   );

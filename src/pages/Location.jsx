@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-routing-machine';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -15,6 +14,8 @@ const Location = () => {
   const [isLocating, setIsLocating] = useState(false);
   const [nearbyPlaces, setNearbyPlaces] = useState([]);
   const [visitorCount, setVisitorCount] = useState(0);
+  const [routingLoaded, setRoutingLoaded] = useState(false);
+  const [mapInitialized, setMapInitialized] = useState(false);
   
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -22,12 +23,11 @@ const Location = () => {
   const routeLineRef = useRef(null);
   
   const jokes = [
-    "🐐 Shortcut via goat path... just kidding!",
-    "🛵 Dodging potholes like a pro...",
-    "🍲 Free aroma as you get closer...",
-    "🚕 We told the boda guy to hurry!",
-    "🗺️ Calculating... avoid cows on the road!",
-    "📡 GPS locking in like your hunger!"
+    "The shortest route to great food!",
+    "Your journey to comfort begins here.",
+    "Getting closer to your perfect getaway.",
+    "The path to memorable experiences.",
+    "Almost there — your destination awaits!"
   ];
   
   const getDistance = (lat1, lon1, lat2, lon2) => {
@@ -45,7 +45,7 @@ const Location = () => {
   
   useEffect(() => {
     // Initialize visitor count
-    setVisitorCount(Math.floor(Math.random() * 50) + 10);
+    setVisitorCount(Math.floor(Math.random() * 30) + 15);
     
     // Simulate nearby places
     const places = [
@@ -56,77 +56,115 @@ const Location = () => {
     ];
     setNearbyPlaces(places);
     
-    if (!mapRef.current) return;
+    // Dynamically load leaflet-routing-machine
+    if (typeof window !== 'undefined' && !window.L?.Routing) {
+      import('leaflet-routing-machine').then(() => {
+        setRoutingLoaded(true);
+      });
+    } else if (typeof window !== 'undefined' && window.L?.Routing) {
+      setRoutingLoaded(true);
+    }
     
-    mapInstanceRef.current = L.map(mapRef.current, {
-      center: settlersCoords,
-      zoom: 15,
-      zoomControl: false,
-    });
+    // Initialize map only once
+    if (!mapRef.current || mapInitialized) return;
     
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(mapInstanceRef.current);
+    try {
+      mapInstanceRef.current = L.map(mapRef.current, {
+        center: settlersCoords,
+        zoom: 15,
+        zoomControl: false,
+      });
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19,
+      }).addTo(mapInstanceRef.current);
+      
+      L.marker(settlersCoords, {
+        icon: L.divIcon({
+          className: 'settlers-marker',
+          html: '🏨',
+          iconSize: [30, 30],
+          iconAnchor: [15, 15],
+        }),
+      })
+        .addTo(mapInstanceRef.current)
+        .bindPopup('Settlers Inn')
+        .openPopup();
+      
+      setMapInitialized(true);
+    } catch (error) {
+      console.error("Error initializing map:", error);
+    }
     
-    L.marker(settlersCoords, {
-      icon: L.divIcon({
-        className: 'settlers-marker',
-        html: '🏠',
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-      }),
-    })
-      .addTo(mapInstanceRef.current)
-      .bindPopup('📍 Settlers Inn — We\'re here!')
-      .openPopup();
-    
-    return () => mapInstanceRef.current.remove();
-  }, []);
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        setMapInitialized(false);
+      }
+    };
+  }, [mapInitialized]);
   
   const locateMe = () => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+    
     setIsLocating(true);
     navigator.geolocation.getCurrentPosition((pos) => {
       const coords = [pos.coords.latitude, pos.coords.longitude];
       setUserCoords(coords);
       
-      if (userMarkerRef.current)
+      if (userMarkerRef.current && mapInstanceRef.current) {
         mapInstanceRef.current.removeLayer(userMarkerRef.current);
-      if (routeLineRef.current)
+      }
+      if (routeLineRef.current && mapInstanceRef.current) {
         mapInstanceRef.current.removeControl(routeLineRef.current);
+      }
       
       userMarkerRef.current = L.marker(coords, {
         icon: L.divIcon({
           className: 'user-marker',
-          html: '🧍',
+          html: '📍',
           iconSize: [28, 28],
           iconAnchor: [14, 14],
         }),
-      })
-        .addTo(mapInstanceRef.current)
-        .bindPopup("📍 You're here!")
-        .openPopup();
+      });
       
-      const routingControl = L.Routing.control({
-        waypoints: [L.latLng(coords), L.latLng(settlersCoords)],
-        lineOptions: {
-          styles: [{ color: '#007bff', weight: 5 }],
-        },
-        createMarker: () => null,
-        show: false,
-        routeWhileDragging: false,
-      }).addTo(mapInstanceRef.current);
+      if (mapInstanceRef.current) {
+        userMarkerRef.current
+          .addTo(mapInstanceRef.current)
+          .bindPopup("Your location")
+          .openPopup();
+      }
       
-      routeLineRef.current = routingControl;
+      if (routingLoaded && window.L?.Routing && mapInstanceRef.current) {
+        try {
+          const routingControl = window.L.Routing.control({
+            waypoints: [L.latLng(coords), L.latLng(settlersCoords)],
+            lineOptions: {
+              styles: [{ color: '#38bdf8', weight: 5 }],
+            },
+            createMarker: () => null,
+            show: false,
+            routeWhileDragging: false,
+          }).addTo(mapInstanceRef.current);
+          
+          routeLineRef.current = routingControl;
+          
+          mapInstanceRef.current.fitBounds(
+            routingControl.getPlan().getWaypoints().map((w) => w.latLng),
+            { padding: [50, 50] }
+          );
+        } catch (error) {
+          console.error("Error creating route:", error);
+        }
+      }
       
       const dist = getDistance(coords[0], coords[1], settlersCoords[0], settlersCoords[1]);
       setDistance(dist);
       setJoke(jokes[Math.floor(Math.random() * jokes.length)]);
-      
-      mapInstanceRef.current.fitBounds(
-        routingControl.getPlan().getWaypoints().map((w) => w.latLng),
-        { padding: [50, 50] }
-      );
       
       setIsLocating(false);
     }, () => {
@@ -136,129 +174,159 @@ const Location = () => {
   };
   
   const flyToSettlers = () => {
-    mapInstanceRef.current.flyTo(settlersCoords, 17, {
-      animate: true,
-      duration: 2,
-    });
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.flyTo(settlersCoords, 17, {
+        animate: true,
+        duration: 2,
+      });
+    }
   };
   
   const openGoogleMaps = () => {
     window.open('https://maps.app.goo.gl/T4JeUH1KDCUrx9mK7', '_blank');
   };
-
+  
+  // Styles with modern glassy design
   const styles = {
     page: {
-      background: '#fff',
-      color: '#111',
-      fontFamily: 'Fira Code, monospace',
+      background: 'linear-gradient(135deg, #0f172a, #1e293b)',
+      color: '#e2e8f0',
+      fontFamily: "'Inter', system-ui, sans-serif",
+      minHeight: '100vh',
     },
     section: {
       maxWidth: '1100px',
       margin: 'auto',
-      padding: '2rem 1rem',
+      padding: '3rem 1.5rem',
     },
     title: {
       textAlign: 'center',
-      fontSize: '2rem',
-      marginBottom: '0.5rem',
-      color: '#007bff',
+      fontSize: '2.2rem',
+      marginBottom: '0.8rem',
+      color: '#e2e8f0',
+      fontWeight: '600',
     },
     subtitle: {
       textAlign: 'center',
-      fontSize: '1rem',
-      marginBottom: '2rem',
-      color: '#555',
+      fontSize: '1.1rem',
+      marginBottom: '2.5rem',
+      color: '#94a3b8',
+      maxWidth: '600px',
+      marginInline: 'auto',
     },
     mapContainer: {
       height: mapExpanded ? 'min(80vh, 500px)' : '400px',
-      borderRadius: '12px',
-      border: '2px solid #ccc',
-      marginBottom: '1.5rem',
+      borderRadius: '20px',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      marginBottom: '2rem',
       position: 'relative',
+      overflow: 'hidden',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
     },
     buttonContainer: {
       display: 'flex',
       flexWrap: 'wrap',
-      gap: '1rem',
+      gap: '1.2rem',
       justifyContent: 'center',
-      marginBottom: '2rem',
+      marginBottom: '2.5rem',
     },
     button: {
-      padding: '10px 18px',
+      padding: '0.8rem 1.5rem',
       fontSize: '0.95rem',
-      borderRadius: '10px',
+      borderRadius: '12px',
       border: 'none',
-      backgroundColor: '#007bff',
-      color: '#fff',
+      backgroundColor: 'rgba(56, 189, 248, 0.9)',
+      color: '#0f172a',
       cursor: 'pointer',
       minWidth: '150px',
-      transition: 'all 0.2s',
+      transition: 'all 0.3s ease',
+      fontWeight: '600',
+      backdropFilter: 'blur(4px)',
+      boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
     },
     distanceContainer: {
       textAlign: 'center',
-      marginTop: '1rem',
-      marginBottom: '1rem',
+      marginTop: '1.5rem',
+      marginBottom: '1.5rem',
+      background: 'rgba(30, 41, 59, 0.7)',
+      borderRadius: '16px',
+      padding: '1.5rem',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
     },
     distance: {
-      color: '#007bff',
-      fontWeight: 'bold',
+      color: '#38bdf8',
+      fontWeight: '600',
+      fontSize: '1.1rem',
     },
     joke: {
-      color: '#555',
+      color: '#cbd5e1',
       fontStyle: 'italic',
+      marginTop: '0.8rem',
     },
     nearbyContainer: {
-      background: '#f8f9fa',
-      borderRadius: '12px',
-      padding: '1.5rem',
-      marginBottom: '2rem',
+      background: 'rgba(30, 41, 59, 0.7)',
+      borderRadius: '20px',
+      padding: '2rem',
+      marginBottom: '2.5rem',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
     },
     nearbyTitle: {
-      fontSize: '1.2rem',
-      marginBottom: '1rem',
-      color: '#007bff',
+      fontSize: '1.5rem',
+      marginBottom: '1.5rem',
+      color: '#e2e8f0',
       textAlign: 'center',
+      fontWeight: '600',
     },
     nearbyList: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '1rem',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+      gap: '1.5rem',
     },
     nearbyItem: {
-      background: '#fff',
-      borderRadius: '8px',
-      padding: '1rem',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+      background: 'rgba(15, 23, 42, 0.6)',
+      borderRadius: '16px',
+      padding: '1.5rem',
+      backdropFilter: 'blur(4px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
+      transition: 'all 0.3s ease',
     },
     nearbyName: {
-      fontWeight: 'bold',
+      fontWeight: '600',
+      color: '#e2e8f0',
+      fontSize: '1.1rem',
     },
     nearbyDistance: {
-      color: '#007bff',
-      fontSize: '0.9rem',
+      color: '#38bdf8',
+      fontSize: '0.95rem',
+      fontWeight: '600',
     },
     statsContainer: {
       display: 'flex',
       justifyContent: 'space-around',
-      background: '#e9f5ff',
-      borderRadius: '12px',
-      padding: '1rem',
-      marginBottom: '2rem',
+      background: 'rgba(30, 41, 59, 0.7)',
+      borderRadius: '20px',
+      padding: '1.5rem',
+      marginBottom: '2.5rem',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
     },
     statItem: {
       textAlign: 'center',
     },
     statNumber: {
       fontSize: '1.5rem',
-      fontWeight: 'bold',
-      color: '#007bff',
+      fontWeight: '600',
+      color: '#38bdf8',
     },
     statLabel: {
       fontSize: '0.9rem',
-      color: '#555',
+      color: '#94a3b8',
+      marginTop: '0.3rem',
     },
     loadingOverlay: {
       position: 'absolute',
@@ -266,21 +334,35 @@ const Location = () => {
       left: 0,
       width: '100%',
       height: '100%',
-      background: 'rgba(255,255,255,0.8)',
+      background: 'rgba(15, 23, 42, 0.8)',
+      backdropFilter: 'blur(8px)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: '12px',
+      borderRadius: '20px',
       zIndex: 1000,
     },
+    loadingText: {
+      color: '#e2e8f0',
+      marginBottom: '1rem',
+      fontWeight: '500',
+    },
+    spinner: {
+      border: '3px solid rgba(56, 189, 248, 0.2)',
+      borderTop: '3px solid #38bdf8',
+      borderRadius: '50%',
+      width: '30px',
+      height: '30px',
+      animation: 'spin 1s linear infinite',
+    }
   };
-
+  
   return (
     <div style={styles.page}>
       <Navbar />
       <section style={styles.section}>
-        <h2 style={styles.title}>📍 Find Us</h2>
-        <p style={styles.subtitle}>We're in the Kenya Highlands — here's how to get to Settlers Inn.</p>
+        <h2 style={styles.title}>Find Us</h2>
+        <p style={styles.subtitle}>We're located in the Kenya Highlands. Here's how to get to Settlers Inn.</p>
         
         <div style={styles.statsContainer}>
           <div style={styles.statItem}>
@@ -288,7 +370,7 @@ const Location = () => {
             <div style={styles.statLabel}>Visitors Today</div>
           </div>
           <div style={styles.statItem}>
-            <div style={styles.statNumber}>4.9★</div>
+            <div style={styles.statNumber}>4.8★</div>
             <div style={styles.statLabel}>Location Rating</div>
           </div>
           <div style={styles.statItem}>
@@ -302,16 +384,8 @@ const Location = () => {
           {isLocating && (
             <div style={styles.loadingOverlay}>
               <div>
-                <div style={{ textAlign: 'center', marginBottom: '1rem' }}>Finding your location...</div>
-                <div style={{
-                  border: '4px solid #f3f3f3',
-                  borderTop: '4px solid #007bff',
-                  borderRadius: '50%',
-                  width: '30px',
-                  height: '30px',
-                  animation: 'spin 1s linear infinite',
-                  margin: '0 auto'
-                }}></div>
+                <div style={styles.loadingText}>Finding your location...</div>
+                <div style={styles.spinner}></div>
               </div>
             </div>
           )}
@@ -322,14 +396,17 @@ const Location = () => {
             onClick={locateMe} 
             style={{
               ...styles.button,
-              background: isLocating ? '#555' : '#007bff',
+              background: isLocating ? 'rgba(100, 116, 139, 0.7)' : 'rgba(56, 189, 248, 0.9)',
               cursor: isLocating ? 'not-allowed' : 'pointer',
             }}
             disabled={isLocating}
           >
             {isLocating ? 'Locating...' : '📍 Locate Me'}
           </button>
-          <button onClick={flyToSettlers} style={{ ...styles.button, backgroundColor: '#28a745' }}>
+          <button 
+            onClick={flyToSettlers} 
+            style={{ ...styles.button, backgroundColor: 'rgba(34, 197, 94, 0.9)' }}
+          >
             🚀 Fly to Settlers
           </button>
           <button 
@@ -338,7 +415,10 @@ const Location = () => {
           >
             {mapExpanded ? '🗺️ Collapse Map' : '🔍 Expand Map'}
           </button>
-          <button onClick={openGoogleMaps} style={{ ...styles.button, backgroundColor: '#fbbc05', color: '#000' }}>
+          <button 
+            onClick={openGoogleMaps} 
+            style={{ ...styles.button, backgroundColor: 'rgba(251, 191, 36, 0.9)', color: '#0f172a' }}
+          >
             🌍 Google Maps
           </button>
         </div>
@@ -359,7 +439,9 @@ const Location = () => {
               <div key={index} style={styles.nearbyItem}>
                 <div>
                   <div style={styles.nearbyName}>{place.name}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#777' }}>{place.type}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.3rem' }}>
+                    {place.type}
+                  </div>
                 </div>
                 <div style={styles.nearbyDistance}>{place.distance}</div>
               </div>
@@ -369,10 +451,22 @@ const Location = () => {
       </section>
       <Footer />
       <style>{`
-        .leaflet-container { width: 100%; height: 100%; }
-        .settlers-marker { font-size: 1.5rem; }
-        .user-marker { font-size: 1.4rem; }
-        .leaflet-routing-container { display: none; }
+        .leaflet-container { 
+          width: 100%; 
+          height: 100%; 
+          border-radius: 20px;
+        }
+        .settlers-marker { 
+          font-size: 1.5rem; 
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        .user-marker { 
+          font-size: 1.4rem; 
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        .leaflet-routing-container { 
+          display: none; 
+        }
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }

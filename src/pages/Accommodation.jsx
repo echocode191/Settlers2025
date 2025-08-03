@@ -24,7 +24,7 @@ const MpesaPayment = ({ amount = '', item = 'booking' }) => {
   
   return (
     <div style={{ marginTop: '1rem', position: 'relative' }}>
-      <h4 style={{ marginBottom: '0.5rem', color: '#9fef00' }}>Confirm M-PESA Payment</h4>
+      <h4 style={{ marginBottom: '0.5rem', color: '#38bdf8' }}>Confirm M-PESA Payment</h4>
       <input
         type="text"
         placeholder="Phone Number (07...)"
@@ -56,11 +56,13 @@ const MpesaPayment = ({ amount = '', item = 'booking' }) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          background: 'rgba(0,0,0,0.8)',
-          color: 'white',
-          padding: '10px 20px',
-          borderRadius: '8px',
+          background: 'rgba(15, 23, 42, 0.9)',
+          color: '#e2e8f0',
+          padding: '12px 20px',
+          borderRadius: '10px',
           zIndex: 10,
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
         }}>
           Processing payment...
         </div>
@@ -88,67 +90,82 @@ const Accommodation = () => {
     setLastUpdated(`Last updated: ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`);
     
     // Animation styles
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes popIn {
-        from {opacity: 0; transform: scale(0.95);}
-        to {opacity: 1; transform: scale(1);}
-      }
-      @keyframes shimmer {
-        0% { background-position: -200px 0; }
-        100% { background-position: calc(200px + 100%) 0; }
-      }
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-      }
-      .react-datepicker {
-        background-color: #161b22;
-        border: 1px solid #30363d;
-        color: white;
-      }
-      .react-datepicker__day--selected,
-      .react-datepicker__day--keyboard-selected {
-        background-color: #9fef00 !important;
-        color: #000 !important;
-      }
-      .new-badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background: #ff3e3e;
-        color: white;
-        font-size: 0.7rem;
-        padding: 2px 6px;
-        border-radius: 10px;
-        animation: pulse 2s infinite;
-      }
-      .special-banner {
-        background: linear-gradient(90deg, #9fef00, #58a6ff);
-        color: #0d1117;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 1rem;
-        animation: shimmer 2s infinite;
-        background-size: 200px 100%;
-      }
-      @media (max-width: 600px) {
-        .media-scroll {
-          gap: 0.5rem !important;
+    if (typeof document !== 'undefined') {
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes fadeInUp {
+          from {opacity: 0; transform: translateY(20px);}
+          to {opacity: 1; transform: translateY(0);}
         }
-        .media-scroll > div {
-          width: 160px !important;
+        @keyframes shimmer {
+          0% { background-position: -200px 0; }
+          100% { background-position: calc(200px + 100%) 0; }
         }
-        .room-card {
-          padding: 1rem !important;
+        @keyframes subtlePulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
         }
-      }
-    `;
-    document.head.appendChild(style);
+        .react-datepicker {
+          background-color: rgba(30, 41, 59, 0.9);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #e2e8f0;
+          backdrop-filter: blur(10px);
+          border-radius: 12px;
+        }
+        .react-datepicker__header {
+          background-color: rgba(30, 41, 59, 0.9);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .react-datepicker__day--selected,
+        .react-datepicker__day--keyboard-selected {
+          background-color: #38bdf8 !important;
+          color: #0f172a !important;
+          border-radius: 50%;
+        }
+        .react-datepicker__day:hover {
+          background-color: rgba(56, 189, 248, 0.3);
+          border-radius: 50%;
+        }
+        .new-badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: rgba(239, 68, 68, 0.9);
+          color: white;
+          font-size: 0.7rem;
+          padding: 2px 6px;
+          border-radius: 10px;
+          animation: subtlePulse 2s infinite;
+          backdrop-filter: blur(4px);
+        }
+        .special-banner {
+          background: linear-gradient(90deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.9));
+          color: #0f172a;
+          padding: 10px 18px;
+          border-radius: 20px;
+          font-weight: 600;
+          text-align: center;
+          margin-bottom: 1.5rem;
+          animation: shimmer 3s infinite;
+          background-size: 200px 100%;
+          backdrop-filter: blur(4px);
+        }
+        @media (max-width: 600px) {
+          .media-scroll {
+            gap: 0.8rem !important;
+          }
+          .media-scroll > div {
+            width: 180px !important;
+          }
+          .room-card {
+            padding: 1.2rem !important;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
   }, []);
-
+  
   const mediaItems = [
     '/assets/room1.jpg',
     '/assets/room2.jpg',
@@ -160,7 +177,7 @@ const Accommodation = () => {
     '/assets/Room 40sec.mp4',
     '/assets/bar under construction.mp4',
   ];
-
+  
   const RoomCard = ({ type }) => {
     const [guests, setGuests] = useState(1);
     const [breakfast, setBreakfast] = useState(false);
@@ -216,7 +233,7 @@ const Accommodation = () => {
         style={{
           ...roomCardStyle,
           transform: isHovered ? 'translateY(-5px)' : 'none',
-          boxShadow: isHovered ? '0 10px 25px rgba(0,0,0,0.2)' : '0 4px 15px rgba(0,0,0,0.1)',
+          boxShadow: isHovered ? '0 12px 30px rgba(0, 0, 0, 0.2)' : '0 8px 25px rgba(0, 0, 0, 0.15)',
           transition: 'all 0.3s ease',
         }}
         onMouseEnter={() => setIsHovered(true)}
@@ -227,11 +244,21 @@ const Accommodation = () => {
         <h3 style={titleStyle}>{title}</h3>
         {type !== 'conference' ? (
           <>
-            <label>Check-In Date:</label>
-            <DatePicker selected={checkIn} onChange={setCheckIn} />
-            <label>Check-Out Date:</label>
-            <DatePicker selected={checkOut} onChange={setCheckOut} />
-            <label>Guests:</label>
+            <label style={labelStyle}>Check-In Date:</label>
+            <DatePicker 
+              selected={checkIn} 
+              onChange={setCheckIn}
+              className="date-picker"
+              style={datePickerStyle}
+            />
+            <label style={labelStyle}>Check-Out Date:</label>
+            <DatePicker 
+              selected={checkOut} 
+              onChange={setCheckOut}
+              className="date-picker"
+              style={datePickerStyle}
+            />
+            <label style={labelStyle}>Guests:</label>
             <input
               type="number"
               min="1"
@@ -239,20 +266,32 @@ const Accommodation = () => {
               onChange={(e) => setGuests(parseInt(e.target.value))}
               style={inputStyle}
             />
-            <label style={{ display: 'block', marginTop: '0.5rem' }}>
+            <label style={{ 
+              display: 'block', 
+              marginTop: '0.8rem',
+              color: '#cbd5e1',
+              fontSize: '0.9rem',
+              cursor: 'pointer'
+            }}>
               <input
                 type="checkbox"
                 checked={breakfast}
                 onChange={(e) => setBreakfast(e.target.checked)}
+                style={{ marginRight: '0.5rem' }}
               />{' '}
               Add Breakfast (KES 500/guest)
             </label>
           </>
         ) : (
           <>
-            <label>Booking Date:</label>
-            <DatePicker selected={checkIn} onChange={setCheckIn} />
-            <label>Session:</label>
+            <label style={labelStyle}>Booking Date:</label>
+            <DatePicker 
+              selected={checkIn} 
+              onChange={setCheckIn}
+              className="date-picker"
+              style={datePickerStyle}
+            />
+            <label style={labelStyle}>Session:</label>
             <select
               value={sessionType}
               onChange={(e) => setSessionType(e.target.value)}
@@ -263,7 +302,12 @@ const Accommodation = () => {
             </select>
           </>
         )}
-        <p style={{ color: '#9fef00', fontWeight: 'bold' }}>Total: KES {total}</p>
+        <p style={{ 
+          color: '#38bdf8', 
+          fontWeight: '600',
+          margin: '1rem 0',
+          fontSize: '1.1rem'
+        }}>Total: KES {total}</p>
         <a
           href={`https://wa.me/254748778388?text=${message}`}
           target="_blank"
@@ -276,16 +320,45 @@ const Accommodation = () => {
       </div>
     );
   };
-
+  
   return (
-    <div style={{ background: '#0d1117', color: '#c9d1d9', fontFamily: 'Fira Code, monospace' }}>
+    <div style={{ 
+      background: 'linear-gradient(135deg, #0f172a, #1e293b)', 
+      color: '#e2e8f0', 
+      fontFamily: 'Inter, system-ui, sans-serif',
+      minHeight: '100vh'
+    }}>
       <Navbar />
-      <section style={{ maxWidth: '900px', margin: 'auto', padding: '2rem 1rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h2 style={{ color: '#9fef00', fontSize: '2rem', animation: 'popIn 0.6s ease-in-out' }}>
+      <section style={{ 
+        maxWidth: '1000px', 
+        margin: 'auto', 
+        padding: '3rem 1.5rem',
+        animation: 'fadeInUp 0.8s ease'
+      }}>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          marginBottom: '1.5rem',
+          flexWrap: 'wrap'
+        }}>
+          <h2 style={{ 
+            color: '#e2e8f0', 
+            fontSize: '2.2rem',
+            fontWeight: '600',
+            marginBottom: '0.5rem'
+          }}>
             🏨 Settlers Inn Booking
           </h2>
-          <div style={{ fontSize: '0.8rem', color: '#8b949e' }}>
+          <div style={{ 
+            fontSize: '0.85rem', 
+            color: '#94a3b8',
+            background: 'rgba(30, 41, 59, 0.7)',
+            padding: '6px 12px',
+            borderRadius: '20px',
+            backdropFilter: 'blur(4px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
+          }}>
             {lastUpdated}
           </div>
         </div>
@@ -294,23 +367,30 @@ const Accommodation = () => {
           🌟 {dailySpecial} 🌟
         </div>
         
-        <p style={{ marginBottom: '1rem' }}>
+        <p style={{ 
+          marginBottom: '1.5rem', 
+          lineHeight: '1.6',
+          color: '#cbd5e1',
+          fontSize: '1rem'
+        }}>
           You can book with M-PESA or choose to pay on arrival.
         </p>
         
         <div style={{
-          background: '#0d1f17',
-          border: '1px solid #1f5f3f',
-          padding: '1.2rem',
-          borderRadius: '10px',
-          marginBottom: '2rem',
-          color: '#9fffa2',
+          background: 'rgba(30, 41, 59, 0.7)',
+          border: '1px solid rgba(56, 189, 248, 0.3)',
+          padding: '1.5rem',
+          borderRadius: '16px',
+          marginBottom: '2.5rem',
+          color: '#e2e8f0',
           fontSize: '0.95rem',
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.15)'
         }}>
-          <strong>📱 How to Pay via M-PESA</strong><br />
-          1. Go to <strong>Lipa na M-PESA</strong> → Paybill<br />
-          2. Enter Paybill Number: <strong>522533</strong><br />
-          3. Account Number: <strong>5936175</strong><br />
+          <strong style={{ color: '#38bdf8', fontSize: '1.1rem' }}>📱 How to Pay via M-PESA</strong><br />
+          1. Go to <strong style={{ color: '#38bdf8' }}>Lipa na M-PESA</strong> → Paybill<br />
+          2. Enter Paybill Number: <strong style={{ color: '#38bdf8' }}>522533</strong><br />
+          3. Account Number: <strong style={{ color: '#38bdf8' }}>5936175</strong><br />
           4. Enter Amount<br />
           5. Enter your PIN and confirm<br /><br />
           ✅ Then enter the M-PESA Code below to confirm, or skip to pay later.
@@ -319,18 +399,25 @@ const Accommodation = () => {
         <div className="media-scroll" style={{
           display: 'flex',
           overflowX: 'auto',
-          gap: '1rem',
-          paddingBottom: '1rem',
-          scrollSnapType: 'x mandatory'
+          gap: '1.2rem',
+          paddingBottom: '1.5rem',
+          scrollSnapType: 'x mandatory',
+          marginBottom: '2.5rem',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(56, 189, 248, 0.3) transparent'
         }}>
           {mediaItems.map((src, i) => {
             const isVideo = src.endsWith('.mp4');
             return (
               <div key={i} style={{ 
                 flex: '0 0 auto', 
-                width: '220px', 
+                width: '240px', 
                 scrollSnapAlign: 'start',
-                position: 'relative'
+                position: 'relative',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
               }}>
                 {isVideo ? (
                   <video src={src} style={imageStyle} autoPlay loop muted playsInline />
@@ -340,13 +427,16 @@ const Accommodation = () => {
                 {i === 0 && (
                   <div style={{
                     position: 'absolute',
-                    top: '5px',
-                    left: '5px',
-                    background: 'rgba(0,0,0,0.7)',
-                    color: 'white',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    fontSize: '0.7rem',
+                    top: '10px',
+                    left: '10px',
+                    background: 'rgba(30, 41, 59, 0.8)',
+                    color: '#38bdf8',
+                    padding: '4px 10px',
+                    borderRadius: '6px',
+                    fontSize: '0.75rem',
+                    fontWeight: '600',
+                    backdropFilter: 'blur(4px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
                   }}>
                     NEW
                   </div>
@@ -358,8 +448,8 @@ const Accommodation = () => {
         
         <div style={{
           display: 'grid',
-          gap: '2rem',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
+          gap: '2.5rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))'
         }}>
           <RoomCard type="standard" />
           <RoomCard type="family" />
@@ -373,44 +463,85 @@ const Accommodation = () => {
 
 // 🔧 Styles
 const inputStyle = {
-  padding: '0.4rem',
+  padding: '0.7rem 1rem',
   width: '100%',
-  marginBottom: '0.5rem',
-  borderRadius: '6px',
-  border: '1px solid #30363d',
-  background: '#0d1117',
-  color: '#fff',
+  marginBottom: '1rem',
+  borderRadius: '10px',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  background: 'rgba(30, 41, 59, 0.7)',
+  color: '#e2e8f0',
+  fontSize: '0.95rem',
+  backdropFilter: 'blur(4px)',
+  transition: 'all 0.2s ease',
+  outline: 'none',
 };
+
+const datePickerStyle = {
+  padding: '0.7rem 1rem',
+  width: '100%',
+  marginBottom: '1rem',
+  borderRadius: '10px',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  background: 'rgba(30, 41, 59, 0.7)',
+  color: '#e2e8f0',
+  fontSize: '0.95rem',
+  backdropFilter: 'blur(4px)',
+  transition: 'all 0.2s ease',
+  outline: 'none',
+};
+
+const labelStyle = {
+  display: 'block',
+  marginBottom: '0.5rem',
+  color: '#cbd5e1',
+  fontSize: '0.9rem',
+  fontWeight: '500',
+};
+
 const buttonStyle = {
-  background: '#25d366',
-  color: '#fff',
-  padding: '0.6rem 1.2rem',
-  borderRadius: '6px',
+  background: 'rgba(56, 189, 248, 0.9)',
+  color: '#0f172a',
+  padding: '0.8rem 1.5rem',
+  borderRadius: '10px',
   border: 'none',
   cursor: 'pointer',
-  fontWeight: 'bold',
+  fontWeight: '600',
   textDecoration: 'none',
   display: 'inline-block',
-  marginTop: '0.5rem',
-  transition: 'all 0.2s ease',
+  marginTop: '0.8rem',
+  transition: 'all 0.3s ease',
+  backdropFilter: 'blur(4px)',
+  boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
+  textAlign: 'center',
+  width: '100%',
+  fontSize: '0.95rem'
 };
+
 const roomCardStyle = {
-  background: '#161b22',
-  border: '1px solid #30363d',
-  borderRadius: '12px',
-  padding: '1.5rem',
+  background: 'rgba(30, 41, 59, 0.7)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  borderRadius: '16px',
+  padding: '1.8rem',
   textAlign: 'left',
   position: 'relative',
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
 };
+
 const imageStyle = {
   width: '100%',
-  height: '160px',
+  height: '180px',
   objectFit: 'cover',
-  borderRadius: '8px',
+  borderRadius: '12px',
+  marginBottom: '1.2rem',
+  transition: 'transform 0.3s ease'
 };
+
 const titleStyle = {
-  marginBottom: '1rem',
-  color: '#58a6ff',
+  marginBottom: '1.2rem',
+  color: '#e2e8f0',
+  fontSize: '1.4rem',
+  fontWeight: '600'
 };
 
 export default Accommodation;

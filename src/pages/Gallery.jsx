@@ -1,324 +1,464 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { db } from "../firebase";
+import {
+  collection,
+  query,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  increment,
+} from "firebase/firestore";
+import useHotel from "../hooks/useHotel";
+import StockSummary from "../components/stockSummary";
+import StockTakeForm from "../components/StockTakeForm";
+import StockTakeTable from "../components/StockTakeTable";
+import { generatePDF, generateCSV } from "../utils/pdfUtils";
 
-const Gallery = () => {
-  const [popupMedia, setPopupMedia] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [newMediaCount, setNewMediaCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+// Custom hook for fetching categories
+const useCategories = (hotelId) => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    const handleEsc = (e) => e.key === 'Escape' && setPopupMedia(null);
-    window.addEventListener('keydown', handleEsc);
-    setIsMobile(window.innerWidth < 768);
+    if (!hotelId) {
+      setLoading(false);
+      return;
+    }
     
-    // Handle window resize
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+    const q = query(collection(db, `hotels/${hotelId}/categories`));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const cats = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setCategories(cats);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching categories:", error);
+      setLoading(false);
+    });
+    
+    return unsubscribe;
+  }, [hotelId]);
+  
+  return { categories, loading };
+};
+
+// Custom hook for fetching stock items
+const useStockItems = (hotelId) => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    if (!hotelId) {
+      setLoading(false);
+      return;
+    }
+    
+    const q = query(collection(db, `hotels/${hotelId}/stockItems`));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setItems(data);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching stock items:", error);
+      setLoading(false);
+    });
+    
+    return unsubscribe;
+  }, [hotelId]);
+  
+  return { items, loading };
+};
+
+const StocktakePage = () => {
+  const { hotelId } = useHotel();
+  const { categories, loading: categoriesLoading } = useCategories(hotelId);
+  const { items, loading: itemsLoading } = useStockItems(hotelId);
+  const [editingItem, setEditingItem] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [feedback, setFeedback] = useState({ message: '', type: '' });
+  
+  // Memoized sorted categories
+  const sortedCategories = useMemo(() => {
+    return [...categories].sort((a, b) => a.name.localeCompare(b.name));
+  }, [categories]);
+  
+  // Memoized grouped items
+  const groupedItems = useMemo(() => {
+    return items.reduce((acc, item) => {
+      const cat = item.category || "Uncategorized";
+      acc[cat] = acc[cat] || [];
+      acc[cat].push(item);
+      return acc;
+    }, {});
+  }, [items]);
+  
+  // Memoized totals
+  const { totalCost, totalRevenue, totalProfit } = useMemo(() => {
+    let cost = 0, revenue = 0;
+    items.forEach(({ quantity, unitPrice, sold, sellingPrice }) => {
+      cost += (quantity || 0) * (unitPrice || 0);
+      revenue += (sold || 0) * (sellingPrice || 0);
+    });
+    return {
+      totalCost: cost,
+      totalRevenue: revenue,
+      totalProfit: revenue - cost
     };
-    window.addEventListener('resize', handleResize);
-    
-    // Simulate new content being added
-    const interval = setInterval(() => {
-      setNewMediaCount(prev => prev + 1);
-    }, 30000); // Every 30 seconds
-    
-    // Add CSS animations to document head
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    // Simulate loading
-    setTimeout(() => setIsLoading(false), 1500);
-    
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-      window.removeEventListener('resize', handleResize);
-      clearInterval(interval);
-    };
+  }, [items]);
+  
+  // Show feedback message
+  const showFeedback = useCallback((message, type = 'success') => {
+    setFeedback({ message, type });
+    setTimeout(() => setFeedback({ message: '', type: '' }), 3000);
   }, []);
   
-  const media = [
-    { src: '/assets/bar under construction.mp4', type: 'video', isNew: true },
-    { src: '/assets/boiled egg.jpg', type: 'image' },
-    { src: '/assets/cake video.mp4', type: 'video' },
-    { src: '/assets/cake video2.mp4', type: 'video' },
-    { src: '/assets/cake1.jpg', type: 'image' },
-    { src: '/assets/chapati 1.jpg', type: 'image' },
-    { src: '/assets/chapo x egg pancakes.jpg', type: 'image' },
-    { src: '/assets/chapo x ndazi x chips x sausage.jpg', type: 'image' },
-    { src: '/assets/chillin field 2.jpg', type: 'image' },
-    { src: '/assets/chillin field.jpg', type: 'image' },
-    { src: '/assets/chips kuku 1.jpg', type: 'image' },
-    { src: '/assets/chips kuku2.jpg', type: 'image' },
-    { src: '/assets/chips kuku3.jpg', type: 'image' },
-    { src: '/assets/chips sausage 1.jpg', type: 'image' },
-    { src: '/assets/chips sausage 2.jpg', type: 'image' },
-    { src: '/assets/chips.jpg', type: 'image' },
-    { src: '/assets/cofee 1.jpg', type: 'image' },
-    { src: '/assets/cofee.jpg', type: 'image' },
-    { src: '/assets/cofee2.jpg', type: 'image' },
-    { src: '/assets/Compound Overview1.jpg', type: 'image' },
-    { src: '/assets/conference.jpg', type: 'image' },
-    { src: '/assets/conference1.jpg', type: 'image' },
-    { src: '/assets/dining1.jpg', type: 'image' },
-    { src: '/assets/dining2.jpg', type: 'image' },
-    { src: '/assets/dining3.jpg', type: 'image' },
-    { src: '/assets/dining4.jpg', type: 'image' },
-    { src: '/assets/dining5.jpg', type: 'image' },
-    { src: '/assets/downstairs room.jpg', type: 'image' },
-    { src: '/assets/drown taken overview.jpg', type: 'image' },
-    { src: '/assets/egg pancake x chips.mp4', type: 'video' },
-    { src: '/assets/fanta.jpg', type: 'image' },
-    { src: '/assets/fish x chips.jpg', type: 'image' },
-    { src: '/assets/fish.jpg', type: 'image' },
-    { src: '/assets/greens vs fish.jpg', type: 'image' },
-    { src: '/assets/Holiday vibes for children.jpg', type: 'image' },
-    { src: '/assets/Kachumbari.jpg', type: 'image' },
-    { src: '/assets/kitch.jpg', type: 'image' },
-    { src: '/assets/kitch1.jpg', type: 'image' },
-    { src: '/assets/kitch2.jpg', type: 'image' },
-    { src: '/assets/kitch3.jpg', type: 'image' },
-    { src: '/assets/Master meal.jpg', type: 'image' },
-    { src: '/assets/master plates of chips kuku.jpg', type: 'image' },
-    { src: '/assets/Meal 1.jpg', type: 'image' },
-    { src: '/assets/meat x greens x ugali.mp4', type: 'video' },
-    { src: '/assets/night View.jpg', type: 'image' },
-    { src: '/assets/Onions.jpg', type: 'image' },
-    { src: '/assets/outdoor1.jpg', type: 'image' },
-    { src: '/assets/outdoor2.jpg', type: 'image' },
-    { src: '/assets/outside1.jpg', type: 'image' },
-    { src: '/assets/overview2.jpg', type: 'image' },
-    { src: '/assets/overview3.jpg', type: 'image' },
-    { src: '/assets/overview4.jpg', type: 'image' },
-    { src: '/assets/pure egg pancake.jpg', type: 'image' },
-    { src: '/assets/Room 40sec.mp4', type: 'video' },
-    { src: '/assets/room1.jpg', type: 'image' },
-    { src: '/assets/room2.jpg', type: 'image' },
-    { src: '/assets/senate.mp4', type: 'video' },
-    { src: '/assets/settlers bookshop.jpg', type: 'image' },
-    { src: '/assets/settlers overview 2.jpg', type: 'image' },
-    { src: '/assets/settlers view from highway.jpg', type: 'image' },
-    { src: '/assets/settlers.mp4', type: 'video' },
-    { src: '/assets/smokie x chips x chapo.jpg', type: 'image' },
-    { src: '/assets/smokie1.jpg', type: 'image' },
-    { src: '/assets/sofa 3 main dh.jpg', type: 'image' },
-    { src: '/assets/soft chillin soccer.jpg', type: 'image' },
-    { src: '/assets/Ugali Nyama stew.jpg', type: 'image' },
-    { src: '/assets/ugali x greens x meat.jpg', type: 'image' },
-    { src: '/assets/upstairs env view.jpg', type: 'image' },
-    { src: '/assets/upstairs env view1.jpg', type: 'image' },
-    { src: '/assets/upstairs outview2.jpg', type: 'image' }
-  ];
-  
-  const styles = {
-    page: {
-      fontFamily: "'Fira Code', monospace",
-      backgroundColor: '#0d1117',
-      color: '#c9d1d9',
-      minHeight: '100vh',
-      paddingBottom: '2rem',
-    },
-    section: {
-      maxWidth: '1100px',
-      margin: 'auto',
-      padding: '2rem 1rem',
-    },
-    title: {
-      textAlign: 'center',
-      color: '#9fef00',
-      fontSize: '2rem',
-      marginBottom: '0.5rem',
-    },
-    intro: {
-      textAlign: 'center',
-      color: '#8b949e',
-      marginBottom: '2rem',
-      fontSize: '1rem',
-    },
-    grid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-      gap: '1rem',
-    },
-    item: {
-      width: '100%',
-      height: 'auto',
-      maxHeight: '160px',
-      objectFit: 'cover',
-      borderRadius: '10px',
-      border: '1px solid #30363d',
-      boxShadow: '0 4px 14px rgba(0, 255, 120, 0.08)',
-      transition: 'transform 0.3s ease',
-      cursor: 'pointer',
-    },
-    overlay: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      backgroundColor: 'rgba(0, 0, 0, 0.9)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000,
-    },
-    popupMedia: {
-      maxWidth: '90vw',
-      maxHeight: '90vh',
-      borderRadius: '12px',
-      border: '2px solid #9fef00',
-      boxShadow: '0 0 30px rgba(159, 239, 0, 0.3)',
-    },
-    newBadge: {
-      position: 'absolute',
-      top: '5px',
-      right: '5px',
-      background: '#ff3e3e',
-      color: 'white',
-      fontSize: '0.7rem',
-      padding: '2px 6px',
-      borderRadius: '10px',
-      zIndex: 2,
-    },
-    loading: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '50vh',
-      fontSize: '1.2rem',
-      color: '#9fef00',
-    },
-    newContentBanner: {
-      background: 'linear-gradient(90deg, #9fef00, #58a6ff)',
-      color: '#0d1117',
-      padding: '8px 16px',
-      borderRadius: '20px',
-      fontWeight: 'bold',
-      textAlign: 'center',
-      margin: '0 auto 1.5rem',
-      maxWidth: '300px',
-      animation: 'pulse 2s infinite',
-    },
-    mediaContainer: {
-      position: 'relative',
-    },
-    closePopup: {
-      position: 'absolute',
-      top: '20px',
-      right: '20px',
-      background: 'rgba(0, 0, 0, 0.7)',
-      color: 'white',
-      border: 'none',
-      borderRadius: '50%',
-      width: '40px',
-      height: '40px',
-      fontSize: '20px',
-      cursor: 'pointer',
-      zIndex: 1001,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+  // Add new item
+  const handleAddItem = useCallback(async (newItem) => {
+    if (!hotelId) return;
+    
+    try {
+      await addDoc(collection(db, `hotels/${hotelId}/stockItems`), newItem);
+      setShowForm(false);
+      showFeedback('Item added successfully!');
+    } catch (error) {
+      console.error("Error adding item:", error);
+      showFeedback('Failed to add item', 'error');
     }
-  };
+  }, [hotelId, showFeedback]);
   
-  if (isLoading) {
+  // Bulk restock
+  const handleBulkRestock = useCallback(async (itemId, addedQuantity) => {
+    if (!hotelId || !itemId || !addedQuantity) return;
+    
+    try {
+      const itemRef = doc(db, `hotels/${hotelId}/stockItems`, itemId);
+      await updateDoc(itemRef, {
+        quantity: increment(Number(addedQuantity)),
+      });
+      showFeedback('Stock updated successfully!');
+    } catch (error) {
+      console.error("Error updating stock:", error);
+      showFeedback('Failed to update stock', 'error');
+    }
+  }, [hotelId, showFeedback]);
+  
+  // Update item
+  const handleUpdateItem = useCallback(async (updatedItem) => {
+    if (!hotelId || !updatedItem.id) return;
+    
+    try {
+      const itemRef = doc(db, `hotels/${hotelId}/stockItems`, updatedItem.id);
+      await updateDoc(itemRef, updatedItem);
+      setEditingItem(null);
+      setShowForm(false);
+      showFeedback('Item updated successfully!');
+    } catch (error) {
+      console.error("Error updating item:", error);
+      showFeedback('Failed to update item', 'error');
+    }
+  }, [hotelId, showFeedback]);
+  
+  // Delete item
+  const handleDeleteItem = useCallback(async (item) => {
+    if (!hotelId || !item.id) return;
+    
+    try {
+      const itemRef = doc(db, `hotels/${hotelId}/stockItems`, item.id);
+      await deleteDoc(itemRef);
+      if (editingItem?.id === item.id) {
+        setEditingItem(null);
+        setShowForm(false);
+      }
+      showFeedback('Item deleted successfully!');
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      showFeedback('Failed to delete item', 'error');
+    }
+  }, [hotelId, editingItem, showFeedback]);
+  
+  // Add item inline
+  const handleAddItemInline = useCallback(async (newItem) => {
+    await handleAddItem(newItem);
+  }, [handleAddItem]);
+  
+  // Form submission handler
+  const onSubmit = useCallback(async (itemData, isBulk = false) => {
+    if (editingItem && !isBulk) {
+      await handleUpdateItem({ ...editingItem, ...itemData });
+    } else if (isBulk && editingItem) {
+      const addedQuantity = parseInt(itemData.quantity, 10);
+      await handleBulkRestock(editingItem.id, addedQuantity);
+      clearEdit();
+    } else {
+      await handleAddItem(itemData);
+    }
+  }, [editingItem, handleUpdateItem, handleBulkRestock, handleAddItem]);
+  
+  // Clear editing state
+  const clearEdit = useCallback(() => {
+    setEditingItem(null);
+    setShowForm(false);
+  }, []);
+  
+  // Export to PDF
+  const handleExportPDF = useCallback(() => {
+    const columns = ["Category", "Item", "Qty", "Remaining", "Supplier", "Unit Price", "Selling Price", "Sold"];
+    const data = [];
+    
+    sortedCategories.forEach((cat) => {
+      data.push([cat.name, "", "", "", "", "", "", "", ""]);
+      (groupedItems[cat.name] || []).forEach((item) => {
+        const rem = (item.quantity || 0) - (item.sold || 0);
+        data.push([
+          "",
+          item.itemName || item.name || "",
+          item.quantity || 0,
+          rem,
+          item.supplier || "",
+          `KES ${(item.unitPrice || 0).toLocaleString()}`,
+          `KES ${(item.sellingPrice || 0).toLocaleString()}`,
+          item.sold || 0,
+        ]);
+      });
+    });
+    
+    data.push(["", "", "", "", "", "", "", "", ""]);
+    data.push([
+      "Totals", 
+      "", 
+      "", 
+      "", 
+      "", 
+      `KES ${totalCost.toLocaleString()}`, 
+      `KES ${totalRevenue.toLocaleString()}`, 
+      ""
+    ]);
+    data.push([
+      "Profit", 
+      "", 
+      "", 
+      "", 
+      "", 
+      "", 
+      "", 
+      `KES ${totalProfit.toLocaleString()}`
+    ]);
+    
+    generatePDF("Stock Report", columns, data, "stock_report.pdf");
+    showFeedback('PDF exported successfully!');
+  }, [sortedCategories, groupedItems, totalCost, totalRevenue, totalProfit, showFeedback]);
+  
+  // Export to CSV
+  const handleExportCSV = useCallback(() => {
+    const csvData = [];
+    
+    sortedCategories.forEach((cat) => {
+      csvData.push([cat.name]);
+      (groupedItems[cat.name] || []).forEach((item) => {
+        const rem = (item.quantity || 0) - (item.sold || 0);
+        csvData.push([
+          item.itemName || item.name || "",
+          item.quantity || 0,
+          rem,
+          item.supplier || "",
+          item.unitPrice || 0,
+          item.sellingPrice || 0,
+          item.sold || 0,
+        ]);
+      });
+    });
+    
+    csvData.push(["Totals", "", "", "", "", totalCost, totalRevenue, ""]);
+    csvData.push(["", "", "", "", "", "", "", "Profit", totalProfit]);
+    
+    generateCSV(csvData, "stock_report.csv");
+    showFeedback('CSV exported successfully!');
+  }, [sortedCategories, groupedItems, totalCost, totalRevenue, totalProfit, showFeedback]);
+  
+  // Toggle form visibility
+  const toggleForm = useCallback(() => {
+    setShowForm(prev => !prev);
+    if (editingItem) {
+      setEditingItem(null);
+    }
+  }, [editingItem]);
+  
+  // Edit item
+  const handleEditItem = useCallback((item) => {
+    setEditingItem(item);
+    setShowForm(true);
+  }, []);
+  
+  // Loading state
+  if (categoriesLoading || itemsLoading) {
     return (
-      <div style={styles.page}>
-        <Navbar />
-        <div style={styles.loading}>
-          Loading gallery...
+      <div style={styles.container}>
+        <div style={styles.loadingContainer}>
+          <div style={styles.loadingSpinner}></div>
+          <p>Loading stock data...</p>
         </div>
-        <Footer />
       </div>
     );
   }
   
-  const handlePopupClick = (e) => {
-    // Only close if clicking directly on the overlay, not on the media
-    if (e.target === e.currentTarget) {
-      setPopupMedia(null);
-    }
-  };
-  
   return (
-    <div style={styles.page}>
-      <Navbar />
-      <section style={styles.section}>
-        <h2 style={styles.title}>📸 Settlers Inn Gallery</h2>
-        <p style={styles.intro}>From sizzling plates to soft fields — moments that matter most.</p>
-        
-        {newMediaCount > 0 && (
-          <div style={styles.newContentBanner}>
-            🆕 {newMediaCount} new moments added!
-          </div>
-        )}
-        
-        <div style={styles.grid}>
-          {media.map((item, index) => (
-            <div key={index} style={styles.mediaContainer}>
-              {item.isNew && <div style={styles.newBadge}>NEW</div>}
-              {item.type === 'image' ? (
-                <img
-                  src={item.src}
-                  alt={`Gallery ${index}`}
-                  style={styles.item}
-                  onClick={() => setPopupMedia(item)}
-                  loading="lazy"
-                />
-              ) : (
-                <video
-                  src={item.src}
-                  style={styles.item}
-                  onClick={() => setPopupMedia(item)}
-                  muted
-                  autoPlay={!isMobile && index === 0}
-                  loop
-                  preload="metadata"
-                  playsInline
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
+    <main style={styles.container}>
+      <StockSummary items={items} />
       
-      {popupMedia && (
-        <div style={styles.overlay} onClick={handlePopupClick}>
-          <button 
-            style={styles.closePopup}
-            onClick={() => setPopupMedia(null)}
-          >
-            ×
-          </button>
-          {popupMedia.type === 'image' ? (
-            <img 
-              src={popupMedia.src} 
-              alt="Popup" 
-              style={styles.popupMedia} 
-            />
-          ) : (
-            <video 
-              src={popupMedia.src} 
-              controls 
-              autoPlay 
-              style={styles.popupMedia}
-              playsInline
-            />
-          )}
+      {feedback.message && (
+        <div style={{
+          ...styles.feedback,
+          backgroundColor: feedback.type === 'error' ? '#fee' : '#f0fff4',
+          color: feedback.type === 'error' ? '#c53030' : '#38a169',
+        }}>
+          {feedback.message}
         </div>
       )}
       
-      <Footer />
-    </div>
+      {!editingItem && (
+        <button
+          onClick={toggleForm}
+          style={styles.addButton}
+          aria-label={showForm ? "Cancel add new item form" : "Open add new item form"}
+        >
+          {showForm ? "Cancel" : "➕ Add New Item"}
+        </button>
+      )}
+      
+      {(showForm || editingItem) && (
+        <div style={styles.formContainer}>
+          <StockTakeForm
+            categories={categories}
+            onSubmit={onSubmit}
+            editingItem={editingItem}
+            clearEdit={clearEdit}
+          />
+        </div>
+      )}
+      
+      {items.length > 0 && categories.length > 0 && (
+        <div style={styles.tableContainer}>
+          <div style={styles.exportButtons}>
+            <button onClick={handleExportCSV} style={styles.exportBtn}>
+              Export CSV
+            </button>
+            <button onClick={handleExportPDF} style={styles.exportBtn}>
+              Export PDF
+            </button>
+          </div>
+          <StockTakeTable
+            items={items}
+            categories={categories}
+            onEdit={handleEditItem}
+            onDelete={handleDeleteItem}
+            onAddItemInline={handleAddItemInline}
+            onBulkRestock={handleBulkRestock}
+          />
+        </div>
+      )}
+      
+      {items.length === 0 && (
+        <div style={styles.emptyState}>
+          <p>No stock items found. Click "Add New Item" to get started.</p>
+        </div>
+      )}
+    </main>
   );
 };
 
-export default Gallery;
+const styles = {
+  container: {
+    padding: "1rem",
+    boxSizing: "border-box",
+    width: "100%",
+    maxWidth: "100%",
+    overflow: "hidden",
+  },
+  loadingContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "300px",
+  },
+  loadingSpinner: {
+    width: "50px",
+    height: "50px",
+    border: "5px solid #f3f3f3",
+    borderTop: "5px solid #4f46e5",
+    borderRadius: "50%",
+    animation: "spin 1s linear infinite",
+    marginBottom: "1rem",
+  },
+  addButton: {
+    padding: "0.75rem 1.25rem",
+    margin: "1rem 0",
+    backgroundColor: "#4f46e5",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "600",
+    transition: "all 0.2s ease",
+    boxShadow: "0 4px 6px rgba(79, 70, 229, 0.1)",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  formContainer: {
+    marginBottom: "1.5rem",
+    borderRadius: "12px",
+    overflow: "hidden",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+  },
+  tableContainer: {
+    width: "100%",
+    borderRadius: "12px",
+    overflow: "hidden",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+  },
+  exportButtons: {
+    display: "flex",
+    gap: "1rem",
+    marginBottom: "1rem",
+    justifyContent: "flex-end",
+  },
+  exportBtn: {
+    padding: "0.6rem 1.2rem",
+    cursor: "pointer",
+    borderRadius: "8px",
+    border: "none",
+    fontWeight: "600",
+    backgroundColor: "#4299e1",
+    color: "#fff",
+    transition: "all 0.3s ease",
+    fontSize: "0.9rem",
+    boxShadow: "0 2px 5px rgba(66, 153, 225, 0.3)",
+  },
+  feedback: {
+    padding: "0.75rem 1rem",
+    borderRadius: "8px",
+    marginBottom: "1rem",
+    fontWeight: "500",
+    textAlign: "center",
+    transition: "all 0.3s ease",
+  },
+  emptyState: {
+    textAlign: "center",
+    padding: "2rem",
+    color: "#718096",
+    fontSize: "1.1rem",
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+  },
+  // Animation keyframes
+  '@keyframes spin': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(360deg)' },
+  }
+};
+
+export default StocktakePage;
