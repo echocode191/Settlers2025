@@ -9,37 +9,50 @@
     <meta name="keywords" content="Settlers Inn, Kipkelion hotel, Kenyan food, Highlands stay, chapati, ugali, tea, African cuisine, Kericho travel, restaurant Kipkelion, local dishes Kenya" />
     <meta name="author" content="EchoBiz (Kimutai Gibson)" />
     <link rel="canonical" href="https://settlersinn.co.ke/" />
-
+    
     <!-- ✅ Social Meta -->
     <meta property="og:title" content="Settlers Inn Kipkelion | Kenyan Cuisine & Cozy Hotel Stay" />
     <meta property="og:description" content="Authentic dishes, cozy rooms, and a legacy of taste in the heart of Kipkelion. Discover Settlers Inn." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://settlersinn.co.ke/" />
     <meta property="og:image" content="https://settlersinn.co.ke/assets/logo.png" />
-
+    <meta property="og:site_name" content="Settlers Inn" />
+    <meta property="og:locale" content="en_KE" />
+    
     <!-- ✅ Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Settlers Inn Kipkelion | Kenyan Cuisine & Cozy Hotel Stay" />
     <meta name="twitter:description" content="Settlers Inn — Dine, stay, and feel at home in Kipkelion, Kenya." />
     <meta name="twitter:image" content="https://settlersinn.co.ke/assets/logo.png" />
-
+    <meta name="twitter:site" content="@settlersinn" />
+    <meta name="twitter:creator" content="@echobiz_ke" />
+    
     <!-- ✅ PWA & Mobile Settings -->
     <meta name="theme-color" content="#0d1117" />
+    <meta name="msapplication-TileColor" content="#0d1117" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/assets/logo.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Settlers Inn" />
     <meta name="mobile-web-app-capable" content="yes" />
-
+    
     <!-- ✅ Favicons -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="/favicon-64.png" sizes="64x64" type="image/png" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-
+    <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    
     <!-- ✅ Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+    
+    <!-- ✅ Preload critical resources -->
+    <link rel="preload" href="/assets/logo.png" as="image" />
+    <link rel="preload" href="/assets/settlers.mp4" as="video" />
+    
     <!-- ✅ Schema.org JSON-LD -->
     <script type="application/ld+json">
     {
@@ -58,39 +71,147 @@
       "url": "https://settlersinn.co.ke/",
       "servesCuisine": ["Kenyan", "African", "Local"],
       "priceRange": "$$",
+      "openingHours": "Mo-Su 07:00-22:00",
       "sameAs": [
         "https://www.facebook.com/settlersinn1/",
         "https://instagram.com"
+      ],
+      "menu": "https://settlersinn.co.ke/menu",
+      "acceptsReservations": "True"
+    }
+    </script>
+    
+    <!-- ✅ Additional Schema for Hotel -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Hotel",
+      "name": "Settlers Inn",
+      "image": "https://settlersinn.co.ke/assets/logo.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kipkelion",
+        "addressRegion": "Kericho",
+        "addressCountry": "KE"
+      },
+      "description": "Cozy hotel rooms in the heart of Kipkelion, Kenya. Experience warm hospitality and comfortable stays.",
+      "telephone": "+254748778388",
+      "url": "https://settlersinn.co.ke/accommodation",
+      "priceRange": "$$",
+      "starRating": {
+        "@type": "Rating",
+        "ratingValue": "4.5"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Free WiFi"
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Restaurant"
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Conference Room"
+        }
       ]
     }
     </script>
-
+    
     <!-- ✅ Facebook SDK (optional) -->
     <script async defer crossorigin="anonymous"
       src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
       nonce="settlersInnScript">
     </script>
-
+    
     <!-- ✅ Analytics -->
     <script data-goatcounter="https://settlers.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
-    <script type="module" crossorigin src="/assets/index-C1syLXXX.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DqsxdYfl.css">
-  <link rel="manifest" href="/manifest.webmanifest"></head>
-
-  <body style="margin: 0; font-family: 'Fira Code', monospace; background-color: #0d1117; color: #c9d1d9;">
+    
+    <!-- ✅ Critical CSS (inline) -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        margin: 0;
+        font-family: 'Fira Code', monospace;
+        background-color: #0d1117;
+        color: #c9d1d9;
+        overflow-x: hidden;
+      }
+      
+      #app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Loading state */
+      .app-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .app-loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #30363d;
+        border-top: 5px solid #9fef00;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-MgXVgaJu.js"></script>
+  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+  <body>
     <noscript>
-      <strong>We're sorry, but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
+      <div style="text-align: center; padding: 50px 20px; background-color: #0d1117; color: #c9d1d9;">
+        <h1>JavaScript Required</h1>
+        <p>We're sorry, but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</p>
+        <p>You can still contact us directly at <a href="tel:+254748778388" style="color: #9fef00;">+254748778388</a></p>
+      </div>
     </noscript>
-
+    
     <!-- Facebook SDK Root -->
     <div id="fb-root"></div>
-
+    
+    <!-- Loading Screen -->
+    <div id="app-loading" class="app-loading">
+      <div class="app-loading-spinner"></div>
+      <h2 style="color: #9fef00;">Loading Settlers Inn...</h2>
+      <p style="color: #8b949e;">Preparing your authentic Kenyan experience</p>
+    </div>
+    
     <!-- Semantic Main -->
-    <main id="app">
+    <main id="app" style="display: none;">
       <div id="root"></div>
     </main>
-
+    
     <!-- Main App Entry -->
+    
+    <!-- Hide loading screen when app is ready -->
+    <script>
+      // Hide loading screen when app is ready
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          document.getElementById('app-loading').style.display = 'none';
+          document.getElementById('app').style.display = 'flex';
+        }, 500);
+      });
+    </script>
   </body>
 </html>
