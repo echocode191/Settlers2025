@@ -207,7 +207,7 @@ const Home = () => {
     background: 'rgba(0, 0, 0, 0.6)',
     backdropFilter: 'blur(5px)',
     borderRadius: '16px',
-    padding: '2rem',
+
     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
   };
   

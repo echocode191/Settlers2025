@@ -12,7 +12,7 @@ export default defineConfig({
       includeAssets: [
         'favicon.ico',
         'apple-touch-icon.png',
-        'assets/logo.png'
+        'assets/logo.png',
       ],
       manifest: {
         name: 'Settlers Inn',
@@ -21,7 +21,8 @@ export default defineConfig({
         display: 'standalone',
         background_color: '#0d1117',
         theme_color: '#9fef00',
-        description: 'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
+        description:
+          'Authentic dishes & cozy stays — Where Settlers Still Eat Like Kings.',
         icons: [
           {
             src: 'assets/logo.png',
@@ -38,8 +39,8 @@ export default defineConfig({
           {
             src: 'favicon.ico',
             sizes: '48x48',
-            type: 'image/x-icon'
-          }
+            type: 'image/x-icon',
+          },
         ],
         lang: 'en-KE',
         dir: 'ltr',
@@ -50,20 +51,20 @@ export default defineConfig({
           {
             src: 'assets/preview1.png',
             sizes: '540x720',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'assets/preview2.png',
             sizes: '540x720',
-            type: 'image/png'
-          }
-        ]
+            type: 'image/png',
+          },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,svg}'],
         globIgnores: [
           '**/assets/settlers.mp4',
-          '**/*.{jpg,jpeg,png,webp,gif}'
+          '**/*.{jpg,jpeg,png,webp,gif}',
         ],
         maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
         runtimeCaching: [
@@ -107,13 +108,11 @@ export default defineConfig({
       },
     }),
   ],
-
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-
   build: {
     outDir: 'dist',
     sourcemap: false,
