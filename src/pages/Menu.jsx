@@ -14,38 +14,12 @@ const Menu = () => {
   const [isSending, setIsSending] = useState(false);
   const [visitorCount, setVisitorCount] = useState(0);
   
-  const foodJokes = [
-    "😋 Eat like royalty, pay like a villager.",
-    "🔥 Our nyama choma speaks fluent Swahili.",
-    "🍽️ Forks up! Time to offend your diet.",
-    "☕ Our tea sees your soul and hugs it.",
-    "🤣 Calories don't count at Settlers Inn — trust us.",
-    "🍗 Chicken that makes you forget your ex.",
-    "🥘 Our chapatis are soft like your crush's hands.",
-    "💥 Hunger meets its match here.",
-    "🐐 Goat meat so good, it might call you back.",
-    "🎶 Your stomach's playlist: 'Ugali Anthem Remix'",
-    "🥤 Soda colder than your DMs.",
-    "🚫 Diet starts after this plate... maybe.",
-    "🍛 Food hot enough to slap your worries away.",
-    "😎 This plate? Certified street legend.",
-    "🔥 Mbuzi that burns into your memory.",
-    "🍲 Soup that makes you believe in healing.",
-    "💬 You came for food, stayed for vibes.",
-    "🍖 Our grill guy has beef with bland meat.",
-    "🌶️ Flavor turned up like a Gen Z playlist.",
-    "📸 Too tasty for just one photo.",
-    "🎯 No disappointments — only cravings hit.",
-    "📦 Takeaway that feels like a gift.",
-    "🎉 You + our plate = the best duo since Ugali & Sukuma.",
-    "🍞 Breakfast? More like Bestfast.",
-    "🫶 We season our food with love and legends.",
-    "🎬 Chapati: soft. Mbuzi: wild. You: obsessed.",
-    "🍷 Wine so fine, it whispers sweet nothings.",
-    "🤤 Tastes like home but cooked with ambition.",
-    "🌟 Meals that make your phone forget Instagram.",
-    "💡 Idea: Eat now. Regret never.",
-    "📞 Your stomach called. It said, 'Settlers, now!'",
+  const foodMessages = [
+    "Taste the authentic flavors of Kenya",
+    "Fresh ingredients, delicious meals",
+    "Where local cuisine meets comfort",
+    "Savor every moment with our dishes",
+    "Your perfect dining destination"
   ];
   
   useEffect(() => {
@@ -64,47 +38,54 @@ const Menu = () => {
     // Set visitor count
     setVisitorCount(Math.floor(Math.random() * 100) + 50);
     
-    // Rotate jokes
+    // Rotate messages
     const interval = setInterval(() => {
-      setJokeIndex((prev) => (prev + 1) % foodJokes.length);
-    }, 4000);
+      setJokeIndex((prev) => (prev + 1) % foodMessages.length);
+    }, 5000);
     
     // Animation styles
-    const style = document.createElement("style");
-    style.innerHTML = `
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes typewriter { from { width: 0; } to { width: 100%; } }
-      @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-      @keyframes glow { 0% { text-shadow: 0 0 5px #9fef00; } 50% { text-shadow: 0 0 15px #9fef00; } 100% { text-shadow: 0 0 5px #9fef00; } }
-      @keyframes shimmer {
-        0% { background-position: -200px 0; }
-        100% { background-position: calc(200px + 100%) 0; }
-      }
-      .new-badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background: #ff3e3e;
-        color: white;
-        font-size: 0.7rem;
-        padding: 2px 6px;
-        border-radius: 10px;
-        animation: pulse 2s infinite;
-      }
-      .special-banner {
-        background: linear-gradient(90deg, #9fef00, #58a6ff);
-        color: #0d1117;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 1rem;
-        animation: shimmer 2s infinite;
-        background-size: 200px 100%;
-      }
-    `;
-    document.head.appendChild(style);
+    if (typeof document !== 'undefined') {
+      const style = document.createElement("style");
+      style.innerHTML = `
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtlePulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200px 0; }
+          100% { background-position: calc(200px + 100%) 0; }
+        }
+        .new-badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background: rgba(239, 68, 68, 0.9);
+          color: white;
+          font-size: 0.7rem;
+          padding: 2px 6px;
+          border-radius: 10px;
+          animation: subtlePulse 2s infinite;
+          backdrop-filter: blur(4px);
+        }
+        .special-banner {
+          background: linear-gradient(90deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.9));
+          color: #0f172a;
+          padding: 10px 18px;
+          border-radius: 20px;
+          font-weight: 600;
+          text-align: center;
+          margin-bottom: 1.5rem;
+          animation: shimmer 3s infinite;
+          background-size: 200px 100%;
+          backdrop-filter: blur(4px);
+        }
+      `;
+      document.head.appendChild(style);
+    }
     
     return () => clearInterval(interval);
   }, []);
@@ -119,10 +100,10 @@ const Menu = () => {
     
     // Simulate sending delay
     setTimeout(() => {
-      const message = `Hi Settlers Inn 👋, I want to order: ${foodName}
-Order Type: ${orderType === 'pickup' ? '🛍 Pickup' : orderType === 'eat' ? '🍽 Eat Here' : '🛵 Delivery'}
+      const message = `Hi Settlers Inn, I want to order: ${foodName}
+Order Type: ${orderType === 'pickup' ? 'Pickup' : orderType === 'eat' ? 'Dine In' : 'Delivery'}
 ${orderType === 'delivery' ? `Location: ${location}` : ''}
-Payment Method: ${paymentOption === 'arrival' ? '💰 Pay on Arrival' : `📲 Mpesa (${phone})`}
+Payment Method: ${paymentOption === 'arrival' ? 'Pay on Arrival' : `Mpesa (${phone})`}
 ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer will pay on delivery/pickup.'}
 `;
       const url = `https://wa.me/254748778388?text=${encodeURIComponent(message)}`;
@@ -138,11 +119,11 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
   
   const categories = [
     {
-      id: 'breakfast', title: '🌅 Breakfast',
+      id: 'breakfast', title: 'Breakfast',
       items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 500']]
     },
     {
-      id: 'lunch', title: '🍛 Lunch & Dinner',
+      id: 'lunch', title: 'Lunch & Dinner',
       items: [
         ['Whole Fish', 'KES 700'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'],
         ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'],
@@ -152,18 +133,18 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       ]
     },
     {
-      id: 'dinner', title: '🌇 Dinner Special',
+      id: 'dinner', title: 'Dinner Special',
       items: [['Chicken Stir Fry', 'KES 800', true]]  // New item
     },
     {
-      id: 'matumbo', title: '🥠 Matumbo Zone',
+      id: 'matumbo', title: 'Matumbo Zone',
       items: [
         ['Matumbo Mbuzi 1/4KG', 'KES 300'], ['Matumbo Mbuzi 1/2KG', 'KES 600'],
         ['Matumbo Ng`ombe 1/4KG', 'KES 250'], ['Matumbo Ng`ombe 1/2KG', 'KES 500']
       ]
     },
     {
-      id: 'sides', title: '🍽️ Side Orders',
+      id: 'sides', title: 'Side Orders',
       items: [
         ['White Ugali', 'KES 70'], ['Ugali Wimbi', 'KES 100'], ['Ugali Sorghum', 'KES 100'],
         ['White Rice', 'KES 150'], ['Stir Fried', 'KES 200'],
@@ -172,7 +153,7 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       ]
     },
     {
-      id: 'soft', title: '🍹 Soft Beverages',
+      id: 'soft', title: 'Soft Beverages',
       items: [
         ['Dasani 500ML', 'KES 50'], ['Dasani 1L', 'KES 100'],
         ['Plastic Soda 350ML', 'KES 50'], ['Plastic Soda 500ML', 'KES 80'],
@@ -184,169 +165,197 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       ]
     },
     {
-      id: 'cake', title: '🍰 Cakes & Desserts',
+      id: 'cake', title: 'Cakes & Desserts',
       items: [['Vanilla 1KG', 'KES 1500'], ['Black Forest', 'KES 2000'], ['Marble 1KG', 'KES 2000'], ['Cake Slice', 'KES 150']]
     },
     {
-      id: 'beer', title: '🍺 Beer',
+      id: 'beer', title: 'Beer',
       items: [['Beer Cans', 'KES 350'], ['Bottled Beer', 'KES 300']]
     },
     {
-      id: 'wine', title: '🍷 Wines',
+      id: 'wine', title: 'Wines',
       items: [['Caprice', 'KES 1000'], ['Four Cousins', 'KES 1600'], ['4th Street', 'KES 1600']]
     },
   ];
-
+  
+  // Styles with modern glassy design
   const styles = {
     body: {
-      fontFamily: "'Fira Code', monospace",
-      backgroundColor: '#0d1117',
-      color: '#c9d1d9',
+      fontFamily: "'Inter', system-ui, sans-serif",
+      background: 'linear-gradient(135deg, #0f172a, #1e293b)',
+      color: '#e2e8f0',
       minHeight: '100vh',
       paddingBottom: '5rem',
     },
     section: {
-      padding: '2rem 1rem',
-      maxWidth: '900px',
+      padding: '3rem 1.5rem',
+      maxWidth: '1000px',
       margin: 'auto',
-      animation: 'fadeIn 1s ease',
+      animation: 'fadeInUp 0.8s ease',
     },
     orderBox: {
-      background: '#161b22',
-      padding: '2rem',
-      borderRadius: '12px',
-      boxShadow: '0 0 15px rgba(88,166,255,0.1)',
+      background: 'rgba(30, 41, 59, 0.7)',
+      padding: '2.5rem',
+      borderRadius: '20px',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
       textAlign: 'center',
       marginBottom: '3rem',
+      backdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
     },
     h2: {
-      color: '#9fef00',
-      fontSize: '1.5rem',
-      marginBottom: '0.6rem',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      animation: 'typewriter 3s steps(40, end) 1 normal both',
+      color: '#e2e8f0',
+      fontSize: '2rem',
+      marginBottom: '1rem',
+      fontWeight: '600',
     },
     p: {
-      color: '#d0ff87',
-      marginBottom: '1rem',
+      color: '#38bdf8',
+      marginBottom: '1.5rem',
       minHeight: '24px',
-      fontWeight: 'bold',
-      animation: 'glow 3s ease-in-out infinite, pulse 3s ease-in-out infinite',
+      fontWeight: '500',
+      animation: 'subtlePulse 4s ease-in-out infinite',
       textAlign: 'center',
-      fontSize: '1rem',
+      fontSize: '1.1rem',
     },
     form: {
       display: 'flex',
       flexWrap: 'wrap',
-      gap: '1rem',
+      gap: '1.2rem',
       justifyContent: 'center',
-      marginTop: '1rem',
+      marginTop: '1.5rem',
     },
     input: {
-      padding: '0.6rem 1rem',
-      background: '#0d1117',
-      border: '1px solid #30363d',
-      borderRadius: '8px',
-      color: '#c9d1d9',
+      padding: '0.8rem 1.2rem',
+      background: 'rgba(15, 23, 42, 0.7)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      borderRadius: '12px',
+      color: '#e2e8f0',
       minWidth: '220px',
       flex: '1',
+      backdropFilter: 'blur(4px)',
+      fontSize: '1rem',
+      outline: 'none',
+      transition: 'all 0.2s ease',
     },
     button: {
-      padding: '0.6rem 1.2rem',
-      background: '#9fef00',
-      color: '#0d1117',
+      padding: '0.8rem 1.5rem',
+      background: 'rgba(56, 189, 248, 0.9)',
+      color: '#0f172a',
       border: 'none',
-      borderRadius: '8px',
+      borderRadius: '12px',
       cursor: 'pointer',
-      fontWeight: 'bold',
+      fontWeight: '600',
       flexShrink: '0',
-      transition: 'all 0.2s',
+      transition: 'all 0.3s ease',
+      backdropFilter: 'blur(4px)',
+      boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
     },
     quickAccess: {
       display: 'flex',
       flexWrap: 'wrap',
-      gap: '0.5rem',
+      gap: '0.8rem',
       justifyContent: 'center',
-      marginBottom: '2rem',
-      fontSize: '0.85rem',
+      marginBottom: '2.5rem',
     },
     quickButton: {
-      background: '#21262d',
-      color: '#9fef00',
-      padding: '0.4rem 0.8rem',
-      border: '1px solid #30363d',
-      borderRadius: '6px',
+      background: 'rgba(30, 41, 59, 0.7)',
+      color: '#e2e8f0',
+      padding: '0.6rem 1.2rem',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      borderRadius: '10px',
       cursor: 'pointer',
-      transition: 'all 0.2s',
+      transition: 'all 0.3s ease',
+      backdropFilter: 'blur(4px)',
+      fontWeight: '500',
+      fontSize: '0.9rem',
     },
     floatBtn: {
       position: 'fixed',
       bottom: 25,
       right: 20,
-      background: '#25D366',
+      background: 'rgba(37, 211, 102, 0.9)',
       color: 'white',
       fontSize: '1.5rem',
-      padding: '0.7rem 0.85rem',
+      padding: '0.8rem 0.9rem',
       borderRadius: '50%',
-      boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)',
       zIndex: 999,
       textDecoration: 'none',
+      backdropFilter: 'blur(4px)',
+      transition: 'all 0.3s ease',
     },
     menuSection: {
-      paddingTop: '1rem',
+      paddingTop: '1.5rem',
     },
     category: {
       marginBottom: '2.5rem',
       animation: 'fadeInUp 0.8s ease',
       position: 'relative',
+      background: 'rgba(30, 41, 59, 0.7)',
+      borderRadius: '20px',
+      padding: '2rem',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
     },
     categoryTitle: {
-      color: '#58a6ff',
-      borderBottom: '1px solid #30363d',
-      paddingBottom: '0.4rem',
-      marginBottom: '1rem',
-      fontSize: '1.2rem',
+      color: '#38bdf8',
+      borderBottom: '1px solid rgba(56, 189, 248, 0.3)',
+      paddingBottom: '0.6rem',
+      marginBottom: '1.5rem',
+      fontSize: '1.4rem',
+      fontWeight: '600',
     },
     menuItem: {
       display: 'flex',
       justifyContent: 'space-between',
-      marginBottom: '0.7rem',
-      padding: '0.4rem 0.2rem',
-      borderBottom: '1px dashed #30363d',
-      fontSize: '0.95rem',
+      marginBottom: '0.8rem',
+      padding: '0.6rem 0.2rem',
+      borderBottom: '1px dashed rgba(255, 255, 255, 0.1)',
+      fontSize: '1rem',
       position: 'relative',
     },
     statsContainer: {
       display: 'flex',
       justifyContent: 'space-around',
-      background: 'rgba(22, 27, 34, 0.5)',
-      borderRadius: '12px',
-      padding: '1rem',
-      marginBottom: '1rem',
+      background: 'rgba(15, 23, 42, 0.5)',
+      borderRadius: '16px',
+      padding: '1.2rem',
+      marginBottom: '1.5rem',
+      backdropFilter: 'blur(4px)',
     },
     statItem: {
       textAlign: 'center',
     },
     statNumber: {
-      fontSize: '1.2rem',
-      color: '#9fef00',
-      fontWeight: 'bold',
+      fontSize: '1.3rem',
+      color: '#38bdf8',
+      fontWeight: '600',
     },
     statLabel: {
-      fontSize: '0.8rem',
-      color: '#8b949e',
+      fontSize: '0.85rem',
+      color: '#94a3b8',
+      marginTop: '0.3rem',
     },
+    radioLabel: {
+      color: '#e2e8f0',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      fontSize: '0.95rem',
+    },
+    radioInput: {
+      marginRight: '0.5rem',
+    }
   };
-
+  
   return (
     <div style={styles.body}>
       <Navbar />
       <section style={styles.section}>
         <div style={styles.orderBox}>
-          <h2 style={styles.h2}>🍛 Welcome to Our Delicious World</h2>
-          <p style={styles.p}>{foodJokes[jokeIndex]}</p>
+          <h2 style={styles.h2}>Our Menu</h2>
+          <p style={styles.p}>{foodMessages[jokeIndex]}</p>
           
           <div className="special-banner">
             🌟 {dailySpecial} 🌟
@@ -355,7 +364,7 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
           <div style={styles.statsContainer}>
             <div style={styles.statItem}>
               <div style={styles.statNumber}>{visitorCount}+</div>
-              <div style={styles.statLabel}>Hungry Visitors</div>
+              <div style={styles.statLabel}>Visitors Today</div>
             </div>
             <div style={styles.statItem}>
               <div style={styles.statNumber}>{newItems.length}</div>
@@ -373,16 +382,17 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
               style={styles.input}
             />
             {/* Order Type */}
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               {['pickup', 'eat', 'delivery'].map((type) => (
-                <label key={type} style={{ color: '#c9d1d9', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <label key={type} style={styles.radioLabel}>
                   <input
                     type="radio"
                     value={type}
                     checked={orderType === type}
                     onChange={(e) => setOrderType(e.target.value)}
+                    style={styles.radioInput}
                   />
-                  {type === 'pickup' ? '🛍 Pickup' : type === 'eat' ? '🍽 Eat Here' : '🛵 Delivery'}
+                  {type === 'pickup' ? 'Pickup' : type === 'eat' ? 'Dine In' : 'Delivery'}
                 </label>
               ))}
             </div>
@@ -397,24 +407,26 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
               />
             )}
             {/* Payment */}
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
-              <label style={{ color: '#c9d1d9' }}>
+            <div style={{ display: 'flex', gap: '1.2rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '0.5rem' }}>
+              <label style={styles.radioLabel}>
                 <input
                   type="radio"
                   value="arrival"
                   checked={paymentOption === 'arrival'}
                   onChange={(e) => setPaymentOption(e.target.value)}
+                  style={styles.radioInput}
                 />
-                💰 Pay on Arrival
+                Pay on Arrival
               </label>
-              <label style={{ color: '#c9d1d9' }}>
+              <label style={styles.radioLabel}>
                 <input
                   type="radio"
                   value="mpesa"
                   checked={paymentOption === 'mpesa'}
                   onChange={(e) => setPaymentOption(e.target.value)}
+                  style={styles.radioInput}
                 />
-                📲 Pay with Mpesa
+                Pay with Mpesa
               </label>
             </div>
             {paymentOption === 'mpesa' && (
@@ -431,12 +443,12 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
               type="submit" 
               style={{
                 ...styles.button,
-                background: isSending ? '#555' : '#9fef00',
+                background: isSending ? 'rgba(100, 116, 139, 0.7)' : 'rgba(56, 189, 248, 0.9)',
                 cursor: isSending ? 'not-allowed' : 'pointer',
               }}
               disabled={isSending}
             >
-              {isSending ? 'Sending...' : '📲 WhatsApp Us'}
+              {isSending ? 'Sending...' : 'WhatsApp Us'}
             </button>
           </form>
         </div>
@@ -450,7 +462,7 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
         </div>
         
         <div style={styles.menuSection}>
-          <h2 style={styles.h2}>🍽️ Our Menu</h2>
+          <h2 style={styles.h2}>Menu Categories</h2>
           {categories.map((cat, i) => (
             <div key={i} id={cat.id} style={styles.category}>
               {newItems.includes(cat.items[0]?.[0]) && <div className="new-badge">NEW</div>}

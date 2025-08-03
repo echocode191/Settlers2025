@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [visitorCount, setVisitorCount] = useState(0);
   const [currentTime, setCurrentTime] = useState("");
@@ -14,8 +14,8 @@ const Navbar = () => {
   const isHome = location.pathname === '/';
   
   useEffect(() => {
-    // Initialize visitor count
-    setVisitorCount(Math.floor(Math.random() * 100) + 20);
+    // Initialize visitor count - more realistic for a hotel since 2021
+    setVisitorCount(Math.floor(Math.random() * 50) + 15);
     
     // Update time
     const updateTime = () => {
@@ -32,6 +32,7 @@ const Navbar = () => {
     
     // Handle window resize
     const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // Initialize on mount
     window.addEventListener('resize', handleResize);
     
     // Handle scroll for navbar effect
@@ -41,22 +42,24 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     
     // Add CSS animations
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-      }
-      @keyframes slideIn {
-        from { transform: translateX(100%); }
-        to { transform: translateX(0); }
-      }
-    `;
-    document.head.appendChild(style);
+    if (typeof document !== 'undefined') {
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes subtlePulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
+        }
+        @keyframes slideIn {
+          from { transform: translateX(100%); }
+          to { transform: translateX(0); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
     
     return () => {
       clearInterval(timer);
@@ -82,22 +85,27 @@ const Navbar = () => {
     { to: '/contact', label: '📞 Contact' },
     { to: '/offers', label: '💎 Offers' },
   ];
-
+  
+  // Styles with modern glassy design
   const styles = {
     header: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: isMobile ? '0.8rem 1rem' : '1rem 1.5rem',
-      background: isScrolled ? 'rgba(13, 17, 23, 0.95)' : 'rgba(13, 17, 23, 0.9)',
-      borderBottom: '1px solid #2b3137',
-      backdropFilter: 'blur(10px)',
+      background: isScrolled 
+        ? 'rgba(15, 23, 42, 0.95)' 
+        : 'rgba(15, 23, 42, 0.9)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(12px)',
       position: 'sticky',
       top: 0,
       zIndex: 1000,
       flexWrap: 'wrap',
       transition: 'all 0.3s ease',
-      boxShadow: isScrolled ? '0 4px 20px rgba(0, 0, 0, 0.2)' : 'none',
+      boxShadow: isScrolled 
+        ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
+        : 'none',
     },
     brand: {
       display: 'flex',
@@ -110,9 +118,10 @@ const Navbar = () => {
     },
     title: {
       fontSize: isMobile ? '1.2rem' : '1.4rem',
-      color: '#9fef00',
+      color: '#e2e8f0',
       margin: 0,
       whiteSpace: 'nowrap',
+      fontWeight: '600',
     },
     navContainer: {
       display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
@@ -120,46 +129,46 @@ const Navbar = () => {
       gap: isMobile ? '0.5rem' : '1.2rem',
       alignItems: isMobile ? 'flex-start' : 'center',
       width: isMobile ? '100%' : 'auto',
-      paddingTop: isMobile ? '1rem' : 0,
+      paddingTop: isMobile ? '1rem' : '0',
       position: isMobile ? 'absolute' : 'static',
       top: '100%',
       left: '0',
       right: '0',
-      background: isMobile ? 'rgba(13, 17, 23, 0.98)' : 'transparent',
-      backdropFilter: isMobile ? 'blur(10px)' : 'none',
+      background: isMobile ? 'rgba(15, 23, 42, 0.98)' : 'transparent',
+      backdropFilter: isMobile ? 'blur(12px)' : 'none',
       padding: isMobile ? '1rem' : '0',
-      borderBottom: isMobile ? '1px solid #2b3137' : 'none',
-      borderRadius: isMobile ? '0 0 12px 12px' : '0',
+      borderBottom: isMobile ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+      borderRadius: isMobile ? '0 0 16px 16px' : '0',
       animation: isMobile && menuOpen ? 'fadeInDown 0.3s ease' : 'none',
       zIndex: 999,
     },
     navLink: {
-      color: '#58a6ff',
+      color: '#cbd5e1',
       textDecoration: 'none',
       fontSize: '1rem',
-      padding: '6px 10px',
-      borderRadius: '8px',
+      padding: '8px 12px',
+      borderRadius: '10px',
       transition: 'all 0.2s ease-in-out',
       position: 'relative',
+      fontWeight: '500',
     },
     navLinkActive: {
-      backgroundColor: '#58a6ff22',
-      color: '#9fef00',
-      fontWeight: 'bold',
-      textShadow: '0 0 6px #9fef00',
+      backgroundColor: 'rgba(56, 189, 248, 0.2)',
+      color: '#38bdf8',
+      fontWeight: '600',
     },
     menuBtn: {
       display: 'block',
       background: 'none',
       border: 'none',
       fontSize: '1.6rem',
-      color: '#58a6ff',
+      color: '#38bdf8',
       cursor: 'pointer',
       transition: 'transform 0.3s ease',
     },
     backBtn: {
       fontSize: '1.4rem',
-      color: '#58a6ff',
+      color: '#38bdf8',
       marginRight: '0.8rem',
       cursor: 'pointer',
       border: 'none',
@@ -174,38 +183,39 @@ const Navbar = () => {
     statusItem: {
       display: 'flex',
       alignItems: 'center',
-      gap: '5px',
-      fontSize: '0.8rem',
-      color: '#8b949e',
+      gap: '6px',
+      fontSize: '0.85rem',
+      color: '#94a3b8',
     },
     statusDot: {
       width: '8px',
       height: '8px',
       borderRadius: '50%',
-      background: '#9fef00',
-      animation: 'pulse 2s infinite',
+      background: '#38bdf8',
+      animation: 'subtlePulse 2s infinite',
     },
     notificationBadge: {
       position: 'absolute',
       top: '-5px',
       right: '-5px',
-      background: '#ff3e3e',
+      background: 'rgba(239, 68, 68, 0.9)',
       color: 'white',
       fontSize: '0.7rem',
-      fontWeight: 'bold',
+      fontWeight: '600',
       minWidth: '18px',
       height: '18px',
       borderRadius: '50%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      animation: 'pulse 2s infinite',
+      animation: 'subtlePulse 2s infinite',
+      backdropFilter: 'blur(4px)',
     },
     notificationButton: {
       position: 'relative',
       background: 'none',
       border: 'none',
-      color: '#58a6ff',
+      color: '#38bdf8',
       fontSize: '1.2rem',
       cursor: 'pointer',
       padding: '5px',
@@ -219,7 +229,7 @@ const Navbar = () => {
       width: '100%',
     }
   };
-
+  
   return (
     <header style={styles.header}>
       <div style={isMobile ? styles.mobileHeader : {}}>
@@ -228,8 +238,6 @@ const Navbar = () => {
             <button 
               style={styles.backBtn} 
               onClick={() => navigate(-1)}
-              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
-              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
               ←
             </button>
@@ -238,8 +246,6 @@ const Navbar = () => {
             src="/assets/logo.png" 
             alt="Settlers Inn Logo" 
             style={styles.logo}
-            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
           />
           <h1 style={styles.title}>Settlers Inn</h1>
         </div>
@@ -259,8 +265,6 @@ const Navbar = () => {
             <button 
               style={styles.menuBtn} 
               onClick={toggleMenu}
-              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
-              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
               {menuOpen ? '✕' : '☰'}
             </button>
@@ -305,7 +309,7 @@ const Navbar = () => {
           <div style={{ 
             marginTop: '1rem', 
             paddingTop: '1rem', 
-            borderTop: '1px solid #2b3137',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             width: '100%',
             display: 'flex',
             justifyContent: 'space-around'
