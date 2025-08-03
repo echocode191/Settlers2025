@@ -1,20 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Gallery = () => {
   const [popupMedia, setPopupMedia] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-
+  const [newMediaCount, setNewMediaCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  
   useEffect(() => {
     const handleEsc = (e) => e.key === 'Escape' && setPopupMedia(null);
     window.addEventListener('keydown', handleEsc);
     setIsMobile(window.innerWidth < 768);
-    return () => window.removeEventListener('keydown', handleEsc);
+    
+    // Handle window resize
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    
+    // Simulate new content being added
+    const interval = setInterval(() => {
+      setNewMediaCount(prev => prev + 1);
+    }, 30000); // Every 30 seconds
+    
+    // Add CSS animations to document head
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Simulate loading
+    setTimeout(() => setIsLoading(false), 1500);
+    
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('resize', handleResize);
+      clearInterval(interval);
+    };
   }, []);
-
+  
   const media = [
-    { src: '/assets/bar under construction.mp4', type: 'video' },
+    { src: '/assets/bar under construction.mp4', type: 'video', isNew: true },
     { src: '/assets/boiled egg.jpg', type: 'image' },
     { src: '/assets/cake video.mp4', type: 'video' },
     { src: '/assets/cake video2.mp4', type: 'video' },
@@ -85,7 +116,7 @@ const Gallery = () => {
     { src: '/assets/upstairs env view1.jpg', type: 'image' },
     { src: '/assets/upstairs outview2.jpg', type: 'image' }
   ];
-
+  
   const styles = {
     page: {
       fontFamily: "'Fira Code', monospace",
@@ -146,51 +177,145 @@ const Gallery = () => {
       border: '2px solid #9fef00',
       boxShadow: '0 0 30px rgba(159, 239, 0, 0.3)',
     },
+    newBadge: {
+      position: 'absolute',
+      top: '5px',
+      right: '5px',
+      background: '#ff3e3e',
+      color: 'white',
+      fontSize: '0.7rem',
+      padding: '2px 6px',
+      borderRadius: '10px',
+      zIndex: 2,
+    },
+    loading: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '50vh',
+      fontSize: '1.2rem',
+      color: '#9fef00',
+    },
+    newContentBanner: {
+      background: 'linear-gradient(90deg, #9fef00, #58a6ff)',
+      color: '#0d1117',
+      padding: '8px 16px',
+      borderRadius: '20px',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      margin: '0 auto 1.5rem',
+      maxWidth: '300px',
+      animation: 'pulse 2s infinite',
+    },
+    mediaContainer: {
+      position: 'relative',
+    },
+    closePopup: {
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      background: 'rgba(0, 0, 0, 0.7)',
+      color: 'white',
+      border: 'none',
+      borderRadius: '50%',
+      width: '40px',
+      height: '40px',
+      fontSize: '20px',
+      cursor: 'pointer',
+      zIndex: 1001,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
   };
-
+  
+  if (isLoading) {
+    return (
+      <div style={styles.page}>
+        <Navbar />
+        <div style={styles.loading}>
+          Loading gallery...
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+  
+  const handlePopupClick = (e) => {
+    // Only close if clicking directly on the overlay, not on the media
+    if (e.target === e.currentTarget) {
+      setPopupMedia(null);
+    }
+  };
+  
   return (
     <div style={styles.page}>
       <Navbar />
       <section style={styles.section}>
         <h2 style={styles.title}>📸 Settlers Inn Gallery</h2>
         <p style={styles.intro}>From sizzling plates to soft fields — moments that matter most.</p>
-
+        
+        {newMediaCount > 0 && (
+          <div style={styles.newContentBanner}>
+            🆕 {newMediaCount} new moments added!
+          </div>
+        )}
+        
         <div style={styles.grid}>
-          {media.map((item, index) =>
-            item.type === 'image' ? (
-              <img
-                key={index}
-                src={item.src}
-                alt={`Gallery ${index}`}
-                style={styles.item}
-                onClick={() => setPopupMedia(item)}
-                loading="lazy"
-              />
-            ) : (
-              <video
-                key={index}
-                src={item.src}
-                style={styles.item}
-                onClick={() => setPopupMedia(item)}
-                muted
-                autoPlay={!isMobile && index === 0}
-                loop
-                preload="none"
-              />
-            )
-          )}
+          {media.map((item, index) => (
+            <div key={index} style={styles.mediaContainer}>
+              {item.isNew && <div style={styles.newBadge}>NEW</div>}
+              {item.type === 'image' ? (
+                <img
+                  src={item.src}
+                  alt={`Gallery ${index}`}
+                  style={styles.item}
+                  onClick={() => setPopupMedia(item)}
+                  loading="lazy"
+                />
+              ) : (
+                <video
+                  src={item.src}
+                  style={styles.item}
+                  onClick={() => setPopupMedia(item)}
+                  muted
+                  autoPlay={!isMobile && index === 0}
+                  loop
+                  preload="metadata"
+                  playsInline
+                />
+              )}
+            </div>
+          ))}
         </div>
       </section>
-
+      
       {popupMedia && (
-        <div style={styles.overlay} onClick={() => setPopupMedia(null)}>
+        <div style={styles.overlay} onClick={handlePopupClick}>
+          <button 
+            style={styles.closePopup}
+            onClick={() => setPopupMedia(null)}
+          >
+            ×
+          </button>
           {popupMedia.type === 'image' ? (
-            <img src={popupMedia.src} alt="Popup" style={styles.popupMedia} />
+            <img 
+              src={popupMedia.src} 
+              alt="Popup" 
+              style={styles.popupMedia} 
+            />
           ) : (
-            <video src={popupMedia.src} controls autoPlay style={styles.popupMedia} />
+            <video 
+              src={popupMedia.src} 
+              controls 
+              autoPlay 
+              style={styles.popupMedia}
+              playsInline
+            />
           )}
         </div>
       )}
+      
       <Footer />
     </div>
   );

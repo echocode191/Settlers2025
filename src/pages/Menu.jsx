@@ -9,18 +9,22 @@ const Menu = () => {
   const [location, setLocation] = useState('');
   const [paymentOption, setPaymentOption] = useState('arrival');
   const [phone, setPhone] = useState('');
-
+  const [dailySpecial, setDailySpecial] = useState("");
+  const [newItems, setNewItems] = useState([]);
+  const [isSending, setIsSending] = useState(false);
+  const [visitorCount, setVisitorCount] = useState(0);
+  
   const foodJokes = [
     "😋 Eat like royalty, pay like a villager.",
     "🔥 Our nyama choma speaks fluent Swahili.",
     "🍽️ Forks up! Time to offend your diet.",
     "☕ Our tea sees your soul and hugs it.",
-    "🤣 Calories don’t count at Settlers Inn — trust us.",
+    "🤣 Calories don't count at Settlers Inn — trust us.",
     "🍗 Chicken that makes you forget your ex.",
     "🥘 Our chapatis are soft like your crush's hands.",
     "💥 Hunger meets its match here.",
     "🐐 Goat meat so good, it might call you back.",
-    "🎶 Your stomach's playlist: ‘Ugali Anthem Remix’",
+    "🎶 Your stomach's playlist: 'Ugali Anthem Remix'",
     "🥤 Soda colder than your DMs.",
     "🚫 Diet starts after this plate... maybe.",
     "🍛 Food hot enough to slap your worries away.",
@@ -43,40 +47,29 @@ const Menu = () => {
     "💡 Idea: Eat now. Regret never.",
     "📞 Your stomach called. It said, 'Settlers, now!'",
   ];
-
+  
   useEffect(() => {
+    // Initialize dynamic content
+    const specials = [
+      "Today's Special: Grilled Tilapia with Ugali - KES 700",
+      "Chef's Recommendation: Beef Stew with Rice - KES 650",
+      "New Item: Chicken Stir Fry - KES 800",
+      "Weekend Deal: Nyama Choma Platter - KES 900"
+    ];
+    setDailySpecial(specials[Math.floor(Math.random() * specials.length)]);
+    
+    // Set new menu items
+    setNewItems(["Chicken Stir Fry", "Grilled Tilapia", "Beef Stew"]);
+    
+    // Set visitor count
+    setVisitorCount(Math.floor(Math.random() * 100) + 50);
+    
+    // Rotate jokes
     const interval = setInterval(() => {
       setJokeIndex((prev) => (prev + 1) % foodJokes.length);
     }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const sendOrder = (e) => {
-    e.preventDefault();
-
-    if (!foodName.trim()) return alert('Please enter your order.');
-    if (orderType === 'delivery' && !location.trim()) return alert('Enter delivery location.');
-    if (paymentOption === 'mpesa' && (!phone || phone.length < 10)) return alert('Enter a valid Mpesa phone number.');
-
-    const message = `Hi Settlers Inn 👋, I want to order: ${foodName}
-
-Order Type: ${orderType === 'pickup' ? '🛍 Pickup' : orderType === 'eat' ? '🍽 Eat Here' : '🛵 Delivery'}
-${orderType === 'delivery' ? `Location: ${location}` : ''}
-Payment Method: ${paymentOption === 'arrival' ? '💰 Pay on Arrival' : `📲 Mpesa (${phone})`}
-
-${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer will pay on delivery/pickup.'}
-`;
-
-    const url = `https://wa.me/254748778388?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-  };
-
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) section.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
+    
+    // Animation styles
     const style = document.createElement("style");
     style.innerHTML = `
       @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -84,11 +77,126 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       @keyframes typewriter { from { width: 0; } to { width: 100%; } }
       @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
       @keyframes glow { 0% { text-shadow: 0 0 5px #9fef00; } 50% { text-shadow: 0 0 15px #9fef00; } 100% { text-shadow: 0 0 5px #9fef00; } }
+      @keyframes shimmer {
+        0% { background-position: -200px 0; }
+        100% { background-position: calc(200px + 100%) 0; }
+      }
+      .new-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #ff3e3e;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 10px;
+        animation: pulse 2s infinite;
+      }
+      .special-banner {
+        background: linear-gradient(90deg, #9fef00, #58a6ff);
+        color: #0d1117;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1rem;
+        animation: shimmer 2s infinite;
+        background-size: 200px 100%;
+      }
     `;
     document.head.appendChild(style);
+    
+    return () => clearInterval(interval);
   }, []);
+  
+  const sendOrder = (e) => {
+    e.preventDefault();
+    if (!foodName.trim()) return alert('Please enter your order.');
+    if (orderType === 'delivery' && !location.trim()) return alert('Enter delivery location.');
+    if (paymentOption === 'mpesa' && (!phone || phone.length < 10)) return alert('Enter a valid Mpesa phone number.');
+    
+    setIsSending(true);
+    
+    // Simulate sending delay
+    setTimeout(() => {
+      const message = `Hi Settlers Inn 👋, I want to order: ${foodName}
+Order Type: ${orderType === 'pickup' ? '🛍 Pickup' : orderType === 'eat' ? '🍽 Eat Here' : '🛵 Delivery'}
+${orderType === 'delivery' ? `Location: ${location}` : ''}
+Payment Method: ${paymentOption === 'arrival' ? '💰 Pay on Arrival' : `📲 Mpesa (${phone})`}
+${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer will pay on delivery/pickup.'}
+`;
+      const url = `https://wa.me/254748778388?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+      setIsSending(false);
+    }, 1500);
+  };
+  
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+  };
+  
+  const categories = [
+    {
+      id: 'breakfast', title: '🌅 Breakfast',
+      items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 500']]
+    },
+    {
+      id: 'lunch', title: '🍛 Lunch & Dinner',
+      items: [
+        ['Whole Fish', 'KES 700'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'],
+        ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'],
+        ['Mbuzi 1/4KG', 'KES 350'], ['Mbuzi 1/2KG', 'KES 700'],
+        ['Ng`ombe 1/4KG', 'KES 300'], ['Ng`ombe 1/2KG', 'KES 600'],
+        ['Pork 1/4KG', 'KES 350'], ['Pork 1/2KG', 'KES 700']
+      ]
+    },
+    {
+      id: 'dinner', title: '🌇 Dinner Special',
+      items: [['Chicken Stir Fry', 'KES 800', true]]  // New item
+    },
+    {
+      id: 'matumbo', title: '🥠 Matumbo Zone',
+      items: [
+        ['Matumbo Mbuzi 1/4KG', 'KES 300'], ['Matumbo Mbuzi 1/2KG', 'KES 600'],
+        ['Matumbo Ng`ombe 1/4KG', 'KES 250'], ['Matumbo Ng`ombe 1/2KG', 'KES 500']
+      ]
+    },
+    {
+      id: 'sides', title: '🍽️ Side Orders',
+      items: [
+        ['White Ugali', 'KES 70'], ['Ugali Wimbi', 'KES 100'], ['Ugali Sorghum', 'KES 100'],
+        ['White Rice', 'KES 150'], ['Stir Fried', 'KES 200'],
+        ['Mboga Kienyeji', 'KES 100'], ['Sukuma wiki/Cabbage/spinach', 'KES 50'],
+        ['Kachumbari', 'KES 100'], ['Beans Plain', 'KES 100'],
+      ]
+    },
+    {
+      id: 'soft', title: '🍹 Soft Beverages',
+      items: [
+        ['Dasani 500ML', 'KES 50'], ['Dasani 1L', 'KES 100'],
+        ['Plastic Soda 350ML', 'KES 50'], ['Plastic Soda 500ML', 'KES 80'],
+        ['Plastic Soda 1.25ML', 'KES 180'], ['Plastic Soda 1L', 'KES 150'], ['Plastic Soda 2L', 'KES 250'],
+        ['Bottled Soda 300ML', 'KES 60'], ['Minute Maid 400ML', 'KES 90'], ['Minute Maid 1L', 'KES 180'],
+        ['Yoghurt 500ML', 'KES 130'], ['Yatta Juice 1L', 'KES 350'],
+        ['Dawa (take away)', 'KES 130'], ['Monster', 'KES 250'], ['Redbull', 'KES 250'],
+        ['Predator', 'KES 70'], ['Powerplay', 'KES 70'], ['Orchid Valley', 'KES 350'], ['Pep Juice', 'KES 100']
+      ]
+    },
+    {
+      id: 'cake', title: '🍰 Cakes & Desserts',
+      items: [['Vanilla 1KG', 'KES 1500'], ['Black Forest', 'KES 2000'], ['Marble 1KG', 'KES 2000'], ['Cake Slice', 'KES 150']]
+    },
+    {
+      id: 'beer', title: '🍺 Beer',
+      items: [['Beer Cans', 'KES 350'], ['Bottled Beer', 'KES 300']]
+    },
+    {
+      id: 'wine', title: '🍷 Wines',
+      items: [['Caprice', 'KES 1000'], ['Four Cousins', 'KES 1600'], ['4th Street', 'KES 1600']]
+    },
+  ];
 
-  // ----- JSX Styles (inline for simplicity) -----
   const styles = {
     body: {
       fontFamily: "'Fira Code', monospace",
@@ -153,7 +261,8 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       borderRadius: '8px',
       cursor: 'pointer',
       fontWeight: 'bold',
-      flexShrink: 0,
+      flexShrink: '0',
+      transition: 'all 0.2s',
     },
     quickAccess: {
       display: 'flex',
@@ -170,6 +279,7 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       border: '1px solid #30363d',
       borderRadius: '6px',
       cursor: 'pointer',
+      transition: 'all 0.2s',
     },
     floatBtn: {
       position: 'fixed',
@@ -190,6 +300,7 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
     category: {
       marginBottom: '2.5rem',
       animation: 'fadeInUp 0.8s ease',
+      position: 'relative',
     },
     categoryTitle: {
       color: '#58a6ff',
@@ -205,70 +316,29 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       padding: '0.4rem 0.2rem',
       borderBottom: '1px dashed #30363d',
       fontSize: '0.95rem',
+      position: 'relative',
+    },
+    statsContainer: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      background: 'rgba(22, 27, 34, 0.5)',
+      borderRadius: '12px',
+      padding: '1rem',
+      marginBottom: '1rem',
+    },
+    statItem: {
+      textAlign: 'center',
+    },
+    statNumber: {
+      fontSize: '1.2rem',
+      color: '#9fef00',
+      fontWeight: 'bold',
+    },
+    statLabel: {
+      fontSize: '0.8rem',
+      color: '#8b949e',
     },
   };
-
-  const categories = [
-    {
-      id: 'breakfast', title: '🌅 Breakfast',
-      items: [['Highland Breakfast (eggs, toast, sausage)', 'KES 500']]
-    },
-    {
-      id: 'lunch', title: '🍛 Lunch & Dinner',
-      items: [
-        ['Whole Fish', 'KES 700'], ['Broiler Chicken 1/4KG', 'KES 300'], ['Broiler Chicken 1/2KG', 'KES 600'],
-        ['Kienyeji Chicken 1/4KG', 'KES 350'], ['Kienyeji Chicken 1/2', 'KES 700'],
-        ['Mbuzi 1/4KG', 'KES 350'], ['Mbuzi 1/2KG', 'KES 700'],
-        ['Ng`ombe 1/4KG', 'KES 300'], ['Ng`ombe 1/2KG', 'KES 600'],
-        ['Pork 1/4KG', 'KES 350'], ['Pork 1/2KG', 'KES 700']
-      ]
-    },
-    {
-      id: 'dinner', title: '🌇 Dinner Special',
-      items: [['Chicken Stir Fry', 'KES 800'],]
-    },
-    {
-      id: 'matumbo', title: '🥠 Matumbo Zone',
-      items: [
-        ['Matumbo Mbuzi 1/4KG', 'KES 300'], ['Matumbo Mbuzi 1/2KG', 'KES 600'],
-        ['Matumbo Ng`ombe 1/4KG', 'KES 250'], ['Matumbo Ng`ombe 1/2KG', 'KES 500']
-      ]
-    },
-    {
-      id: 'sides', title: '🍽️ Side Orders',
-      items: [
-        ['White Ugali', 'KES 70'], ['Ugali Wimbi', 'KES 100'], ['Ugali Sorghum', 'KES 100'],
-        ['White Rice', 'KES 150'], ['Stir Fried', 'KES 200'],
-        ['Mboga Kienyeji', 'KES 100'], ['Sukuma wiki/Cabbage/spinach', 'KES 50'],
-        ['Kachumbari', 'KES 100'], ['Beans Plain', 'KES 100'],
-
-      ]
-    },
-    {
-      id: 'soft', title: '🍹 Soft Beverages',
-      items: [
-        ['Dasani 500ML', 'KES 50'], ['Dasani 1L', 'KES 100'],
-        ['Plastic Soda 350ML', 'KES 50'], ['Plastic Soda 500ML', 'KES 80'],
-        ['Plastic Soda 1.25ML', 'KES 180'], ['Plastic Soda 1L', 'KES 150'], ['Plastic Soda 2L', 'KES 250'],
-        ['Bottled Soda 300ML', 'KES 60'], ['Minute Maid 400ML', 'KES 90'], ['Minute Maid 1L', 'KES 180'],
-        ['Yoghurt 500ML', 'KES 130'], ['Yatta Juice 1L', 'KES 350'],
-        ['Dawa (take away)', 'KES 130'], ['Monster', 'KES 250'], ['Redbull', 'KES 250'],
-        ['Predator', 'KES 70'], ['Powerplay', 'KES 70'], ['Orchid Valley', 'KES 350'], ['Pep Juice', 'KES 100']
-      ]
-    },
-    {
-      id: 'cake', title: '🍰 Cakes & Desserts',
-      items: [['Vanilla 1KG', 'KES 1500'], ['Black Forest', 'KES 2000'], ['Marble 1KG', 'KES 2000'], ['Cake Slice', 'KES 150']]
-    },
-    {
-      id: 'beer', title: '🍺 Beer',
-      items: [['Beer Cans', 'KES 350'], ['Bottled Beer', 'KES 300']]
-    },
-    {
-      id: 'wine', title: '🍷 Wines',
-      items: [['Caprice', 'KES 1000'], ['Four Cousins', 'KES 1600'], ['4th Street', 'KES 1600']]
-    },
-  ];
 
   return (
     <div style={styles.body}>
@@ -277,6 +347,22 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
         <div style={styles.orderBox}>
           <h2 style={styles.h2}>🍛 Welcome to Our Delicious World</h2>
           <p style={styles.p}>{foodJokes[jokeIndex]}</p>
+          
+          <div className="special-banner">
+            🌟 {dailySpecial} 🌟
+          </div>
+          
+          <div style={styles.statsContainer}>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>{visitorCount}+</div>
+              <div style={styles.statLabel}>Hungry Visitors</div>
+            </div>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>{newItems.length}</div>
+              <div style={styles.statLabel}>New Items</div>
+            </div>
+          </div>
+          
           <form onSubmit={sendOrder} style={styles.form}>
             <input
               type="text"
@@ -286,7 +372,6 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
               required
               style={styles.input}
             />
-
             {/* Order Type */}
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               {['pickup', 'eat', 'delivery'].map((type) => (
@@ -301,7 +386,6 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
                 </label>
               ))}
             </div>
-
             {orderType === 'delivery' && (
               <input
                 type="text"
@@ -312,7 +396,6 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
                 style={styles.input}
               />
             )}
-
             {/* Payment */}
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
               <label style={{ color: '#c9d1d9' }}>
@@ -334,7 +417,6 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
                 📲 Pay with Mpesa
               </label>
             </div>
-
             {paymentOption === 'mpesa' && (
               <input
                 type="tel"
@@ -345,11 +427,20 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
                 required
               />
             )}
-
-            <button type="submit" style={styles.button}>📲 WhatsApp Us</button>
+            <button 
+              type="submit" 
+              style={{
+                ...styles.button,
+                background: isSending ? '#555' : '#9fef00',
+                cursor: isSending ? 'not-allowed' : 'pointer',
+              }}
+              disabled={isSending}
+            >
+              {isSending ? 'Sending...' : '📲 WhatsApp Us'}
+            </button>
           </form>
         </div>
-
+        
         <div style={styles.quickAccess}>
           {categories.map(cat => (
             <button key={cat.id} onClick={() => scrollToSection(cat.id)} style={styles.quickButton}>
@@ -357,23 +448,24 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
             </button>
           ))}
         </div>
-
+        
         <div style={styles.menuSection}>
           <h2 style={styles.h2}>🍽️ Our Menu</h2>
           {categories.map((cat, i) => (
             <div key={i} id={cat.id} style={styles.category}>
+              {newItems.includes(cat.items[0]?.[0]) && <div className="new-badge">NEW</div>}
               <h3 style={styles.categoryTitle}>{cat.title}</h3>
-              {cat.items.map(([name, price], j) => (
+              {cat.items.map(([name, price, isNew], j) => (
                 <div key={j} style={styles.menuItem}>
                   <p>{name}</p>
                   <span>{price}</span>
+                  {isNew && <div className="new-badge">NEW</div>}
                 </div>
               ))}
             </div>
           ))}
         </div>
       </section>
-
       <a
         href="https://wa.me/254748778388?text=Hi%20Settlers%20Inn%2C%20I%20want%20to%20order%20food"
         target="_blank"
@@ -383,11 +475,9 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       >
         💬
       </a>
-
       <Footer />
     </div>
   );
 };
 
 export default Menu;
-

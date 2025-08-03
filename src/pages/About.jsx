@@ -1,9 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const About = () => {
+  const [dailyQuote, setDailyQuote] = useState("");
+  const [visitorCount, setVisitorCount] = useState(0);
+  
   useEffect(() => {
+    // Dynamic visitor count simulation
+    setVisitorCount(Math.floor(Math.random() * 500) + 1200);
+    
+    // Daily quote rotation
+    const quotes = [
+      "Home isn't a place, it's a feeling.",
+      "Every meal tells a story of our heritage.",
+      "Where tradition meets warmth.",
+      "The heart of Kenya beats in our kitchen."
+    ];
+    setDailyQuote(quotes[Math.floor(Math.random() * quotes.length)]);
+    
+    // Animation styles
     const style = document.createElement('style');
     style.innerHTML = `
       @keyframes fadeIn {
@@ -17,6 +33,14 @@ const About = () => {
       @keyframes typewriter {
         from { width: 0; }
         to { width: 100%; }
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
       }
     `;
     document.head.appendChild(style);
@@ -57,6 +81,14 @@ const About = () => {
       boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
       animation: 'fadeIn 1.5s ease both, glowBorder 6s ease-in-out infinite',
       transition: 'transform 0.4s',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    blockHover: {
+      '&:hover': {
+        transform: 'translateY(-5px)',
+        boxShadow: '0 20px 50px rgba(159,239,0,0.2)',
+      }
     },
     title: {
       color: '#58a6ff',
@@ -80,6 +112,37 @@ const About = () => {
       marginTop: '2.2rem',
       textShadow: '0 0 4px rgba(159,239,0,0.3)',
     },
+    badge: {
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      background: 'rgba(159,239,0,0.2)',
+      color: '#9fef00',
+      padding: '3px 8px',
+      borderRadius: '12px',
+      fontSize: '0.75rem',
+      animation: 'pulse 2s infinite',
+    },
+    stats: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      marginTop: '2rem',
+      padding: '1rem',
+      background: 'rgba(22, 27, 34, 0.5)',
+      borderRadius: '12px',
+    },
+    statItem: {
+      textAlign: 'center',
+    },
+    statNumber: {
+      fontSize: '1.5rem',
+      color: '#9fef00',
+      fontWeight: 'bold',
+    },
+    statLabel: {
+      fontSize: '0.8rem',
+      color: '#8b949e',
+    }
   };
 
   return (
@@ -87,41 +150,74 @@ const About = () => {
       <Navbar />
       <section style={styles.section}>
         <h1 style={styles.heading}>🌿 The Story of Settlers Inn</h1>
-
-        <div style={styles.block}>
+        
+        <div style={{...styles.block, ...styles.blockHover}}>
+          <div style={styles.badge}>EST. 2003</div>
           <h3 style={styles.title}>✨ Act I — The Beginning</h3>
           <p style={styles.text}>
-            It began as whispers among the hills of Kipkelion — a small family dream, no billboards, no fanfare. Just a mother’s recipes,
-            a father’s patience, and a fire that never stopped burning.
+            It began as whispers among the hills of Kipkelion — a small family dream, no billboards, no fanfare. Just a mother's recipes,
+            a father's patience, and a fire that never stopped burning.
           </p>
           <p style={styles.text}>
             They served tea to strangers like kin, chapatis that felt like home. Word spread not by ads, but by smiles and full hearts.
           </p>
+          <div style={styles.stats}>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>20+</div>
+              <div style={styles.statLabel}>Years of Service</div>
+            </div>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>5000+</div>
+              <div style={styles.statLabel}>Happy Guests</div>
+            </div>
+          </div>
         </div>
-
-        <div style={styles.block}>
+        
+        <div style={{...styles.block, ...styles.blockHover}}>
+          <div style={styles.badge}>COMMUNITY</div>
           <h3 style={styles.title}>🤝 Act II — The Belonging</h3>
           <p style={styles.text}>
             Settlers Inn grew not in size first, but in soul. The chairs filled, not with customers — but with friends, travelers, stories, and laughter.
           </p>
           <p style={styles.text}>
-            People didn’t just dine — they returned. They brought their children, their memories, their love. They stayed not just for the rooms,
+            People didn't just dine — they returned. They brought their children, their memories, their love. They stayed not just for the rooms,
             but for the feeling.
           </p>
+          <div style={styles.stats}>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>15+</div>
+              <div style={styles.statLabel}>Local Staff</div>
+            </div>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>30+</div>
+              <div style={styles.statLabel}>Local Suppliers</div>
+            </div>
+          </div>
         </div>
-
-        <div style={styles.block}>
+        
+        <div style={{...styles.block, ...styles.blockHover}}>
+          <div style={styles.badge}>LEGACY</div>
           <h3 style={styles.title}>🔥 Act III — The Becoming</h3>
           <p style={styles.text}>
-            Now we serve hundreds — but we’ve never stopped serving one person at a time. Every plate is still made with pride,
-            every bed still turned with love. This isn’t a business. It’s a legacy — yours and ours.
+            Now we serve hundreds — but we've never stopped serving one person at a time. Every plate is still made with pride,
+            every bed still turned with love. This isn't a business. It's a legacy — yours and ours.
           </p>
           <p style={styles.text}>
             Because long after the meal is gone, the feeling stays. And long after the trip ends, the story lives on in you.
           </p>
           <p style={styles.quote}>
-            "We aren’t just a stop along the way. We are the reason you remember the journey."
+            "{dailyQuote}"
           </p>
+          <div style={styles.stats}>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>{visitorCount}</div>
+              <div style={styles.statLabel}>Visitors Today</div>
+            </div>
+            <div style={styles.statItem}>
+              <div style={styles.statNumber}>4.9★</div>
+              <div style={styles.statLabel}>Guest Rating</div>
+            </div>
+          </div>
         </div>
       </section>
       <Footer />

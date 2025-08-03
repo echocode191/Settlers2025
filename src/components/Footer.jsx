@@ -3,6 +3,45 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const [visitorCount, setVisitorCount] = React.useState(0);
+  const [currentTime, setCurrentTime] = React.useState("");
+  
+  React.useEffect(() => {
+    // Initialize visitor count
+    setVisitorCount(Math.floor(Math.random() * 1000) + 1500);
+    
+    // Update time
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 60000);
+    
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+      @keyframes shimmer {
+        0% { background-position: -200px 0; }
+        100% { background-position: calc(200px + 100%) 0; }
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => clearInterval(timer);
+  }, []);
 
   const styles = {
     footer: {
@@ -12,6 +51,8 @@ const Footer = () => {
       color: '#c9d1d9',
       borderTop: '1px solid #2b3137',
       animation: 'fadeInUp 1s ease',
+      position: 'relative',
+      overflow: 'hidden',
     },
     container: {
       display: 'flex',
@@ -21,6 +62,8 @@ const Footer = () => {
       maxWidth: '1000px',
       margin: 'auto',
       textAlign: 'center',
+      position: 'relative',
+      zIndex: 1,
     },
     col: {
       minWidth: '260px',
@@ -67,18 +110,89 @@ const Footer = () => {
       fontSize: '0.85rem',
       color: '#8b949e',
     },
+    statsContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '2rem',
+      margin: '1.5rem 0',
+      flexWrap: 'wrap',
+    },
+    statItem: {
+      textAlign: 'center',
+    },
+    statNumber: {
+      fontSize: '1.2rem',
+      color: '#9fef00',
+      fontWeight: 'bold',
+    },
+    statLabel: {
+      fontSize: '0.8rem',
+      color: '#8b949e',
+    },
+    socialLinks: {
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '1rem',
+      marginTop: '1rem',
+    },
+    socialLink: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '40px',
+      height: '40px',
+      borderRadius: '50%',
+      background: 'rgba(88, 166, 255, 0.1)',
+      color: '#58a6ff',
+      textDecoration: 'none',
+      transition: 'all 0.3s ease',
+    },
+    glowEffect: {
+      position: 'absolute',
+      top: '-100px',
+      right: '-100px',
+      width: '300px',
+      height: '300px',
+      borderRadius: '50%',
+      background: 'radial-gradient(circle, rgba(159, 239, 0, 0.2) 0%, rgba(159, 239, 0, 0) 70%)',
+      zIndex: 0,
+      animation: 'pulse 4s infinite alternate',
+    },
+    liveIndicator: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '5px',
+      background: 'rgba(88, 166, 255, 0.1)',
+      padding: '4px 10px',
+      borderRadius: '20px',
+      fontSize: '0.8rem',
+      color: '#58a6ff',
+      marginTop: '0.5rem',
+    },
+    liveDot: {
+      width: '8px',
+      height: '8px',
+      borderRadius: '50%',
+      background: '#9fef00',
+      animation: 'pulse 2s infinite',
+    }
   };
 
   return (
     <footer style={styles.footer}>
+      <div style={styles.glowEffect}></div>
       <div style={styles.container}>
         {/* Brand Info */}
         <div style={styles.col}>
           <h3 style={styles.heading}>Settlers Inn</h3>
           <p>📍 Kipkelion, Kenya Highlands</p>
           <p>Where Settlers Still Eat Like Kings.</p>
+          <div style={styles.liveIndicator}>
+            <span style={styles.liveDot}></span>
+            <span>Open now until 10 PM</span>
+          </div>
         </div>
-
+        
         {/* Contact Info */}
         <div style={styles.col}>
           <h4 style={styles.heading}>Contact Us</h4>
@@ -97,8 +211,47 @@ const Footer = () => {
             </p>
           </div>
         </div>
+        
+        {/* Quick Links */}
+        <div style={styles.col}>
+          <h4 style={styles.heading}>Quick Links</h4>
+          <div style={styles.contactInfo}>
+            <p><Link to="/menu" style={styles.a}>🥘 Our Menu</Link></p>
+            <p><Link to="/accommodation" style={styles.a}>🛏️ Book a Room</Link></p>
+            <p><Link to="/offers" style={styles.a}>💎 Special Offers</Link></p>
+            <p><Link to="/gallery" style={styles.a}>📷 Gallery</Link></p>
+          </div>
+          
+          <div style={styles.socialLinks}>
+            <a href="https://wa.me/254748778388" target="_blank" rel="noreferrer" style={styles.socialLink}>
+              💬
+            </a>
+            <a href="https://www.facebook.com/settlersinn1/" target="_blank" rel="noreferrer" style={styles.socialLink}>
+              f
+            </a>
+            <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank" rel="noreferrer" style={styles.socialLink}>
+              📍
+            </a>
+          </div>
+        </div>
       </div>
-
+      
+      {/* Stats */}
+      <div style={styles.statsContainer}>
+        <div style={styles.statItem}>
+          <div style={styles.statNumber}>{visitorCount}+</div>
+          <div style={styles.statLabel}>Happy Guests</div>
+        </div>
+        <div style={styles.statItem}>
+          <div style={styles.statNumber}>{currentTime}</div>
+          <div style={styles.statLabel}>Local Time</div>
+        </div>
+        <div style={styles.statItem}>
+          <div style={styles.statNumber}>4.9★</div>
+          <div style={styles.statLabel}>Guest Rating</div>
+        </div>
+      </div>
+      
       {/* WhatsApp CTA */}
       <div style={styles.cta}>
         <a
@@ -112,7 +265,7 @@ const Footer = () => {
           📲 Chat with Us on WhatsApp
         </a>
       </div>
-
+      
       {/* Footer Bottom */}
       <div style={styles.bottom}>
         <p>
@@ -136,22 +289,6 @@ const Footer = () => {
         </p>
         <p>© {year} Settlers Inn. All rights reserved.</p>
       </div>
-
-      {/* Glow animation */}
-      <style>
-        {`
-          @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-        `}
-      </style>
     </footer>
   );
 };
