@@ -117,6 +117,13 @@ const Navbar = () => {
           font-size: 1.6rem;
           color: #38bdf8;
           cursor: pointer;
+          padding: 5px;
+          border-radius: 4px;
+          transition: background-color 0.2s;
+        }
+        
+        .navbar-menu-btn:hover {
+          background-color: rgba(56, 189, 248, 0.1);
         }
         
         .navbar-back-btn {
@@ -126,6 +133,13 @@ const Navbar = () => {
           cursor: pointer;
           border: none;
           background: none;
+          padding: 5px;
+          border-radius: 4px;
+          transition: background-color 0.2s;
+        }
+        
+        .navbar-back-btn:hover {
+          background-color: rgba(56, 189, 248, 0.1);
         }
         
         .navbar-status-container {
@@ -175,6 +189,12 @@ const Navbar = () => {
           font-size: 1.2rem;
           cursor: pointer;
           padding: 5px;
+          border-radius: 4px;
+          transition: background-color 0.2s;
+        }
+        
+        .navbar-notification-btn:hover {
+          background-color: rgba(56, 189, 248, 0.1);
         }
         
         .navbar-mobile-header {
@@ -183,9 +203,18 @@ const Navbar = () => {
         }
         
         .navbar-mobile-status {
-          display: flex;
+          display: none;
           align-items: center;
           gap: 1rem;
+        }
+        
+        .navbar-mobile-nav-status {
+          display: none;
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          width: 100%;
+          justify-content: space-between;
         }
         
         /* Mobile styles */
@@ -243,6 +272,10 @@ const Navbar = () => {
           }
           
           .navbar-mobile-status {
+            display: flex;
+          }
+          
+          .navbar-mobile-nav-status {
             display: flex;
           }
         }
@@ -357,6 +390,8 @@ const Navbar = () => {
           <button 
             className="navbar-menu-btn" 
             onClick={toggleMenu}
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
           >
             {menuOpen ? '✕' : '☰'}
           </button>
@@ -389,24 +424,18 @@ const Navbar = () => {
             className={({ isActive }) =>
               `navbar-nav-link ${isActive ? 'active' : ''}`
             }
+            onClick={() => setMenuOpen(false)} // Close menu when link is clicked
           >
             {label}
           </NavLink>
         ))}
         
-        <div className="navbar-status-item" style={{ 
-          marginTop: '1rem', 
-          paddingTop: '1rem', 
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-          width: '100%',
-          display: 'none',
-          justifyContent: 'space-between'
-        }} id="mobile-nav-status">
-          <div>
+        <div className="navbar-mobile-nav-status">
+          <div className="navbar-status-item">
             <span className="navbar-status-dot"></span>
             <span>{visitorCount} visitors</span>
           </div>
-          <div>
+          <div className="navbar-status-item">
             <span>🕒 {currentTime}</span>
           </div>
         </div>
