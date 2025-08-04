@@ -14,6 +14,7 @@ const Home = () => {
   const [newContentCount, setNewContentCount] = useState(0);
   const [activeDish, setActiveDish] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   
   const welcomingPhrases = [
     "🍲 Authentic flavors, memorable experiences",
@@ -154,6 +155,16 @@ const Home = () => {
           margin-bottom: 80px; /* Space for stats container */
         }
         
+        .hero-background {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: -2;
+          background: url('/assets/hero-fallback.jpg') center/cover;
+        }
+        
         .hero-video {
           position: absolute;
           top: 0;
@@ -164,17 +175,14 @@ const Home = () => {
           z-index: -1;
         }
         
-        /* Fallback background for when video fails to load */
-        .hero-section::before {
-          content: '';
+        .hero-overlay {
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)), 
-                      url('/assets/hero-fallback.jpg') center/cover;
-          z-index: -2;
+          background: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.8));
+          z-index: -1;
         }
         
         .hero-content {
@@ -938,6 +946,10 @@ const Home = () => {
     }
   };
   
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
+  
   return (
     <div className="home-container">
       <Navbar />
@@ -960,16 +972,25 @@ const Home = () => {
       )}
       
       <section className="hero-section">
+        {/* Background image as fallback */}
+        <div className="hero-background"></div>
+        
+        {/* Video overlay */}
+        <div className="hero-overlay"></div>
+        
+        {/* Video element */}
         <video 
           className="hero-video" 
           autoPlay 
           muted 
           loop 
           playsInline 
-          preload="none"
-          poster="/assets/hero-fallback.jpg" /* Add fallback image */
+          preload="metadata"
+          poster="/assets/hero-fallback.jpg"
+          onLoadedData={handleVideoLoad}
         >
           <source src="/assets/settlers.mp4" type="video/mp4" />
+          <source src="/assets/settlers.webm" type="video/webm" />
           Your browser does not support the video tag.
         </video>
         
