@@ -72,6 +72,7 @@ const Navbar = () => {
           display: flex;
           align-items: center;
           gap: 0.8rem;
+          flex-shrink: 0; /* Prevent brand from shrinking */
         }
         
         .navbar-logo {
@@ -120,6 +121,7 @@ const Navbar = () => {
           padding: 5px;
           border-radius: 4px;
           transition: background-color 0.2s;
+          flex-shrink: 0; /* Prevent button from shrinking */
         }
         
         .navbar-menu-btn:hover {
@@ -136,6 +138,7 @@ const Navbar = () => {
           padding: 5px;
           border-radius: 4px;
           transition: background-color 0.2s;
+          flex-shrink: 0; /* Prevent button from shrinking */
         }
         
         .navbar-back-btn:hover {
@@ -162,6 +165,7 @@ const Navbar = () => {
           border-radius: 50%;
           background: #38bdf8;
           animation: subtlePulse 2s infinite;
+          flex-shrink: 0; /* Prevent dot from shrinking */
         }
         
         .navbar-notification-badge {
@@ -191,6 +195,7 @@ const Navbar = () => {
           padding: 5px;
           border-radius: 4px;
           transition: background-color 0.2s;
+          flex-shrink: 0; /* Prevent button from shrinking */
         }
         
         .navbar-notification-btn:hover {
@@ -205,7 +210,7 @@ const Navbar = () => {
         .navbar-mobile-status {
           display: none;
           align-items: center;
-          gap: 1rem;
+          gap: 0.8rem; /* Reduced gap for small screens */
         }
         
         .navbar-mobile-nav-status {
@@ -217,7 +222,34 @@ const Navbar = () => {
           justify-content: space-between;
         }
         
-        /* Mobile styles */
+        /* Desktop styles */
+        @media (min-width: 769px) {
+          .navbar-mobile-header {
+            display: none !important;
+          }
+          
+          .navbar-mobile-status {
+            display: none !important;
+          }
+          
+          .navbar-mobile-nav-status {
+            display: none !important;
+          }
+          
+          .navbar-status-container {
+            display: flex !important;
+          }
+          
+          .navbar-nav-container {
+            display: flex !important;
+          }
+          
+          .navbar-menu-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Tablet styles */
         @media (max-width: 768px) {
           .navbar-header {
             padding: 0.8rem 1rem;
@@ -269,6 +301,7 @@ const Navbar = () => {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
           }
           
           .navbar-mobile-status {
@@ -280,7 +313,7 @@ const Navbar = () => {
           }
         }
         
-        /* Small mobile styles */
+        /* Mobile styles */
         @media (max-width: 480px) {
           .navbar-header {
             padding: 0.6rem 0.8rem;
@@ -296,6 +329,7 @@ const Navbar = () => {
           
           .navbar-menu-btn {
             font-size: 1.4rem;
+            padding: 4px; /* Reduced padding */
           }
           
           .navbar-nav-container {
@@ -316,6 +350,7 @@ const Navbar = () => {
           
           .navbar-notification-btn {
             font-size: 1.1rem;
+            padding: 4px; /* Reduced padding */
           }
           
           .navbar-notification-badge {
@@ -324,6 +359,63 @@ const Navbar = () => {
             font-size: 0.65rem;
             top: -4px;
             right: -4px;
+          }
+        }
+        
+        /* Very small mobile styles */
+        @media (max-width: 333px) {
+          .navbar-header {
+            padding: 0.5rem 0.6rem; /* Further reduced padding */
+          }
+          
+          .navbar-logo {
+            height: 25px; /* Smaller logo */
+          }
+          
+          .navbar-title {
+            font-size: 1rem; /* Smaller title */
+          }
+          
+          .navbar-menu-btn {
+            font-size: 1.2rem; /* Slightly smaller but still visible */
+            padding: 3px; /* Minimal padding */
+          }
+          
+          .navbar-back-btn {
+            font-size: 1.2rem; /* Smaller back button */
+            padding: 3px;
+            margin-right: 0.5rem; /* Reduced margin */
+          }
+          
+          .navbar-mobile-status {
+            gap: 0.6rem; /* Further reduced gap */
+          }
+          
+          .navbar-mobile-status .navbar-status-item {
+            font-size: 0.75rem; /* Even smaller text */
+            gap: 0.4rem;
+          }
+          
+          .navbar-notification-btn {
+            font-size: 1rem; /* Smaller notification button */
+            padding: 3px;
+          }
+          
+          .navbar-notification-badge {
+            min-width: 14px;
+            height: 14px;
+            font-size: 0.6rem;
+            top: -3px;
+            right: -3px;
+          }
+          
+          .navbar-nav-container {
+            padding: 0.6rem; /* Reduced padding */
+          }
+          
+          .navbar-nav-link {
+            padding: 8px 10px; /* Reduced padding */
+            font-size: 0.9rem;
           }
         }
       `;
@@ -362,6 +454,7 @@ const Navbar = () => {
             <button 
               className="navbar-back-btn" 
               onClick={() => navigate(-1)}
+              aria-label="Go back"
             >
               ←
             </button>
@@ -379,7 +472,7 @@ const Navbar = () => {
             <span className="navbar-status-dot"></span>
             <span>{visitorCount}</span>
           </div>
-          <button className="navbar-notification-btn">
+          <button className="navbar-notification-btn" aria-label="Notifications">
             🔔
             {notificationCount > 0 && (
               <span className="navbar-notification-badge">
@@ -406,7 +499,7 @@ const Navbar = () => {
         <div className="navbar-status-item">
           <span>🕒 {currentTime}</span>
         </div>
-        <button className="navbar-notification-btn">
+        <button className="navbar-notification-btn" aria-label="Notifications">
           🔔
           {notificationCount > 0 && (
             <span className="navbar-notification-badge">
