@@ -3,22 +3,17 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [visitorCount, setVisitorCount] = useState(0);
   const [currentTime, setCurrentTime] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
   
-  // Check for very small mobile devices
-  const isSmallMobile = windowWidth < 480;
-  
   useEffect(() => {
-    // Initialize visitor count - more realistic for a hotel since 2021
+    // Initialize visitor count
     setVisitorCount(Math.floor(Math.random() * 50) + 15);
     
     // Update time
@@ -32,16 +27,7 @@ const Navbar = () => {
     // Simulate notifications
     const notificationInterval = setInterval(() => {
       setNotificationCount(prev => prev + 1);
-    }, 45000); // Every 45 seconds
-    
-    // Handle window resize
-    const handleResize = () => {
-      const width = window.innerWidth;
-      setWindowWidth(width);
-      setIsMobile(width < 768);
-    };
-    handleResize(); // Initialize on mount
-    window.addEventListener('resize', handleResize);
+    }, 45000);
     
     // Handle scroll for navbar effect
     const handleScroll = () => {
@@ -61,63 +47,250 @@ const Navbar = () => {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.8; }
         }
-        @keyframes slideIn {
-          from { transform: translateX(100%); }
-          to { transform: translateX(0); }
+        
+        /* Base styles */
+        .navbar-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 1.5rem;
+          background: rgba(15, 23, 42, 0.9);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(12px);
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          transition: all 0.3s ease;
         }
         
-        /* Mobile-specific responsive styles */
+        .navbar-header.scrolled {
+          background: rgba(15, 23, 42, 0.95);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+        }
+        
+        .navbar-logo {
+          height: 45px;
+          transition: transform 0.3s ease;
+        }
+        
+        .navbar-title {
+          font-size: 1.4rem;
+          color: #e2e8f0;
+          margin: 0;
+          white-space: nowrap;
+          font-weight: 600;
+        }
+        
+        .navbar-nav-container {
+          display: flex;
+          flex-direction: row;
+          gap: 1.2rem;
+          align-items: center;
+        }
+        
+        .navbar-nav-link {
+          color: #cbd5e1;
+          text-decoration: none;
+          font-size: 1rem;
+          padding: 8px 12px;
+          border-radius: 10px;
+          transition: all 0.2s ease-in-out;
+          font-weight: 500;
+        }
+        
+        .navbar-nav-link.active {
+          background-color: rgba(56, 189, 248, 0.2);
+          color: #38bdf8;
+          font-weight: 600;
+        }
+        
+        .navbar-menu-btn {
+          display: none;
+          background: none;
+          border: none;
+          font-size: 1.6rem;
+          color: #38bdf8;
+          cursor: pointer;
+        }
+        
+        .navbar-back-btn {
+          font-size: 1.4rem;
+          color: #38bdf8;
+          margin-right: 0.8rem;
+          cursor: pointer;
+          border: none;
+          background: none;
+        }
+        
+        .navbar-status-container {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        
+        .navbar-status-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.85rem;
+          color: #94a3b8;
+        }
+        
+        .navbar-status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #38bdf8;
+          animation: subtlePulse 2s infinite;
+        }
+        
+        .navbar-notification-badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background: rgba(239, 68, 68, 0.9);
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          min-width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: subtlePulse 2s infinite;
+        }
+        
+        .navbar-notification-btn {
+          position: relative;
+          background: none;
+          border: none;
+          color: #38bdf8;
+          font-size: 1.2rem;
+          cursor: pointer;
+          padding: 5px;
+        }
+        
+        .navbar-mobile-header {
+          display: none;
+          width: 100%;
+        }
+        
+        .navbar-mobile-status {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+          .navbar-header {
+            padding: 0.8rem 1rem;
+            flex-wrap: wrap;
+          }
+          
+          .navbar-logo {
+            height: 35px;
+          }
+          
+          .navbar-title {
+            font-size: 1.2rem;
+          }
+          
+          .navbar-menu-btn {
+            display: block;
+          }
+          
+          .navbar-nav-container {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-start;
+            width: 100%;
+            padding: 1rem;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 16px 16px;
+            animation: fadeInDown 0.3s ease;
+            z-index: 999;
+            max-height: 60vh;
+            overflow-y: auto;
+          }
+          
+          .navbar-nav-container.open {
+            display: flex;
+          }
+          
+          .navbar-status-container {
+            display: none;
+          }
+          
+          .navbar-mobile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          
+          .navbar-mobile-status {
+            display: flex;
+          }
+        }
+        
+        /* Small mobile styles */
         @media (max-width: 480px) {
-          .mobile-header {
-            padding: 0.6rem 0.8rem !important;
+          .navbar-header {
+            padding: 0.6rem 0.8rem;
           }
           
-          .mobile-logo {
-            height: 30px !important;
+          .navbar-logo {
+            height: 30px;
           }
           
-          .mobile-title {
-            font-size: 1.1rem !important;
+          .navbar-title {
+            font-size: 1.1rem;
           }
           
-          .mobile-menu-btn {
-            font-size: 1.4rem !important;
+          .navbar-menu-btn {
+            font-size: 1.4rem;
           }
           
-          .mobile-nav-container {
-            max-height: 70vh !important;
-            overflow-y: auto !important;
-            padding: 0.8rem !important;
+          .navbar-nav-container {
+            padding: 0.8rem;
+            max-height: 70vh;
           }
           
-          .mobile-nav-link {
-            padding: 10px 12px !important;
-            font-size: 1rem !important;
-            margin-bottom: 4px !important;
+          .navbar-nav-link {
+            padding: 10px 12px;
+            font-size: 1rem;
+            margin-bottom: 4px;
           }
           
-          .mobile-status-container {
-            font-size: 0.8rem !important;
-            gap: 0.6rem !important;
+          .navbar-mobile-status .navbar-status-item {
+            font-size: 0.8rem;
+            gap: 0.6rem;
           }
           
-          .mobile-notification-btn {
-            font-size: 1.1rem !important;
+          .navbar-notification-btn {
+            font-size: 1.1rem;
           }
           
-          .mobile-notification-badge {
-            min-width: 16px !important;
-            height: 16px !important;
-            font-size: 0.65rem !important;
-            top: -4px !important;
-            right: -4px !important;
-          }
-        }
-        
-        @media (min-width: 481px) and (max-width: 768px) {
-          .mobile-nav-container {
-            max-height: 60vh !important;
-            overflow-y: auto !important;
+          .navbar-notification-badge {
+            min-width: 16px;
+            height: 16px;
+            font-size: 0.65rem;
+            top: -4px;
+            right: -4px;
           }
         }
       `;
@@ -127,7 +300,6 @@ const Navbar = () => {
     return () => {
       clearInterval(timer);
       clearInterval(notificationInterval);
-      window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -149,167 +321,13 @@ const Navbar = () => {
     { to: '/offers', label: '💎 Offers' },
   ];
   
-  // Styles with modern glassy design
-  const getStyles = () => {
-    const isSmallMobile = windowWidth < 480;
-    const isMobile = windowWidth < 768;
-    
-    return {
-      header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: isSmallMobile ? '0.6rem 0.8rem' : (isMobile ? '0.8rem 1rem' : '1rem 1.5rem'),
-        background: isScrolled 
-          ? 'rgba(15, 23, 42, 0.95)' 
-          : 'rgba(15, 23, 42, 0.9)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(12px)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 1000,
-        flexWrap: 'wrap',
-        transition: 'all 0.3s ease',
-        boxShadow: isScrolled 
-          ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
-          : 'none',
-      },
-      brand: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: isSmallMobile ? '0.5rem' : '0.8rem',
-      },
-      logo: {
-        height: isSmallMobile ? '30px' : (isMobile ? '35px' : '45px'),
-        transition: 'transform 0.3s ease',
-      },
-      title: {
-        fontSize: isSmallMobile ? '1.1rem' : (isMobile ? '1.2rem' : '1.4rem'),
-        color: '#e2e8f0',
-        margin: 0,
-        whiteSpace: 'nowrap',
-        fontWeight: '600',
-      },
-      navContainer: {
-        display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        gap: isMobile ? '0.3rem' : '1.2rem',
-        alignItems: isMobile ? 'flex-start' : 'center',
-        width: isMobile ? '100%' : 'auto',
-        paddingTop: isMobile ? '0.8rem' : '0',
-        position: isMobile ? 'absolute' : 'static',
-        top: '100%',
-        left: '0',
-        right: '0',
-        background: isMobile ? 'rgba(15, 23, 42, 0.98)' : 'transparent',
-        backdropFilter: isMobile ? 'blur(12px)' : 'none',
-        padding: isMobile ? '0.8rem' : '0',
-        borderBottom: isMobile ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
-        borderRadius: isMobile ? '0 0 16px 16px' : '0',
-        animation: isMobile && menuOpen ? 'fadeInDown 0.3s ease' : 'none',
-        zIndex: 999,
-        maxHeight: isMobile ? '70vh' : 'none',
-        overflowY: isMobile ? 'auto' : 'visible',
-      },
-      navLink: {
-        color: '#cbd5e1',
-        textDecoration: 'none',
-        fontSize: isSmallMobile ? '1rem' : '1rem',
-        padding: isSmallMobile ? '10px 12px' : '8px 12px',
-        borderRadius: '10px',
-        transition: 'all 0.2s ease-in-out',
-        position: 'relative',
-        fontWeight: '500',
-        marginBottom: isSmallMobile ? '4px' : '0',
-      },
-      navLinkActive: {
-        backgroundColor: 'rgba(56, 189, 248, 0.2)',
-        color: '#38bdf8',
-        fontWeight: '600',
-      },
-      menuBtn: {
-        display: 'block',
-        background: 'none',
-        border: 'none',
-        fontSize: isSmallMobile ? '1.4rem' : '1.6rem',
-        color: '#38bdf8',
-        cursor: 'pointer',
-        transition: 'transform 0.3s ease',
-      },
-      backBtn: {
-        fontSize: isSmallMobile ? '1.2rem' : '1.4rem',
-        color: '#38bdf8',
-        marginRight: isSmallMobile ? '0.5rem' : '0.8rem',
-        cursor: 'pointer',
-        border: 'none',
-        background: 'none',
-        transition: 'transform 0.3s ease',
-      },
-      statusContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: isSmallMobile ? '0.6rem' : '1rem',
-      },
-      statusItem: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        fontSize: isSmallMobile ? '0.8rem' : '0.85rem',
-        color: '#94a3b8',
-      },
-      statusDot: {
-        width: '8px',
-        height: '8px',
-        borderRadius: '50%',
-        background: '#38bdf8',
-        animation: 'subtlePulse 2s infinite',
-      },
-      notificationBadge: {
-        position: 'absolute',
-        top: isSmallMobile ? '-4px' : '-5px',
-        right: isSmallMobile ? '-4px' : '-5px',
-        background: 'rgba(239, 68, 68, 0.9)',
-        color: 'white',
-        fontSize: isSmallMobile ? '0.65rem' : '0.7rem',
-        fontWeight: '600',
-        minWidth: isSmallMobile ? '16px' : '18px',
-        height: isSmallMobile ? '16px' : '18px',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        animation: 'subtlePulse 2s infinite',
-        backdropFilter: 'blur(4px)',
-      },
-      notificationButton: {
-        position: 'relative',
-        background: 'none',
-        border: 'none',
-        color: '#38bdf8',
-        fontSize: isSmallMobile ? '1.1rem' : '1.2rem',
-        cursor: 'pointer',
-        padding: '5px',
-        borderRadius: '50%',
-        transition: 'all 0.2s ease',
-      },
-      mobileHeader: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }
-    };
-  };
-  
-  const styles = getStyles();
-  
   return (
-    <header style={styles.header} className={isMobile ? "mobile-header" : ""}>
-      <div style={isMobile ? styles.mobileHeader : {}}>
-        <div style={styles.brand}>
+    <header className={`navbar-header ${isScrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-mobile-header">
+        <div className="navbar-brand">
           {!isHome && (
             <button 
-              style={styles.backBtn} 
+              className="navbar-back-btn" 
               onClick={() => navigate(-1)}
             >
               ←
@@ -318,91 +336,80 @@ const Navbar = () => {
           <img 
             src="/assets/logo.png" 
             alt="Settlers Inn Logo" 
-            style={styles.logo}
-            className={isMobile ? "mobile-logo" : ""}
+            className="navbar-logo"
           />
-          <h1 style={styles.title} className={isMobile ? "mobile-title" : ""}>Settlers Inn</h1>
+          <h1 className="navbar-title">Settlers Inn</h1>
         </div>
         
-        {isMobile && (
-          <div style={styles.statusContainer} className="mobile-status-container">
-            <div style={styles.statusItem}>
-              <span style={styles.statusDot}></span>
-              <span>{visitorCount}</span>
-            </div>
-            <button style={styles.notificationButton} className="mobile-notification-btn">
-              🔔
-              {notificationCount > 0 && (
-                <span style={styles.notificationBadge} className="mobile-notification-badge">
-                  {notificationCount > 9 ? '9+' : notificationCount}
-                </span>
-              )}
-            </button>
-            <button 
-              style={styles.menuBtn} 
-              onClick={toggleMenu}
-              className="mobile-menu-btn"
-            >
-              {menuOpen ? '✕' : '☰'}
-            </button>
+        <div className="navbar-mobile-status">
+          <div className="navbar-status-item">
+            <span className="navbar-status-dot"></span>
+            <span>{visitorCount}</span>
           </div>
-        )}
-      </div>
-      
-      {!isMobile && (
-        <div style={styles.statusContainer}>
-          <div style={styles.statusItem}>
-            <span style={styles.statusDot}></span>
-            <span>{visitorCount} visitors online</span>
-          </div>
-          <div style={styles.statusItem}>
-            <span>🕒 {currentTime}</span>
-          </div>
-          <button style={styles.notificationButton}>
+          <button className="navbar-notification-btn">
             🔔
             {notificationCount > 0 && (
-              <span style={styles.notificationBadge}>
+              <span className="navbar-notification-badge">
                 {notificationCount > 9 ? '9+' : notificationCount}
               </span>
             )}
           </button>
+          <button 
+            className="navbar-menu-btn" 
+            onClick={toggleMenu}
+          >
+            {menuOpen ? '✕' : '☰'}
+          </button>
         </div>
-      )}
+      </div>
       
-      <nav style={styles.navContainer} className={isMobile ? "mobile-nav-container" : ""}>
+      <div className="navbar-status-container">
+        <div className="navbar-status-item">
+          <span className="navbar-status-dot"></span>
+          <span>{visitorCount} visitors online</span>
+        </div>
+        <div className="navbar-status-item">
+          <span>🕒 {currentTime}</span>
+        </div>
+        <button className="navbar-notification-btn">
+          🔔
+          {notificationCount > 0 && (
+            <span className="navbar-notification-badge">
+              {notificationCount > 9 ? '9+' : notificationCount}
+            </span>
+          )}
+        </button>
+      </div>
+      
+      <nav className={`navbar-nav-container ${menuOpen ? 'open' : ''}`}>
         {navLinks.map(({ to, label }) => (
           <NavLink
             key={to}
             to={to}
-            style={({ isActive }) =>
-              isActive
-                ? { ...styles.navLink, ...styles.navLinkActive }
-                : styles.navLink
+            className={({ isActive }) =>
+              `navbar-nav-link ${isActive ? 'active' : ''}`
             }
-            className={isMobile ? "mobile-nav-link" : ""}
           >
             {label}
           </NavLink>
         ))}
         
-        {isMobile && (
-          <div style={{ 
-            marginTop: '1rem', 
-            paddingTop: '1rem', 
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-around'
-          }}>
-            <div style={styles.statusItem}>
-              <span style={styles.statusDot}></span>
-              <span>{visitorCount} visitors</span>
-            </div>
-            <div style={styles.statusItem}>
-              <span>🕒 {currentTime}</span>
-            </div>
+        <div className="navbar-status-item" style={{ 
+          marginTop: '1rem', 
+          paddingTop: '1rem', 
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+          width: '100%',
+          display: 'none',
+          justifyContent: 'space-between'
+        }} id="mobile-nav-status">
+          <div>
+            <span className="navbar-status-dot"></span>
+            <span>{visitorCount} visitors</span>
           </div>
-        )}
+          <div>
+            <span>🕒 {currentTime}</span>
+          </div>
+        </div>
       </nav>
     </header>
   );
