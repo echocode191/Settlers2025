@@ -8,6 +8,7 @@ const Navbar = () => {
   const [visitorCount, setVisitorCount] = useState(0);
   const [currentTime, setCurrentTime] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(0);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,7 +32,11 @@ const Navbar = () => {
     }, 45000); // Every 45 seconds
     
     // Handle window resize
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+      setIsMobile(width < 768);
+    };
     handleResize(); // Initialize on mount
     window.addEventListener('resize', handleResize);
     
@@ -41,7 +46,7 @@ const Navbar = () => {
     };
     window.addEventListener('scroll', handleScroll);
     
-    // Add CSS animations
+    // Add CSS animations and responsive styles
     if (typeof document !== 'undefined') {
       const style = document.createElement('style');
       style.innerHTML = `
@@ -56,6 +61,61 @@ const Navbar = () => {
         @keyframes slideIn {
           from { transform: translateX(100%); }
           to { transform: translateX(0); }
+        }
+        
+        /* Mobile-specific responsive styles */
+        @media (max-width: 480px) {
+          .mobile-header {
+            padding: 0.6rem 0.8rem !important;
+          }
+          
+          .mobile-logo {
+            height: 30px !important;
+          }
+          
+          .mobile-title {
+            font-size: 1.1rem !important;
+          }
+          
+          .mobile-menu-btn {
+            font-size: 1.4rem !important;
+          }
+          
+          .mobile-nav-container {
+            max-height: 70vh !important;
+            overflow-y: auto !important;
+            padding: 0.8rem !important;
+          }
+          
+          .mobile-nav-link {
+            padding: 10px 12px !important;
+            font-size: 1rem !important;
+            margin-bottom: 4px !important;
+          }
+          
+          .mobile-status-container {
+            font-size: 0.8rem !important;
+            gap: 0.6rem !important;
+          }
+          
+          .mobile-notification-btn {
+            font-size: 1.1rem !important;
+          }
+          
+          .mobile-notification-badge {
+            min-width: 16px !important;
+            height: 16px !important;
+            font-size: 0.65rem !important;
+            top: -4px !important;
+            right: -4px !important;
+          }
+        }
+        
+        @media (min-width: 481px) and (max-width: 768px) {
+          .mobile-nav-container {
+            max-height: 60vh !important;
+            overflow-y: auto !important;
+          }
         }
       `;
       document.head.appendChild(style);
@@ -86,13 +146,16 @@ const Navbar = () => {
     { to: '/offers', label: '💎 Offers' },
   ];
   
+  // Check for very small mobile devices
+  const isSmallMobile = windowWidth < 480;
+  
   // Styles with modern glassy design
   const styles = {
     header: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: isMobile ? '0.8rem 1rem' : '1rem 1.5rem',
+      padding: isSmallMobile ? '0.6rem 0.8rem' : (isMobile ? '0.8rem 1rem' : '1rem 1.5rem'),
       background: isScrolled 
         ? 'rgba(15, 23, 42, 0.95)' 
         : 'rgba(15, 23, 42, 0.9)',
@@ -110,14 +173,14 @@ const Navbar = () => {
     brand: {
       display: 'flex',
       alignItems: 'center',
-      gap: '0.8rem',
+      gap: isSmallMobile ? '0.5rem' : '0.8rem',
     },
     logo: {
-      height: isMobile ? '35px' : '45px',
+      height: isSmallMobile ? '30px' : (isMobile ? '35px' : '45px'),
       transition: 'transform 0.3s ease',
     },
     title: {
-      fontSize: isMobile ? '1.2rem' : '1.4rem',
+      fontSize: isSmallMobile ? '1.1rem' : (isMobile ? '1.2rem' : '1.4rem'),
       color: '#e2e8f0',
       margin: 0,
       whiteSpace: 'nowrap',
@@ -126,31 +189,34 @@ const Navbar = () => {
     navContainer: {
       display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
       flexDirection: isMobile ? 'column' : 'row',
-      gap: isMobile ? '0.5rem' : '1.2rem',
+      gap: isMobile ? '0.3rem' : '1.2rem',
       alignItems: isMobile ? 'flex-start' : 'center',
       width: isMobile ? '100%' : 'auto',
-      paddingTop: isMobile ? '1rem' : '0',
+      paddingTop: isMobile ? '0.8rem' : '0',
       position: isMobile ? 'absolute' : 'static',
       top: '100%',
       left: '0',
       right: '0',
       background: isMobile ? 'rgba(15, 23, 42, 0.98)' : 'transparent',
       backdropFilter: isMobile ? 'blur(12px)' : 'none',
-      padding: isMobile ? '1rem' : '0',
+      padding: isMobile ? '0.8rem' : '0',
       borderBottom: isMobile ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
       borderRadius: isMobile ? '0 0 16px 16px' : '0',
       animation: isMobile && menuOpen ? 'fadeInDown 0.3s ease' : 'none',
       zIndex: 999,
+      maxHeight: isMobile ? '70vh' : 'none',
+      overflowY: isMobile ? 'auto' : 'visible',
     },
     navLink: {
       color: '#cbd5e1',
       textDecoration: 'none',
-      fontSize: '1rem',
-      padding: '8px 12px',
+      fontSize: isSmallMobile ? '1rem' : '1rem',
+      padding: isSmallMobile ? '10px 12px' : '8px 12px',
       borderRadius: '10px',
       transition: 'all 0.2s ease-in-out',
       position: 'relative',
       fontWeight: '500',
+      marginBottom: isSmallMobile ? '4px' : '0',
     },
     navLinkActive: {
       backgroundColor: 'rgba(56, 189, 248, 0.2)',
@@ -161,15 +227,15 @@ const Navbar = () => {
       display: 'block',
       background: 'none',
       border: 'none',
-      fontSize: '1.6rem',
+      fontSize: isSmallMobile ? '1.4rem' : '1.6rem',
       color: '#38bdf8',
       cursor: 'pointer',
       transition: 'transform 0.3s ease',
     },
     backBtn: {
-      fontSize: '1.4rem',
+      fontSize: isSmallMobile ? '1.2rem' : '1.4rem',
       color: '#38bdf8',
-      marginRight: '0.8rem',
+      marginRight: isSmallMobile ? '0.5rem' : '0.8rem',
       cursor: 'pointer',
       border: 'none',
       background: 'none',
@@ -178,13 +244,13 @@ const Navbar = () => {
     statusContainer: {
       display: 'flex',
       alignItems: 'center',
-      gap: '1rem',
+      gap: isSmallMobile ? '0.6rem' : '1rem',
     },
     statusItem: {
       display: 'flex',
       alignItems: 'center',
       gap: '6px',
-      fontSize: '0.85rem',
+      fontSize: isSmallMobile ? '0.8rem' : '0.85rem',
       color: '#94a3b8',
     },
     statusDot: {
@@ -196,14 +262,14 @@ const Navbar = () => {
     },
     notificationBadge: {
       position: 'absolute',
-      top: '-5px',
-      right: '-5px',
+      top: isSmallMobile ? '-4px' : '-5px',
+      right: isSmallMobile ? '-4px' : '-5px',
       background: 'rgba(239, 68, 68, 0.9)',
       color: 'white',
-      fontSize: '0.7rem',
+      fontSize: isSmallMobile ? '0.65rem' : '0.7rem',
       fontWeight: '600',
-      minWidth: '18px',
-      height: '18px',
+      minWidth: isSmallMobile ? '16px' : '18px',
+      height: isSmallMobile ? '16px' : '18px',
       borderRadius: '50%',
       display: 'flex',
       alignItems: 'center',
@@ -216,7 +282,7 @@ const Navbar = () => {
       background: 'none',
       border: 'none',
       color: '#38bdf8',
-      fontSize: '1.2rem',
+      fontSize: isSmallMobile ? '1.1rem' : '1.2rem',
       cursor: 'pointer',
       padding: '5px',
       borderRadius: '50%',
@@ -231,7 +297,7 @@ const Navbar = () => {
   };
   
   return (
-    <header style={styles.header}>
+    <header style={styles.header} className={isMobile ? "mobile-header" : ""}>
       <div style={isMobile ? styles.mobileHeader : {}}>
         <div style={styles.brand}>
           {!isHome && (
@@ -246,25 +312,29 @@ const Navbar = () => {
             src="/assets/logo.png" 
             alt="Settlers Inn Logo" 
             style={styles.logo}
+            className={isMobile ? "mobile-logo" : ""}
           />
-          <h1 style={styles.title}>Settlers Inn</h1>
+          <h1 style={styles.title} className={isMobile ? "mobile-title" : ""}>Settlers Inn</h1>
         </div>
         
         {isMobile && (
-          <div style={styles.statusContainer}>
+          <div style={styles.statusContainer} className="mobile-status-container">
             <div style={styles.statusItem}>
               <span style={styles.statusDot}></span>
               <span>{visitorCount}</span>
             </div>
-            <button style={styles.notificationButton}>
+            <button style={styles.notificationButton} className="mobile-notification-btn">
               🔔
               {notificationCount > 0 && (
-                <span style={styles.notificationBadge}>{notificationCount}</span>
+                <span style={styles.notificationBadge} className="mobile-notification-badge">
+                  {notificationCount > 9 ? '9+' : notificationCount}
+                </span>
               )}
             </button>
             <button 
               style={styles.menuBtn} 
               onClick={toggleMenu}
+              className="mobile-menu-btn"
             >
               {menuOpen ? '✕' : '☰'}
             </button>
@@ -284,13 +354,15 @@ const Navbar = () => {
           <button style={styles.notificationButton}>
             🔔
             {notificationCount > 0 && (
-              <span style={styles.notificationBadge}>{notificationCount}</span>
+              <span style={styles.notificationBadge}>
+                {notificationCount > 9 ? '9+' : notificationCount}
+              </span>
             )}
           </button>
         </div>
       )}
       
-      <nav style={styles.navContainer}>
+      <nav style={styles.navContainer} className={isMobile ? "mobile-nav-container" : ""}>
         {navLinks.map(({ to, label }) => (
           <NavLink
             key={to}
@@ -300,6 +372,7 @@ const Navbar = () => {
                 ? { ...styles.navLink, ...styles.navLinkActive }
                 : styles.navLink
             }
+            className={isMobile ? "mobile-nav-link" : ""}
           >
             {label}
           </NavLink>
@@ -316,7 +389,7 @@ const Navbar = () => {
           }}>
             <div style={styles.statusItem}>
               <span style={styles.statusDot}></span>
-              <span>{visitorCount}</span>
+              <span>{visitorCount} visitors</span>
             </div>
             <div style={styles.statusItem}>
               <span>🕒 {currentTime}</span>
