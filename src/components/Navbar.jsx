@@ -8,11 +8,14 @@ const Navbar = () => {
   const [visitorCount, setVisitorCount] = useState(0);
   const [currentTime, setCurrentTime] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
+  
+  // Check for very small mobile devices
+  const isSmallMobile = windowWidth < 480;
   
   useEffect(() => {
     // Initialize visitor count - more realistic for a hotel since 2021
@@ -146,155 +149,159 @@ const Navbar = () => {
     { to: '/offers', label: '💎 Offers' },
   ];
   
-  // Check for very small mobile devices
-  const isSmallMobile = windowWidth < 480;
-  
   // Styles with modern glassy design
-  const styles = {
-    header: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: isSmallMobile ? '0.6rem 0.8rem' : (isMobile ? '0.8rem 1rem' : '1rem 1.5rem'),
-      background: isScrolled 
-        ? 'rgba(15, 23, 42, 0.95)' 
-        : 'rgba(15, 23, 42, 0.9)',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-      backdropFilter: 'blur(12px)',
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      flexWrap: 'wrap',
-      transition: 'all 0.3s ease',
-      boxShadow: isScrolled 
-        ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
-        : 'none',
-    },
-    brand: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: isSmallMobile ? '0.5rem' : '0.8rem',
-    },
-    logo: {
-      height: isSmallMobile ? '30px' : (isMobile ? '35px' : '45px'),
-      transition: 'transform 0.3s ease',
-    },
-    title: {
-      fontSize: isSmallMobile ? '1.1rem' : (isMobile ? '1.2rem' : '1.4rem'),
-      color: '#e2e8f0',
-      margin: 0,
-      whiteSpace: 'nowrap',
-      fontWeight: '600',
-    },
-    navContainer: {
-      display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      gap: isMobile ? '0.3rem' : '1.2rem',
-      alignItems: isMobile ? 'flex-start' : 'center',
-      width: isMobile ? '100%' : 'auto',
-      paddingTop: isMobile ? '0.8rem' : '0',
-      position: isMobile ? 'absolute' : 'static',
-      top: '100%',
-      left: '0',
-      right: '0',
-      background: isMobile ? 'rgba(15, 23, 42, 0.98)' : 'transparent',
-      backdropFilter: isMobile ? 'blur(12px)' : 'none',
-      padding: isMobile ? '0.8rem' : '0',
-      borderBottom: isMobile ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
-      borderRadius: isMobile ? '0 0 16px 16px' : '0',
-      animation: isMobile && menuOpen ? 'fadeInDown 0.3s ease' : 'none',
-      zIndex: 999,
-      maxHeight: isMobile ? '70vh' : 'none',
-      overflowY: isMobile ? 'auto' : 'visible',
-    },
-    navLink: {
-      color: '#cbd5e1',
-      textDecoration: 'none',
-      fontSize: isSmallMobile ? '1rem' : '1rem',
-      padding: isSmallMobile ? '10px 12px' : '8px 12px',
-      borderRadius: '10px',
-      transition: 'all 0.2s ease-in-out',
-      position: 'relative',
-      fontWeight: '500',
-      marginBottom: isSmallMobile ? '4px' : '0',
-    },
-    navLinkActive: {
-      backgroundColor: 'rgba(56, 189, 248, 0.2)',
-      color: '#38bdf8',
-      fontWeight: '600',
-    },
-    menuBtn: {
-      display: 'block',
-      background: 'none',
-      border: 'none',
-      fontSize: isSmallMobile ? '1.4rem' : '1.6rem',
-      color: '#38bdf8',
-      cursor: 'pointer',
-      transition: 'transform 0.3s ease',
-    },
-    backBtn: {
-      fontSize: isSmallMobile ? '1.2rem' : '1.4rem',
-      color: '#38bdf8',
-      marginRight: isSmallMobile ? '0.5rem' : '0.8rem',
-      cursor: 'pointer',
-      border: 'none',
-      background: 'none',
-      transition: 'transform 0.3s ease',
-    },
-    statusContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: isSmallMobile ? '0.6rem' : '1rem',
-    },
-    statusItem: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '6px',
-      fontSize: isSmallMobile ? '0.8rem' : '0.85rem',
-      color: '#94a3b8',
-    },
-    statusDot: {
-      width: '8px',
-      height: '8px',
-      borderRadius: '50%',
-      background: '#38bdf8',
-      animation: 'subtlePulse 2s infinite',
-    },
-    notificationBadge: {
-      position: 'absolute',
-      top: isSmallMobile ? '-4px' : '-5px',
-      right: isSmallMobile ? '-4px' : '-5px',
-      background: 'rgba(239, 68, 68, 0.9)',
-      color: 'white',
-      fontSize: isSmallMobile ? '0.65rem' : '0.7rem',
-      fontWeight: '600',
-      minWidth: isSmallMobile ? '16px' : '18px',
-      height: isSmallMobile ? '16px' : '18px',
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      animation: 'subtlePulse 2s infinite',
-      backdropFilter: 'blur(4px)',
-    },
-    notificationButton: {
-      position: 'relative',
-      background: 'none',
-      border: 'none',
-      color: '#38bdf8',
-      fontSize: isSmallMobile ? '1.1rem' : '1.2rem',
-      cursor: 'pointer',
-      padding: '5px',
-      borderRadius: '50%',
-      transition: 'all 0.2s ease',
-    },
-    mobileHeader: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-    }
+  const getStyles = () => {
+    const isSmallMobile = windowWidth < 480;
+    const isMobile = windowWidth < 768;
+    
+    return {
+      header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: isSmallMobile ? '0.6rem 0.8rem' : (isMobile ? '0.8rem 1rem' : '1rem 1.5rem'),
+        background: isScrolled 
+          ? 'rgba(15, 23, 42, 0.95)' 
+          : 'rgba(15, 23, 42, 0.9)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(12px)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+        flexWrap: 'wrap',
+        transition: 'all 0.3s ease',
+        boxShadow: isScrolled 
+          ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
+          : 'none',
+      },
+      brand: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: isSmallMobile ? '0.5rem' : '0.8rem',
+      },
+      logo: {
+        height: isSmallMobile ? '30px' : (isMobile ? '35px' : '45px'),
+        transition: 'transform 0.3s ease',
+      },
+      title: {
+        fontSize: isSmallMobile ? '1.1rem' : (isMobile ? '1.2rem' : '1.4rem'),
+        color: '#e2e8f0',
+        margin: 0,
+        whiteSpace: 'nowrap',
+        fontWeight: '600',
+      },
+      navContainer: {
+        display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? '0.3rem' : '1.2rem',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        width: isMobile ? '100%' : 'auto',
+        paddingTop: isMobile ? '0.8rem' : '0',
+        position: isMobile ? 'absolute' : 'static',
+        top: '100%',
+        left: '0',
+        right: '0',
+        background: isMobile ? 'rgba(15, 23, 42, 0.98)' : 'transparent',
+        backdropFilter: isMobile ? 'blur(12px)' : 'none',
+        padding: isMobile ? '0.8rem' : '0',
+        borderBottom: isMobile ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+        borderRadius: isMobile ? '0 0 16px 16px' : '0',
+        animation: isMobile && menuOpen ? 'fadeInDown 0.3s ease' : 'none',
+        zIndex: 999,
+        maxHeight: isMobile ? '70vh' : 'none',
+        overflowY: isMobile ? 'auto' : 'visible',
+      },
+      navLink: {
+        color: '#cbd5e1',
+        textDecoration: 'none',
+        fontSize: isSmallMobile ? '1rem' : '1rem',
+        padding: isSmallMobile ? '10px 12px' : '8px 12px',
+        borderRadius: '10px',
+        transition: 'all 0.2s ease-in-out',
+        position: 'relative',
+        fontWeight: '500',
+        marginBottom: isSmallMobile ? '4px' : '0',
+      },
+      navLinkActive: {
+        backgroundColor: 'rgba(56, 189, 248, 0.2)',
+        color: '#38bdf8',
+        fontWeight: '600',
+      },
+      menuBtn: {
+        display: 'block',
+        background: 'none',
+        border: 'none',
+        fontSize: isSmallMobile ? '1.4rem' : '1.6rem',
+        color: '#38bdf8',
+        cursor: 'pointer',
+        transition: 'transform 0.3s ease',
+      },
+      backBtn: {
+        fontSize: isSmallMobile ? '1.2rem' : '1.4rem',
+        color: '#38bdf8',
+        marginRight: isSmallMobile ? '0.5rem' : '0.8rem',
+        cursor: 'pointer',
+        border: 'none',
+        background: 'none',
+        transition: 'transform 0.3s ease',
+      },
+      statusContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: isSmallMobile ? '0.6rem' : '1rem',
+      },
+      statusItem: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        fontSize: isSmallMobile ? '0.8rem' : '0.85rem',
+        color: '#94a3b8',
+      },
+      statusDot: {
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        background: '#38bdf8',
+        animation: 'subtlePulse 2s infinite',
+      },
+      notificationBadge: {
+        position: 'absolute',
+        top: isSmallMobile ? '-4px' : '-5px',
+        right: isSmallMobile ? '-4px' : '-5px',
+        background: 'rgba(239, 68, 68, 0.9)',
+        color: 'white',
+        fontSize: isSmallMobile ? '0.65rem' : '0.7rem',
+        fontWeight: '600',
+        minWidth: isSmallMobile ? '16px' : '18px',
+        height: isSmallMobile ? '16px' : '18px',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        animation: 'subtlePulse 2s infinite',
+        backdropFilter: 'blur(4px)',
+      },
+      notificationButton: {
+        position: 'relative',
+        background: 'none',
+        border: 'none',
+        color: '#38bdf8',
+        fontSize: isSmallMobile ? '1.1rem' : '1.2rem',
+        cursor: 'pointer',
+        padding: '5px',
+        borderRadius: '50%',
+        transition: 'all 0.2s ease',
+      },
+      mobileHeader: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+      }
+    };
   };
+  
+  const styles = getStyles();
   
   return (
     <header style={styles.header} className={isMobile ? "mobile-header" : ""}>
