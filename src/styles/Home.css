@@ -1,0 +1,814 @@
+/* Paste all your CSS styles here */
+
+/* Key optimizations made:
+1. Removed style injection from JavaScript
+2. Added aspect-ratio for image containers to prevent layout shift
+3. Removed fixed heights in responsive sections
+4. Added width/height attributes to images
+*/
+
+/* Base styles */
+.home-container {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+.hero-section {
+  position: relative;
+  height: 90vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  background: url('/assets/hero-fallback.jpg') center/cover;
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.8));
+  z-index: -1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+  max-width: 800px;
+  width: 90%;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  margin-bottom: 1.2rem;
+  color: #e2e8f0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 1.2s ease;
+  font-weight: 600;
+}
+
+.hero-phrase {
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  margin-bottom: 1.5rem;
+  color: #cbd5e1;
+  animation: subtlePulse 4s infinite;
+  min-height: 2.5rem;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  margin-bottom: 2.5rem;
+  color: #94a3b8;
+  font-weight: 300;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-button {
+  display: inline-block;
+  padding: 14px 28px;
+  background: rgba(56, 189, 248, 0.9);
+  color: #0f172a;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.hero-button.book {
+  background: rgba(139, 92, 246, 0.9);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+}
+
+.stats-container {
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 18px;
+  border-radius: 16px;
+  margin: 0 20px;
+  z-index: 3;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+}
+
+.intro-section {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.special-banner {
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.9));
+  color: #0f172a;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1.8rem;
+  animation: shimmer 3s infinite;
+  background-size: 200px 100%;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.featured-dishes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.dish-card {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dish-card.active {
+  animation: gentleFloat 8s ease-in-out infinite;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.dish-image-container {
+  position: relative;
+  aspect-ratio: 4/3; /* Replaced fixed height with aspect ratio */
+  overflow: hidden;
+}
+
+.dish-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.new-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  animation: subtlePulse 3s infinite;
+  backdrop-filter: blur(4px);
+}
+
+.dish-content {
+  padding: 1.8rem;
+}
+
+.dish-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.dish-desc {
+  color: #cbd5e1;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.reviews-section {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.reviews-title {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.review-rotator {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-text {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #e2e8f0;
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fadeInUp 1.2s ease;
+}
+
+.facebook-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.facebook-title {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.facebook-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.facebook-embed {
+  width: 380px;
+}
+
+.quick-access {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateY(100px);
+  opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quick-access.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #38bdf8;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.footer-text {
+  text-align: center;
+  margin-top: 3rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.install-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 41, 59, 0.85);
+  color: #f1f5f9;
+  padding: 14px 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  z-index: 10000;
+  max-width: 90%;
+  text-align: center;
+  animation: fadeInOut 7s ease-in-out;
+  line-height: 1.5;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.new-content-banner {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.9), rgba(245, 158, 11, 0.9));
+  color: white;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  z-index: 100;
+  animation: subtlePulse 3s infinite;
+  transform: translateX(200px);
+  transition: transform 0.5s ease;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.new-content-banner.visible {
+  transform: translateX(0);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 10px;
+  line-height: 1;
+}
+
+/* Keyframe animations */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(10px); }
+  15% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Mobile-first responsive styles */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 75vh;
+    min-height: 450px;
+    margin-bottom: 60px;
+  }
+  
+  .hero-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+  
+  .hero-title {
+    font-size: 2.2rem;
+  }
+  
+  .hero-phrase {
+    font-size: 1.1rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .hero-button {
+    width: 100%;
+  }
+  
+  .stats-container {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+    margin: 0 1rem;
+    bottom: -30px;
+  }
+  
+  .section-container {
+    padding: 2rem 1rem;
+  }
+  
+  .featured-dishes {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .quick-access {
+    bottom: 15px;
+    right: 15px;
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .quick-link {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .new-content-banner {
+    top: 80px;
+    right: 10px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    height: 70vh;
+    min-height: 400px;
+    margin-bottom: 50px;
+  }
+  
+  .hero-content {
+    padding: 1.2rem;
+    width: 95%;
+  }
+  
+  .hero-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .hero-phrase {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    min-height: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .hero-buttons {
+    gap: 0.6rem;
+  }
+  
+  .hero-button {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .stats-container {
+    gap: 8px;
+    padding: 10px;
+    margin: 0 0.8rem;
+    bottom: -25px;
+  }
+  
+  .stat-number {
+    font-size: 1.1rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .section-container {
+    padding: 1.5rem 0.8rem;
+  }
+  
+  .intro-section {
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .special-banner {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .intro-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .featured-dishes {
+    gap: 1.2rem;
+  }
+  
+  .dish-content {
+    padding: 1rem;
+  }
+  
+  .dish-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .dish-desc {
+    font-size: 0.85rem;
+  }
+  
+  .reviews-section {
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .reviews-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .review-text {
+    font-size: 0.95rem;
+  }
+  
+  .facebook-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .facebook-embed {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .quick-access {
+    bottom: 10px;
+    right: 10px;
+    padding: 6px;
+    gap: 6px;
+  }
+  
+  .quick-link {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  
+  .footer-text {
+    font-size: 0.75rem;
+    padding: 0 0.8rem;
+    margin-top: 2rem;
+  }
+  
+  .new-content-banner {
+    top: 70px;
+    right: 10px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Very small mobile styles */
+@media (max-width: 333px) {
+  .hero-section {
+    height: 65vh;
+    min-height: 350px;
+  }
+  
+  .hero-content {
+    padding: 1rem;
+    width: 95%;
+  }
+  
+  .hero-title {
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .hero-phrase {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    min-height: 1.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-buttons {
+    gap: 0.5rem;
+  }
+  
+  .hero-button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .stats-container {
+    gap: 6px;
+    padding: 8px;
+    margin: 0 0.6rem;
+    bottom: -20px;
+  }
+  
+  .stat-number {
+    font-size: 1rem;
+  }
+  
+  .stat-label {
+    font-size: 0.7rem;
+  }
+  
+  .section-container {
+    padding: 1.2rem 0.6rem;
+  }
+  
+  .intro-section {
+    padding: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .special-banner {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .intro-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .featured-dishes {
+    gap: 1rem;
+  }
+  
+  .dish-content {
+    padding: 0.8rem;
+  }
+  
+  .dish-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dish-desc {
+    font-size: 0.8rem;
+  }
+  
+  .reviews-section {
+    padding: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .reviews-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .review-text {
+    font-size: 0.9rem;
+  }
+  
+  .facebook-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .facebook-embed {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .quick-access {
+    bottom: 8px;
+    right: 8px;
+    padding: 4px;
+    gap: 4px;
+  }
+  
+  .quick-link {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  .footer-text {
+    font-size: 0.7rem;
+    padding: 0 0.6rem;
+    margin-top: 1.5rem;
+  }
+  
+  .new-content-banner {
+    top: 60px;
+    right: 8px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+}
