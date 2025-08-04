@@ -151,6 +151,7 @@ const Home = () => {
           overflow: hidden;
           color: #fff;
           text-align: center;
+          margin-bottom: 80px; /* Space for stats container */
         }
         
         .hero-video {
@@ -168,13 +169,13 @@ const Home = () => {
           z-index: 2;
           padding: 2rem;
           max-width: 800px;
-          width: 100%;
+          width: 90%;
           background: rgba(15, 23, 42, 0.7);
           backdrop-filter: blur(12px);
           border-radius: 20px;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
           border: 1px solid rgba(255, 255, 255, 0.1);
-          margin: 0 1rem;
+          margin: 0 auto;
         }
         
         .hero-title {
@@ -230,7 +231,7 @@ const Home = () => {
         
         .stats-container {
           position: absolute;
-          bottom: 30px;
+          bottom: -40px; /* Position partially outside hero section */
           left: 0;
           right: 0;
           display: flex;
@@ -243,6 +244,7 @@ const Home = () => {
           margin: 0 20px;
           z-index: 3;
           border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
         }
         
         .stat-item {
@@ -275,7 +277,8 @@ const Home = () => {
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
           text-align: center;
           border: 1px solid rgba(255, 255, 255, 0.1);
-          margin: 0 auto 3rem;
+          position: relative;
+          z-index: 1;
         }
         
         .special-banner {
@@ -305,6 +308,8 @@ const Home = () => {
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 2.5rem;
           margin-bottom: 3rem;
+          position: relative;
+          z-index: 1;
         }
         
         .dish-card {
@@ -377,7 +382,8 @@ const Home = () => {
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
           text-align: center;
           border: 1px solid rgba(255, 255, 255, 0.1);
-          margin: 0 auto 3rem;
+          position: relative;
+          z-index: 1;
         }
         
         .reviews-title {
@@ -407,6 +413,8 @@ const Home = () => {
         .facebook-section {
           text-align: center;
           margin-bottom: 3rem;
+          position: relative;
+          z-index: 1;
         }
         
         .facebook-title {
@@ -470,6 +478,8 @@ const Home = () => {
           color: #64748b;
           font-size: 0.9rem;
           padding: 0 1rem;
+          position: relative;
+          z-index: 1;
         }
         
         .install-toast {
@@ -495,7 +505,7 @@ const Home = () => {
         
         .new-content-banner {
           position: fixed;
-          top: 80px;
+          top: 100px; /* Increased to be below navbar */
           right: 20px;
           background: linear-gradient(90deg, rgba(239, 68, 68, 0.9), rgba(245, 158, 11, 0.9));
           color: white;
@@ -533,11 +543,12 @@ const Home = () => {
           .hero-section {
             height: 75vh;
             min-height: 450px;
+            margin-bottom: 60px; /* Reduced space for stats container */
           }
           
           .hero-content {
             padding: 1.5rem;
-            margin: 0 1rem;
+            width: 95%;
           }
           
           .hero-title {
@@ -567,6 +578,7 @@ const Home = () => {
             gap: 10px;
             padding: 12px;
             margin: 0 1rem;
+            bottom: -30px; /* Adjusted for mobile */
           }
           
           .section-container {
@@ -594,18 +606,25 @@ const Home = () => {
             height: 36px;
             font-size: 1rem;
           }
+          
+          .new-content-banner {
+            top: 80px; /* Adjusted for mobile navbar height */
+            right: 10px;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+          }
         }
         
         @media (max-width: 480px) {
           .hero-section {
             height: 70vh;
             min-height: 400px;
+            margin-bottom: 50px;
           }
           
           .hero-content {
             padding: 1.2rem;
-            margin: 0 0.8rem;
-            width: calc(100% - 1.6rem);
+            width: 95%;
           }
           
           .hero-title {
@@ -637,7 +656,7 @@ const Home = () => {
             gap: 8px;
             padding: 10px;
             margin: 0 0.8rem;
-            bottom: 15px;
+            bottom: -25px;
           }
           
           .stat-number {
@@ -733,7 +752,7 @@ const Home = () => {
           }
           
           .new-content-banner {
-            top: 70px;
+            top: 70px; /* Further adjusted for smaller mobile navbar */
             right: 10px;
             padding: 8px 14px;
             font-size: 0.8rem;
