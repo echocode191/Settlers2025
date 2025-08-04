@@ -164,6 +164,19 @@ const Home = () => {
           z-index: -1;
         }
         
+        /* Fallback background for when video fails to load */
+        .hero-section::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)), 
+                      url('/assets/hero-fallback.jpg') center/cover;
+          z-index: -2;
+        }
+        
         .hero-content {
           position: relative;
           z-index: 2;
@@ -758,6 +771,150 @@ const Home = () => {
             font-size: 0.8rem;
           }
         }
+        
+        /* Very small mobile styles */
+        @media (max-width: 333px) {
+          .hero-section {
+            height: 65vh;
+            min-height: 350px;
+          }
+          
+          .hero-content {
+            padding: 1rem;
+            width: 95%;
+          }
+          
+          .hero-title {
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
+          }
+          
+          .hero-phrase {
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            min-height: 1.8rem;
+          }
+          
+          .hero-subtitle {
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+          }
+          
+          .hero-buttons {
+            gap: 0.5rem;
+          }
+          
+          .hero-button {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+          }
+          
+          .stats-container {
+            gap: 6px;
+            padding: 8px;
+            margin: 0 0.6rem;
+            bottom: -20px;
+          }
+          
+          .stat-number {
+            font-size: 1rem;
+          }
+          
+          .stat-label {
+            font-size: 0.7rem;
+          }
+          
+          .section-container {
+            padding: 1.2rem 0.6rem;
+          }
+          
+          .intro-section {
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+          }
+          
+          .special-banner {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+          }
+          
+          .intro-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+          }
+          
+          .featured-dishes {
+            gap: 1rem;
+          }
+          
+          .dish-image-container {
+            height: 120px;
+          }
+          
+          .dish-content {
+            padding: 0.8rem;
+          }
+          
+          .dish-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+          }
+          
+          .dish-desc {
+            font-size: 0.8rem;
+          }
+          
+          .reviews-section {
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+          }
+          
+          .reviews-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+          }
+          
+          .review-text {
+            font-size: 0.9rem;
+          }
+          
+          .facebook-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+          }
+          
+          .facebook-embed {
+            width: 100%;
+            max-width: 280px;
+          }
+          
+          .quick-access {
+            bottom: 8px;
+            right: 8px;
+            padding: 4px;
+            gap: 4px;
+          }
+          
+          .quick-link {
+            width: 28px;
+            height: 28px;
+            font-size: 0.8rem;
+          }
+          
+          .footer-text {
+            font-size: 0.7rem;
+            padding: 0 0.6rem;
+            margin-top: 1.5rem;
+          }
+          
+          .new-content-banner {
+            top: 60px; /* Adjusted for very small mobile navbar */
+            right: 8px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+          }
+        }
       `;
       document.head.appendChild(style);
     }
@@ -810,8 +967,10 @@ const Home = () => {
           loop 
           playsInline 
           preload="none"
+          poster="/assets/hero-fallback.jpg" /* Add fallback image */
         >
           <source src="/assets/settlers.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
         </video>
         
         <div className="hero-content">
