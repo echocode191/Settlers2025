@@ -141,686 +141,6 @@ const Home = () => {
     setVideoLoaded(true);
   };
   
-  // Glassy style object
-  const glassyStyle = {
-    container: {
-      fontFamily: "'Inter', system-ui, sans-serif",
-      background: "linear-gradient(135deg, #0f172a, #1e293b)",
-      color: "#e2e8f0",
-      minHeight: "100vh",
-      overflowX: "hidden"
-    },
-    heroSection: {
-      position: "relative",
-      height: "90vh",
-      minHeight: "600px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      overflow: "hidden",
-      color: "#fff",
-      textAlign: "center",
-      marginBottom: "80px"
-    },
-    heroBackground: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      zIndex: -2,
-      background: "url('/assets/hero-fallback.jpg') center/cover"
-    },
-    heroVideo: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      zIndex: -1
-    },
-    heroOverlay: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      background: "linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.8))",
-      zIndex: -1
-    },
-    heroContent: {
-      position: "relative",
-      zIndex: 2,
-      padding: "2rem",
-      maxWidth: "800px",
-      width: "90%",
-      background: "rgba(255, 255, 255, 0.1)",
-      backdropFilter: "blur(16px)",
-      borderRadius: "24px",
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.25)",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      margin: "0 auto",
-      WebkitBackdropFilter: "blur(16px)"
-    },
-    heroTitle: {
-      fontSize: "clamp(2.2rem, 8vw, 4rem)",
-      marginBottom: "1.2rem",
-      color: "#e2e8f0",
-      textShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
-      animation: "fadeInUp 1.2s ease",
-      fontWeight: 600
-    },
-    heroPhrase: {
-      fontSize: "clamp(1.2rem, 4vw, 1.6rem)",
-      marginBottom: "1.5rem",
-      color: "#cbd5e1",
-      animation: "subtlePulse 4s infinite",
-      minHeight: "2.5rem"
-    },
-    heroSubtitle: {
-      fontSize: "clamp(1rem, 3vw, 1.3rem)",
-      marginBottom: "2.5rem",
-      color: "#94a3b8",
-      fontWeight: 300
-    },
-    heroButtons: {
-      display: "flex",
-      flexDirection: "row",
-      gap: "1.2rem",
-      justifyContent: "center",
-      flexWrap: "wrap"
-    },
-    heroButton: {
-      display: "inline-block",
-      padding: "14px 28px",
-      background: "rgba(56, 189, 248, 0.8)",
-      color: "#0f172a",
-      borderRadius: "30px",
-      textDecoration: "none",
-      fontWeight: 600,
-      fontSize: "1rem",
-      transition: "all 0.3s ease",
-      boxShadow: "0 4px 15px rgba(56, 189, 248, 0.3)",
-      backdropFilter: "blur(8px)",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      WebkitBackdropFilter: "blur(8px)"
-    },
-    heroButtonBook: {
-      background: "rgba(139, 92, 246, 0.8)",
-      boxShadow: "0 4px 15px rgba(139, 92, 246, 0.3)"
-    },
-    statsContainer: {
-      position: "absolute",
-      bottom: "-40px",
-      left: 0,
-      right: 0,
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-around",
-      background: "rgba(255, 255, 255, 0.1)",
-      backdropFilter: "blur(12px)",
-      padding: "18px",
-      borderRadius: "20px",
-      margin: "0 20px",
-      zIndex: 3,
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.25)",
-      WebkitBackdropFilter: "blur(12px)"
-    },
-    statItem: {
-      textAlign: "center"
-    },
-    statNumber: {
-      fontSize: "1.5rem",
-      fontWeight: 600,
-      color: "#38bdf8"
-    },
-    statLabel: {
-      fontSize: "0.9rem",
-      color: "#cbd5e1"
-    },
-    sectionContainer: {
-      maxWidth: "1200px",
-      margin: "0 auto",
-      padding: "4rem 1rem"
-    },
-    introSection: {
-      background: "rgba(255, 255, 255, 0.08)",
-      backdropFilter: "blur(12px)",
-      borderRadius: "24px",
-      padding: "2.5rem",
-      marginBottom: "3rem",
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-      textAlign: "center",
-      border: "1px solid rgba(255, 255, 255, 0.15)",
-      position: "relative",
-      zIndex: 1,
-      WebkitBackdropFilter: "blur(12px)"
-    },
-    specialBanner: {
-      background: "linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(139, 92, 246, 0.8))",
-      color: "#0f172a",
-      padding: "12px 24px",
-      borderRadius: "30px",
-      fontWeight: 600,
-      display: "inline-block",
-      marginBottom: "1.8rem",
-      animation: "shimmer 3s infinite",
-      backgroundSize: "200px 100%",
-      boxShadow: "0 4px 15px rgba(56, 189, 248, 0.3)",
-      backdropFilter: "blur(8px)",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      WebkitBackdropFilter: "blur(8px)"
-    },
-    introText: {
-      fontSize: "1.1rem",
-      lineHeight: "1.7",
-      color: "#e2e8f0",
-      maxWidth: "800px",
-      margin: "0 auto"
-    },
-    featuredDishes: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-      gap: "2.5rem",
-      marginBottom: "3rem",
-      position: "relative",
-      zIndex: 1
-    },
-    dishCard: {
-      background: "rgba(255, 255, 255, 0.08)",
-      backdropFilter: "blur(12px)",
-      borderRadius: "24px",
-      overflow: "hidden",
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-      transition: "transform 0.3s ease, box-shadow 0.3s ease",
-      border: "1px solid rgba(255, 255, 255, 0.15)",
-      WebkitBackdropFilter: "blur(12px)"
-    },
-    dishCardActive: {
-      animation: "gentleFloat 8s ease-in-out infinite",
-      transform: "translateY(-5px)",
-      boxShadow: "0 12px 40px rgba(0, 0, 0, 0.2)"
-    },
-    dishImageContainer: {
-      position: "relative",
-      aspectRatio: "4/3",
-      overflow: "hidden"
-    },
-    dishImage: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      transition: "transform 0.5s ease"
-    },
-    newBadge: {
-      position: "absolute",
-      top: "15px",
-      right: "15px",
-      background: "rgba(239, 68, 68, 0.9)",
-      color: "white",
-      padding: "6px 12px",
-      borderRadius: "20px",
-      fontSize: "0.8rem",
-      fontWeight: 600,
-      boxShadow: "0 4px 12px rgba(239, 68, 68, 0.3)",
-      animation: "subtlePulse 3s infinite",
-      backdropFilter: "blur(8px)",
-      WebkitBackdropFilter: "blur(8px)"
-    },
-    dishContent: {
-      padding: "1.8rem"
-    },
-    dishTitle: {
-      fontSize: "1.4rem",
-      marginBottom: "0.8rem",
-      color: "#e2e8f0",
-      fontWeight: 600
-    },
-    dishDesc: {
-      color: "#cbd5e1",
-      lineHeight: "1.6",
-      fontSize: "1rem"
-    },
-    reviewsSection: {
-      background: "rgba(255, 255, 255, 0.08)",
-      backdropFilter: "blur(12px)",
-      borderRadius: "24px",
-      padding: "2.5rem",
-      marginBottom: "3rem",
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
-      textAlign: "center",
-      border: "1px solid rgba(255, 255, 255, 0.15)",
-      position: "relative",
-      zIndex: 1,
-      WebkitBackdropFilter: "blur(12px)"
-    },
-    reviewsTitle: {
-      fontSize: "2.2rem",
-      marginBottom: "2rem",
-      color: "#e2e8f0",
-      fontWeight: 600
-    },
-    reviewRotator: {
-      minHeight: "100px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    reviewText: {
-      fontSize: "1.2rem",
-      fontStyle: "italic",
-      color: "#e2e8f0",
-      lineHeight: "1.7",
-      maxWidth: "800px",
-      margin: "0 auto",
-      animation: "fadeInUp 1.2s ease"
-    },
-    facebookSection: {
-      textAlign: "center",
-      marginBottom: "3rem",
-      position: "relative",
-      zIndex: 1
-    },
-    facebookTitle: {
-      fontSize: "2.2rem",
-      marginBottom: "2rem",
-      color: "#e2e8f0",
-      fontWeight: 600
-    },
-    facebookContainer: {
-      display: "flex",
-      justifyContent: "center",
-      marginBottom: "2rem",
-      width: "100%"
-    },
-    facebookEmbed: {
-      width: "380px"
-    },
-    quickAccess: {
-      position: "fixed",
-      bottom: "25px",
-      right: "25px",
-      background: "rgba(255, 255, 255, 0.1)",
-      backdropFilter: "blur(12px)",
-      borderRadius: "50px",
-      padding: "12px",
-      display: "flex",
-      gap: "12px",
-      boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
-      zIndex: 100,
-      transition: "transform 0.3s ease, opacity 0.3s ease",
-      transform: "translateY(100px)",
-      opacity: 0,
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      WebkitBackdropFilter: "blur(12px)"
-    },
-    quickAccessVisible: {
-      transform: "translateY(0)",
-      opacity: 1
-    },
-    quickLink: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      width: "44px",
-      height: "44px",
-      borderRadius: "50%",
-      background: "rgba(255, 255, 255, 0.15)",
-      color: "#38bdf8",
-      textDecoration: "none",
-      fontSize: "1.2rem",
-      transition: "all 0.2s ease",
-      border: "1px solid rgba(255, 255, 255, 0.1)"
-    },
-    footerText: {
-      textAlign: "center",
-      marginTop: "3rem",
-      color: "#64748b",
-      fontSize: "0.9rem",
-      padding: "0 1rem",
-      position: "relative",
-      zIndex: 1
-    },
-    installToast: {
-      position: "fixed",
-      bottom: "20px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      background: "rgba(255, 255, 255, 0.15)",
-      color: "#f1f5f9",
-      padding: "14px 24px",
-      borderRadius: "16px",
-      boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
-      fontSize: "14px",
-      zIndex: 10000,
-      maxWidth: "90%",
-      textAlign: "center",
-      animation: "fadeInOut 7s ease-in-out",
-      lineHeight: "1.5",
-      cursor: "pointer",
-      backdropFilter: "blur(12px)",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      WebkitBackdropFilter: "blur(12px)"
-    },
-    newContentBanner: {
-      position: "fixed",
-      top: "100px",
-      right: "20px",
-      background: "linear-gradient(90deg, rgba(239, 68, 68, 0.8), rgba(245, 158, 11, 0.8))",
-      color: "white",
-      padding: "10px 18px",
-      borderRadius: "20px",
-      fontWeight: 600,
-      fontSize: "0.9rem",
-      boxShadow: "0 4px 15px rgba(239, 68, 68, 0.3)",
-      zIndex: 100,
-      animation: "subtlePulse 3s infinite",
-      transform: "translateX(200px)",
-      transition: "transform 0.5s ease",
-      backdropFilter: "blur(8px)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      WebkitBackdropFilter: "blur(8px)"
-    },
-    newContentBannerVisible: {
-      transform: "translateX(0)"
-    },
-    closeButton: {
-      background: "none",
-      border: "none",
-      color: "white",
-      fontSize: "1.2rem",
-      cursor: "pointer",
-      marginLeft: "10px",
-      lineHeight: "1"
-    },
-    // Mobile styles
-    mobileHeroSection: {
-      height: "75vh",
-      minHeight: "450px",
-      marginBottom: "60px"
-    },
-    mobileHeroContent: {
-      padding: "1.5rem",
-      width: "95%"
-    },
-    mobileHeroTitle: {
-      fontSize: "2.2rem"
-    },
-    mobileHeroPhrase: {
-      fontSize: "1.1rem"
-    },
-    mobileHeroSubtitle: {
-      fontSize: "0.95rem",
-      marginBottom: "1.5rem"
-    },
-    mobileHeroButtons: {
-      flexDirection: "column",
-      gap: "0.8rem"
-    },
-    mobileHeroButton: {
-      width: "100%"
-    },
-    mobileStatsContainer: {
-      flexDirection: "column",
-      gap: "10px",
-      padding: "12px",
-      margin: "0 1rem",
-      bottom: "-30px"
-    },
-    mobileSectionContainer: {
-      padding: "2rem 1rem"
-    },
-    mobileFeaturedDishes: {
-      gridTemplateColumns: "1fr",
-      gap: "1.5rem"
-    },
-    mobileQuickAccess: {
-      bottom: "15px",
-      right: "15px",
-      padding: "8px",
-      gap: "8px"
-    },
-    mobileQuickLink: {
-      width: "36px",
-      height: "36px",
-      fontSize: "1rem"
-    },
-    mobileNewContentBanner: {
-      top: "80px",
-      right: "10px",
-      padding: "8px 14px",
-      fontSize: "0.8rem"
-    },
-    // Small mobile styles
-    smallMobileHeroSection: {
-      height: "70vh",
-      minHeight: "400px",
-      marginBottom: "50px"
-    },
-    smallMobileHeroContent: {
-      padding: "1.2rem",
-      width: "95%"
-    },
-    smallMobileHeroTitle: {
-      fontSize: "1.8rem",
-      marginBottom: "0.8rem"
-    },
-    smallMobileHeroPhrase: {
-      fontSize: "1rem",
-      marginBottom: "1rem",
-      minHeight: "2rem"
-    },
-    smallMobileHeroSubtitle: {
-      fontSize: "0.85rem",
-      marginBottom: "1.2rem"
-    },
-    smallMobileHeroButtons: {
-      gap: "0.6rem"
-    },
-    smallMobileHeroButton: {
-      padding: "10px 16px",
-      fontSize: "0.9rem"
-    },
-    smallMobileStatsContainer: {
-      gap: "8px",
-      padding: "10px",
-      margin: "0 0.8rem",
-      bottom: "-25px"
-    },
-    smallMobileStatNumber: {
-      fontSize: "1.1rem"
-    },
-    smallMobileStatLabel: {
-      fontSize: "0.75rem"
-    },
-    smallMobileSectionContainer: {
-      padding: "1.5rem 0.8rem"
-    },
-    smallMobileIntroSection: {
-      padding: "1.2rem",
-      marginBottom: "1.5rem"
-    },
-    smallMobileSpecialBanner: {
-      padding: "8px 16px",
-      fontSize: "0.85rem",
-      marginBottom: "1.2rem"
-    },
-    smallMobileIntroText: {
-      fontSize: "0.95rem",
-      lineHeight: "1.5"
-    },
-    smallMobileFeaturedDishes: {
-      gap: "1.2rem"
-    },
-    smallMobileDishContent: {
-      padding: "1rem"
-    },
-    smallMobileDishTitle: {
-      fontSize: "1.1rem",
-      marginBottom: "0.6rem"
-    },
-    smallMobileDishDesc: {
-      fontSize: "0.85rem"
-    },
-    smallMobileReviewsSection: {
-      padding: "1.2rem",
-      marginBottom: "1.5rem"
-    },
-    smallMobileReviewsTitle: {
-      fontSize: "1.6rem",
-      marginBottom: "1.2rem"
-    },
-    smallMobileReviewText: {
-      fontSize: "0.95rem"
-    },
-    smallMobileFacebookTitle: {
-      fontSize: "1.6rem",
-      marginBottom: "1.2rem"
-    },
-    smallMobileFacebookEmbed: {
-      width: "100%",
-      maxWidth: "300px"
-    },
-    smallMobileQuickAccess: {
-      bottom: "10px",
-      right: "10px",
-      padding: "6px",
-      gap: "6px"
-    },
-    smallMobileQuickLink: {
-      width: "32px",
-      height: "32px",
-      fontSize: "1rem"
-    },
-    smallMobileFooterText: {
-      fontSize: "0.75rem",
-      padding: "0 0.8rem",
-      marginTop: "2rem"
-    },
-    smallMobileNewContentBanner: {
-      top: "70px",
-      right: "10px",
-      padding: "8px 14px",
-      fontSize: "0.8rem"
-    },
-    // Very small mobile styles
-    verySmallMobileHeroSection: {
-      height: "65vh",
-      minHeight: "350px"
-    },
-    verySmallMobileHeroContent: {
-      padding: "1rem",
-      width: "95%"
-    },
-    verySmallMobileHeroTitle: {
-      fontSize: "1.6rem",
-      marginBottom: "0.6rem"
-    },
-    verySmallMobileHeroPhrase: {
-      fontSize: "0.9rem",
-      marginBottom: "0.8rem",
-      minHeight: "1.8rem"
-    },
-    verySmallMobileHeroSubtitle: {
-      fontSize: "0.8rem",
-      marginBottom: "1rem"
-    },
-    verySmallMobileHeroButtons: {
-      gap: "0.5rem"
-    },
-    verySmallMobileHeroButton: {
-      padding: "8px 12px",
-      fontSize: "0.85rem"
-    },
-    verySmallMobileStatsContainer: {
-      gap: "6px",
-      padding: "8px",
-      margin: "0 0.6rem",
-      bottom: "-20px"
-    },
-    verySmallMobileStatNumber: {
-      fontSize: "1rem"
-    },
-    verySmallMobileStatLabel: {
-      fontSize: "0.7rem"
-    },
-    verySmallMobileSectionContainer: {
-      padding: "1.2rem 0.6rem"
-    },
-    verySmallMobileIntroSection: {
-      padding: "1rem",
-      marginBottom: "1.2rem"
-    },
-    verySmallMobileSpecialBanner: {
-      padding: "6px 12px",
-      fontSize: "0.8rem",
-      marginBottom: "1rem"
-    },
-    verySmallMobileIntroText: {
-      fontSize: "0.9rem",
-      lineHeight: "1.4"
-    },
-    verySmallMobileFeaturedDishes: {
-      gap: "1rem"
-    },
-    verySmallMobileDishContent: {
-      padding: "0.8rem"
-    },
-    verySmallMobileDishTitle: {
-      fontSize: "1rem",
-      marginBottom: "0.5rem"
-    },
-    verySmallMobileDishDesc: {
-      fontSize: "0.8rem"
-    },
-    verySmallMobileReviewsSection: {
-      padding: "1rem",
-      marginBottom: "1.2rem"
-    },
-    verySmallMobileReviewsTitle: {
-      fontSize: "1.4rem",
-      marginBottom: "1rem"
-    },
-    verySmallMobileReviewText: {
-      fontSize: "0.9rem"
-    },
-    verySmallMobileFacebookTitle: {
-      fontSize: "1.4rem",
-      marginBottom: "1rem"
-    },
-    verySmallMobileFacebookEmbed: {
-      width: "100%",
-      maxWidth: "280px"
-    },
-    verySmallMobileQuickAccess: {
-      bottom: "8px",
-      right: "8px",
-      padding: "4px",
-      gap: "4px"
-    },
-    verySmallMobileQuickLink: {
-      width: "28px",
-      height: "28px",
-      fontSize: "0.8rem"
-    },
-    verySmallMobileFooterText: {
-      fontSize: "0.7rem",
-      padding: "0 0.6rem",
-      marginTop: "1.5rem"
-    },
-    verySmallMobileNewContentBanner: {
-      top: "60px",
-      right: "8px",
-      padding: "6px 12px",
-      fontSize: "0.75rem"
-    }
-  };
-  
   // Responsive style detection
   const [isMobile, setIsMobile] = useState(false);
   const [isSmallMobile, setIsSmallMobile] = useState(false);
@@ -839,58 +159,592 @@ const Home = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
-  // Get responsive styles
-  const getResponsiveStyle = (baseStyle, mobileStyle, smallMobileStyle, verySmallMobileStyle) => {
-    if (isVerySmallMobile && verySmallMobileStyle) return { ...baseStyle, ...verySmallMobileStyle };
-    if (isSmallMobile && smallMobileStyle) return { ...baseStyle, ...smallMobileStyle };
-    if (isMobile && mobileStyle) return { ...baseStyle, ...mobileStyle };
-    return baseStyle;
-  };
-  
   return (
-    <div style={glassyStyle.container}>
+    <div className="home-container">
       <style>
         {`
-          @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(10px); }
-            15% { opacity: 1; transform: translateY(0); }
-            85% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(10px); }
+          /* Base styles */
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
           }
-          @keyframes fadeInUp {
+          
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+            line-height: 1.6;
+          }
+          
+          .home-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+          }
+          
+          /* Hero Section */
+          .hero-section {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #fff;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
+                        url('/assets/hero-fallback.jpg') center/cover no-repeat;
+          }
+          
+          .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+          }
+          
+          .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1.5s ease-in-out;
+          }
+          
+          .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          }
+          
+          .hero-phrase {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+          }
+          
+          .hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+          }
+          
+          .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+          }
+          
+          .hero-button {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: #fff;
+            color: #212529;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          }
+          
+          .hero-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+          }
+          
+          .hero-button.primary {
+            background-color: #0d6efd;
+            color: white;
+          }
+          
+          .stats-container {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            margin: 0 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          
+          .stat-item {
+            text-align: center;
+          }
+          
+          .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+          }
+          
+          .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+          }
+          
+          /* Section Styles */
+          .section {
+            padding: 5rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+          }
+          
+          .intro-section {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            margin-bottom: 3rem;
+          }
+          
+          .special-banner {
+            display: inline-block;
+            background: linear-gradient(90deg, #0d6efd, #6f42c1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+          }
+          
+          .intro-text {
+            font-size: 1.1rem;
+            color: #495057;
+            max-width: 800px;
+            margin: 0 auto;
+          }
+          
+          /* Featured Dishes */
+          .featured-dishes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+          }
+          
+          .dish-card {
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+          
+          .dish-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+          }
+          
+          .dish-card.active {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 2px solid #0d6efd;
+          }
+          
+          .dish-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+          }
+          
+          .dish-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+          }
+          
+          .dish-card:hover .dish-image {
+            transform: scale(1.05);
+          }
+          
+          .new-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+          }
+          
+          .dish-content {
+            padding: 1.5rem;
+          }
+          
+          .dish-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #212529;
+            font-weight: 600;
+          }
+          
+          .dish-desc {
+            color: #6c757d;
+            font-size: 1rem;
+          }
+          
+          /* Reviews Section */
+          .reviews-section {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            margin-bottom: 3rem;
+          }
+          
+          .reviews-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #212529;
+            font-weight: 700;
+          }
+          
+          .review-rotator {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .review-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #495057;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+          }
+          
+          /* Facebook Section */
+          .facebook-section {
+            text-align: center;
+            margin-bottom: 3rem;
+          }
+          
+          .facebook-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #212529;
+            font-weight: 700;
+          }
+          
+          .facebook-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+          }
+          
+          .facebook-embed {
+            width: 380px;
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+          }
+          
+          /* Quick Access */
+          .quick-access {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #fff;
+            border-radius: 50px;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateY(100px);
+            opacity: 0;
+          }
+          
+          .quick-access.visible {
+            transform: translateY(0);
+            opacity: 1;
+          }
+          
+          .quick-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            color: #0d6efd;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+          }
+          
+          .quick-link:hover {
+            background-color: #0d6efd;
+            color: white;
+          }
+          
+          /* Install Toast */
+          .install-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #212529;
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            z-index: 10000;
+            max-width: 90%;
+            text-align: center;
+            cursor: pointer;
+            animation: fadeInOut 7s ease-in-out;
+          }
+          
+          /* New Content Banner */
+          .new-content-banner {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(90deg, #dc3545, #fd7e14);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transform: translateX(200px);
+            transition: transform 0.5s ease;
+          }
+          
+          .new-content-banner.visible {
+            transform: translateX(0);
+          }
+          
+          .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 10px;
+            line-height: 1;
+          }
+          
+          /* Footer */
+          .footer-text {
+            text-align: center;
+            margin-top: 3rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+            padding: 0 1rem;
+          }
+          
+          /* Animations */
+          @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
           }
-          @keyframes subtlePulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.85; }
+          
+          @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, 10px); }
+            15% { opacity: 1; transform: translate(-50%, 0); }
+            85% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, 10px); }
           }
-          @keyframes shimmer {
-            0% { background-position: -200px 0; }
-            100% { background-position: calc(200px + 100%) 0; }
+          
+          /* Responsive Styles */
+          @media (max-width: 768px) {
+            .hero-section {
+              height: 80vh;
+              min-height: 500px;
+            }
+            
+            .hero-title {
+              font-size: 2.5rem;
+            }
+            
+            .hero-phrase {
+              font-size: 1.2rem;
+            }
+            
+            .hero-buttons {
+              flex-direction: column;
+              align-items: center;
+            }
+            
+            .hero-button {
+              width: 80%;
+            }
+            
+            .stats-container {
+              flex-direction: column;
+              gap: 1rem;
+              bottom: 20px;
+            }
+            
+            .section {
+              padding: 3rem 1rem;
+            }
+            
+            .featured-dishes {
+              grid-template-columns: 1fr;
+            }
+            
+            .facebook-embed {
+              width: 100%;
+              max-width: 380px;
+            }
           }
-          @keyframes gentleFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+          
+          @media (max-width: 480px) {
+            .hero-section {
+              height: 70vh;
+              min-height: 450px;
+            }
+            
+            .hero-title {
+              font-size: 2rem;
+            }
+            
+            .hero-phrase {
+              font-size: 1rem;
+            }
+            
+            .hero-content {
+              padding: 1.5rem;
+            }
+            
+            .intro-section, .reviews-section {
+              padding: 2rem 1.5rem;
+            }
+            
+            .reviews-title, .facebook-title {
+              font-size: 1.8rem;
+            }
+            
+            .review-text {
+              font-size: 1rem;
+            }
+            
+            .quick-access {
+              bottom: 15px;
+              right: 15px;
+              padding: 8px;
+              gap: 8px;
+            }
+            
+            .quick-link {
+              width: 36px;
+              height: 36px;
+              font-size: 1rem;
+            }
+          }
+          
+          @media (max-width: 333px) {
+            .hero-title {
+              font-size: 1.8rem;
+            }
+            
+            .hero-phrase {
+              font-size: 0.9rem;
+            }
+            
+            .hero-subtitle {
+              font-size: 0.9rem;
+            }
+            
+            .hero-button {
+              padding: 12px 20px;
+              font-size: 0.9rem;
+            }
+            
+            .section {
+              padding: 2rem 0.8rem;
+            }
+            
+            .intro-section, .reviews-section {
+              padding: 1.5rem 1rem;
+            }
+            
+            .dish-title {
+              font-size: 1.2rem;
+            }
+            
+            .dish-desc {
+              font-size: 0.9rem;
+            }
+            
+            .reviews-title, .facebook-title {
+              font-size: 1.5rem;
+            }
+            
+            .review-text {
+              font-size: 0.9rem;
+            }
+            
+            .quick-access {
+              bottom: 10px;
+              right: 10px;
+            }
+            
+            .quick-link {
+              width: 32px;
+              height: 32px;
+              font-size: 0.9rem;
+            }
           }
         `}
       </style>
       
       <Navbar />
       {showInstallToast && (
-        <div style={glassyStyle.installToast} onClick={handleInstallClick}>
+        <div className="install-toast" onClick={handleInstallClick}>
           💡 Tip: Tap here to <strong>install Settlers Inn</strong> as an app!
         </div>
       )}
       
       {newContentCount > 0 && (
-        <div style={{
-          ...glassyStyle.newContentBanner,
-          ...(newContentCount > 0 && glassyStyle.newContentBannerVisible)
-        }}>
+        <div className={`new-content-banner ${newContentCount > 0 ? 'visible' : ''}`}>
           <span>🆕 {newContentCount} new updates!</span>
           <button 
-            style={glassyStyle.closeButton}
+            className="close-button"
             onClick={() => setNewContentCount(0)}
           >
             ×
@@ -898,21 +752,9 @@ const Home = () => {
         </div>
       )}
       
-      <section style={getResponsiveStyle(
-        glassyStyle.heroSection,
-        glassyStyle.mobileHeroSection,
-        glassyStyle.smallMobileHeroSection,
-        glassyStyle.verySmallMobileHeroSection
-      )}>
-        {/* Background image as fallback */}
-        <div style={glassyStyle.heroBackground}></div>
-        
-        {/* Video overlay */}
-        <div style={glassyStyle.heroOverlay}></div>
-        
-        {/* Video element - optimized loading */}
+      <section className="hero-section">
         <video 
-          style={glassyStyle.heroVideo} 
+          className="hero-video" 
           autoPlay 
           muted 
           loop 
@@ -926,130 +768,39 @@ const Home = () => {
           Your browser does not support the video tag.
         </video>
         
-        <div style={getResponsiveStyle(
-          glassyStyle.heroContent,
-          glassyStyle.mobileHeroContent,
-          glassyStyle.smallMobileHeroContent,
-          glassyStyle.verySmallMobileHeroContent
-        )}>
-          <h2 style={getResponsiveStyle(
-            glassyStyle.heroTitle,
-            glassyStyle.mobileHeroTitle,
-            glassyStyle.smallMobileHeroTitle,
-            glassyStyle.verySmallMobileHeroTitle
-          )}>Settlers Inn</h2>
-          <p style={getResponsiveStyle(
-            glassyStyle.heroPhrase,
-            glassyStyle.mobileHeroPhrase,
-            glassyStyle.smallMobileHeroPhrase,
-            glassyStyle.verySmallMobileHeroPhrase
-          )}>{welcomingPhrases[phraseIndex]}</p>
-          <p style={getResponsiveStyle(
-            glassyStyle.heroSubtitle,
-            glassyStyle.mobileHeroSubtitle,
-            glassyStyle.smallMobileHeroSubtitle,
-            glassyStyle.verySmallMobileHeroSubtitle
-          )}>Established 2021 | Kericho Highlands</p>
+        <div className="hero-content">
+          <h1 className="hero-title">Settlers Inn</h1>
+          <p className="hero-phrase">{welcomingPhrases[phraseIndex]}</p>
+          <p className="hero-subtitle">Established 2021 | Kericho Highlands</p>
           
-          <div style={getResponsiveStyle(
-            glassyStyle.heroButtons,
-            glassyStyle.mobileHeroButtons,
-            glassyStyle.smallMobileHeroButtons,
-            glassyStyle.verySmallMobileHeroButtons
-          )}>
-            <a href="/menu" style={{
-              ...glassyStyle.heroButton,
-              ...(isMobile && glassyStyle.mobileHeroButton),
-              ...(isSmallMobile && glassyStyle.smallMobileHeroButton),
-              ...(isVerySmallMobile && glassyStyle.verySmallMobileHeroButton)
-            }}>🍽️ Our Menu</a>
-            <a href="/accommodation" style={{
-              ...glassyStyle.heroButton,
-              ...glassyStyle.heroButtonBook,
-              ...(isMobile && glassyStyle.mobileHeroButton),
-              ...(isSmallMobile && glassyStyle.smallMobileHeroButton),
-              ...(isVerySmallMobile && glassyStyle.verySmallMobileHeroButton)
-            }}>🛏️ Book a Room</a>
+          <div className="hero-buttons">
+            <a href="/menu" className="hero-button">🍽️ Our Menu</a>
+            <a href="/accommodation" className="hero-button primary">🛏️ Book a Room</a>
           </div>
         </div>
         
-        <div style={getResponsiveStyle(
-          glassyStyle.statsContainer,
-          glassyStyle.mobileStatsContainer,
-          glassyStyle.smallMobileStatsContainer,
-          glassyStyle.verySmallMobileStatsContainer
-        )}>
-          <div style={glassyStyle.statItem}>
-            <div style={getResponsiveStyle(
-              glassyStyle.statNumber,
-              null,
-              glassyStyle.smallMobileStatNumber,
-              glassyStyle.verySmallMobileStatNumber
-            )}>{visitorCount}+</div>
-            <div style={getResponsiveStyle(
-              glassyStyle.statLabel,
-              null,
-              glassyStyle.smallMobileStatLabel,
-              glassyStyle.verySmallMobileStatLabel
-            )}>Guests Since 2021</div>
+        <div className="stats-container">
+          <div className="stat-item">
+            <div className="stat-number">{visitorCount}+</div>
+            <div className="stat-label">Guests Since 2021</div>
           </div>
-          <div style={glassyStyle.statItem}>
-            <div style={getResponsiveStyle(
-              glassyStyle.statNumber,
-              null,
-              glassyStyle.smallMobileStatNumber,
-              glassyStyle.verySmallMobileStatNumber
-            )}>{currentTime}</div>
-            <div style={getResponsiveStyle(
-              glassyStyle.statLabel,
-              null,
-              glassyStyle.smallMobileStatLabel,
-              glassyStyle.verySmallMobileStatLabel
-            )}>Local Time</div>
+          <div className="stat-item">
+            <div className="stat-number">{currentTime}</div>
+            <div className="stat-label">Local Time</div>
           </div>
-          <div style={glassyStyle.statItem}>
-            <div style={getResponsiveStyle(
-              glassyStyle.statNumber,
-              null,
-              glassyStyle.smallMobileStatNumber,
-              glassyStyle.verySmallMobileStatNumber
-            )}>{isOnline ? 'Open' : 'Busy'}</div>
-            <div style={getResponsiveStyle(
-              glassyStyle.statLabel,
-              null,
-              glassyStyle.smallMobileStatLabel,
-              glassyStyle.verySmallMobileStatLabel
-            )}>Status</div>
+          <div className="stat-item">
+            <div className="stat-number">{isOnline ? 'Open' : 'Busy'}</div>
+            <div className="stat-label">Status</div>
           </div>
         </div>
       </section>
       
-      <section style={getResponsiveStyle(
-        glassyStyle.sectionContainer,
-        glassyStyle.mobileSectionContainer,
-        glassyStyle.smallMobileSectionContainer,
-        glassyStyle.verySmallMobileSectionContainer
-      )}>
-        <div style={getResponsiveStyle(
-          glassyStyle.introSection,
-          null,
-          glassyStyle.smallMobileIntroSection,
-          glassyStyle.verySmallMobileIntroSection
-        )}>
-          <div style={getResponsiveStyle(
-            glassyStyle.specialBanner,
-            null,
-            glassyStyle.smallMobileSpecialBanner,
-            glassyStyle.verySmallMobileSpecialBanner
-          )}>
+      <section className="section">
+        <div className="intro-section">
+          <div className="special-banner">
             🌟 {dailySpecial} 🌟
           </div>
-          <p style={getResponsiveStyle(
-            glassyStyle.introText,
-            null,
-            glassyStyle.smallMobileIntroText,
-            glassyStyle.verySmallMobileIntroText
-          )}>
+          <p className="intro-text">
             Nestled in the heart of Kenya's highlands, Settlers Inn offers a perfect blend of comfort, 
             cuisine, and hospitality. Since our opening in 2021, we've been dedicated to providing 
             authentic experiences and memorable meals for our guests.
@@ -1057,105 +808,47 @@ const Home = () => {
         </div>
       </section>
       
-      <section style={getResponsiveStyle(
-        glassyStyle.sectionContainer,
-        glassyStyle.mobileSectionContainer,
-        glassyStyle.smallMobileSectionContainer,
-        glassyStyle.verySmallMobileSectionContainer
-      )}>
-        <div style={getResponsiveStyle(
-          glassyStyle.featuredDishes,
-          glassyStyle.mobileFeaturedDishes,
-          glassyStyle.smallMobileFeaturedDishes,
-          glassyStyle.verySmallMobileFeaturedDishes
-        )}>
+      <section className="section">
+        <div className="featured-dishes">
           {featuredDishes.map((dish, i) => (
             <div 
               key={i} 
-              style={{
-                ...glassyStyle.dishCard,
-                ...(activeDish === i && glassyStyle.dishCardActive)
-              }}
+              className={`dish-card ${activeDish === i ? 'active' : ''}`}
               onMouseEnter={() => setActiveDish(i)}
             >
-              <div style={glassyStyle.dishImageContainer}>
+              <div className="dish-image-container">
                 <img 
                   src={`/assets/${dish.img}`} 
                   alt={dish.title} 
-                  style={glassyStyle.dishImage}
+                  className="dish-image"
                   loading="lazy"
                   width="280"
-                  height="220"
+                  height="200"
                 />
-                {i === 0 && <div style={glassyStyle.newBadge}>NEW</div>}
+                {i === 0 && <div className="new-badge">NEW</div>}
               </div>
-              <div style={getResponsiveStyle(
-                glassyStyle.dishContent,
-                null,
-                glassyStyle.smallMobileDishContent,
-                glassyStyle.verySmallMobileDishContent
-              )}>
-                <h3 style={getResponsiveStyle(
-                  glassyStyle.dishTitle,
-                  null,
-                  glassyStyle.smallMobileDishTitle,
-                  glassyStyle.verySmallMobileDishTitle
-                )}>{dish.emoji} {dish.title}</h3>
-                <p style={getResponsiveStyle(
-                  glassyStyle.dishDesc,
-                  null,
-                  glassyStyle.smallMobileDishDesc,
-                  glassyStyle.verySmallMobileDishDesc
-                )}>{dish.desc}</p>
+              <div className="dish-content">
+                <h3 className="dish-title">{dish.emoji} {dish.title}</h3>
+                <p className="dish-desc">{dish.desc}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
       
-      <section style={getResponsiveStyle(
-        glassyStyle.sectionContainer,
-        glassyStyle.mobileSectionContainer,
-        glassyStyle.smallMobileSectionContainer,
-        glassyStyle.verySmallMobileSectionContainer
-      )}>
-        <div style={getResponsiveStyle(
-          glassyStyle.reviewsSection,
-          null,
-          glassyStyle.smallMobileReviewsSection,
-          glassyStyle.verySmallMobileReviewsSection
-        )}>
-          <h2 style={getResponsiveStyle(
-            glassyStyle.reviewsTitle,
-            null,
-            glassyStyle.smallMobileReviewsTitle,
-            glassyStyle.verySmallMobileReviewsTitle
-          )}>💬 Guest Experiences</h2>
-          <div style={glassyStyle.reviewRotator}>
-            <p style={getResponsiveStyle(
-              glassyStyle.reviewText,
-              null,
-              glassyStyle.smallMobileReviewText,
-              glassyStyle.verySmallMobileReviewText
-            )}>{reviews[reviewIndex]}</p>
+      <section className="section">
+        <div className="reviews-section">
+          <h2 className="reviews-title">💬 Guest Experiences</h2>
+          <div className="review-rotator">
+            <p className="review-text">{reviews[reviewIndex]}</p>
           </div>
         </div>
       </section>
       
-      <section style={getResponsiveStyle(
-        glassyStyle.sectionContainer,
-        glassyStyle.mobileSectionContainer,
-        glassyStyle.smallMobileSectionContainer,
-        glassyStyle.verySmallMobileSectionContainer
-      )}>
-        <div style={glassyStyle.facebookSection}>
-          <h2 style={getResponsiveStyle(
-            glassyStyle.facebookTitle,
-            null,
-            glassyStyle.smallMobileFacebookTitle,
-            glassyStyle.verySmallMobileFacebookTitle
-          )}>💬 Facebook Reviews</h2>
-          <div style={glassyStyle.facebookContainer}>
+      <section className="section">
+        <div className="facebook-section">
+          <h2 className="facebook-title">💬 Facebook Reviews</h2>
+          <div className="facebook-container">
             <div 
               className="fb-xfbml-parse-ignore facebook-embed"
               data-href="https://www.facebook.com/settlersinn1/"
@@ -1166,12 +859,6 @@ const Home = () => {
               data-adapt-container-width="true"
               data-hide-cover="false"
               data-show-facepile="true"
-              style={getResponsiveStyle(
-                glassyStyle.facebookEmbed,
-                null,
-                glassyStyle.smallMobileFacebookEmbed,
-                glassyStyle.verySmallMobileFacebookEmbed
-              )}
             >
               <blockquote cite="https://www.facebook.com/settlersinn1/">
                 <a href="https://www.facebook.com/settlersinn1/">Settlers Inn</a>
@@ -1183,57 +870,16 @@ const Home = () => {
       
       <Footer />
       
-      <div style={{
-        ...glassyStyle.quickAccess,
-        ...(isScrolled && glassyStyle.quickAccessVisible),
-        ...(isMobile && glassyStyle.mobileQuickAccess),
-        ...(isSmallMobile && glassyStyle.smallMobileQuickAccess),
-        ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickAccess)
-      }}>
-        <a href="tel:0748778388" style={{
-          ...glassyStyle.quickLink,
-          ...(isMobile && glassyStyle.mobileQuickLink),
-          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
-          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
-        }}>📞</a>
-        <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank" rel="noreferrer" style={{
-          ...glassyStyle.quickLink,
-          ...(isMobile && glassyStyle.mobileQuickLink),
-          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
-          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
-        }}>🧭</a>
-        <a href="/accommodation" style={{
-          ...glassyStyle.quickLink,
-          ...(isMobile && glassyStyle.mobileQuickLink),
-          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
-          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
-        }}>🛏️</a>
-        <a href="/gallery" style={{
-          ...glassyStyle.quickLink,
-          ...(isMobile && glassyStyle.mobileQuickLink),
-          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
-          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
-        }}>📷</a>
-        <a href="/menu" style={{
-          ...glassyStyle.quickLink,
-          ...(isMobile && glassyStyle.mobileQuickLink),
-          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
-          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
-        }}>🥘</a>
-        <a href="https://wa.me/254748778388" target="_blank" rel="noreferrer" style={{
-          ...glassyStyle.quickLink,
-          ...(isMobile && glassyStyle.mobileQuickLink),
-          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
-          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
-        }}>💬</a>
+      <div className={`quick-access ${isScrolled ? 'visible' : ''}`}>
+        <a href="tel:0748778388" className="quick-link">📞</a>
+        <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank" rel="noreferrer" className="quick-link">🧭</a>
+        <a href="/accommodation" className="quick-link">🛏️</a>
+        <a href="/gallery" className="quick-link">📷</a>
+        <a href="/menu" className="quick-link">🥘</a>
+        <a href="https://wa.me/254748778388" target="_blank" rel="noreferrer" className="quick-link">💬</a>
       </div>
       
-      <p style={getResponsiveStyle(
-        glassyStyle.footerText,
-        null,
-        glassyStyle.smallMobileFooterText,
-        glassyStyle.verySmallMobileFooterText
-      )}>
+      <p className="footer-text">
         &copy; {new Date().getFullYear()} Settlers Inn — Established 2021 | Built by EchoCode
       </p>
     </div>
