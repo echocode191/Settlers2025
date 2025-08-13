@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Accommodation from './pages/Accommodation';
@@ -15,6 +15,15 @@ const ScrollToTop = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pathname]);
+  return null;
+};
+
+// Redirect component
+const Redirect = ({ to }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate(to, { replace: true });
+  }, [navigate, to]);
   return null;
 };
 
@@ -34,18 +43,18 @@ const App = () => {
         setIsCssLoaded(true);
       }
     };
-
+    
     // Initial check
     checkCssLoaded();
-
+    
     // Fallback timeout in case CSS doesn't load
     const timeoutId = setTimeout(() => {
       setIsCssLoaded(true);
     }, 300); // Adjust as needed
-
+    
     // Listen for CSS load events
     window.addEventListener('load', checkCssLoaded);
-
+    
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener('load', checkCssLoaded);
@@ -112,41 +121,37 @@ const App = () => {
       <ScrollToTop />
       {/* Install banner */}
       {showBanner && (
-        <div style={installBannerStyle} onClick={handleInstall}>
+        <div style={{
+          position: 'fixed',
+          top: '10px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#111',
+          color: '#fff',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          fontSize: '15px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+          zIndex: 9999,
+          cursor: 'pointer',
+          animation: 'fadeInOut 7s ease-in-out',
+        }} onClick={handleInstall}>
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
         </div>
       )}
-    
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/home" element={<Navigate to="/" replace />} />
-  <Route path="/menu" element={<Menu />} />
-  <Route path="/accommodation" element={<Accommodation />} />
-  <Route path="/about" element={<About />} />
-  <Route path="/gallery" element={<Gallery />} />
-  <Route path="/location" element={<Location />} />
-  <Route path="/contact" element={<Contact />} />
-  <Route path="/offers" element={<Offers />} />
-</Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Redirect to="/" />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/accommodation" element={<Accommodation />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/location" element={<Location />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/offers" element={<Offers />} />
+      </Routes>
     </Router>
   );
-};
-
-// 🔥 Toast-like banner style
-const installBannerStyle = {
-  position: 'fixed',
-  top: '10px',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  background: '#111',
-  color: '#fff',
-  padding: '10px 20px',
-  borderRadius: '8px',
-  fontSize: '15px',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
-  zIndex: 9999,
-  cursor: 'pointer',
-  animation: 'fadeInOut 7s ease-in-out',
 };
 
 // Optional CSS animation (inject in your CSS file)
@@ -157,7 +162,6 @@ const bannerAnimation = `
   90% { opacity: 1; }
   100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
