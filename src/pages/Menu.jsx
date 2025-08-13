@@ -13,6 +13,9 @@ const Menu = () => {
   const [newItems, setNewItems] = useState([]);
   const [isSending, setIsSending] = useState(false);
   const [visitorCount, setVisitorCount] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSmallMobile, setIsSmallMobile] = useState(false);
+  const [isVerySmallMobile, setIsVerySmallMobile] = useState(false);
   
   const foodMessages = [
     "Taste the authentic flavors of Kenya",
@@ -43,51 +46,20 @@ const Menu = () => {
       setJokeIndex((prev) => (prev + 1) % foodMessages.length);
     }, 5000);
     
-    // Animation styles
-    if (typeof document !== 'undefined') {
-      const style = document.createElement("style");
-      style.innerHTML = `
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(15px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes subtlePulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.8; }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200px 0; }
-          100% { background-position: calc(200px + 100%) 0; }
-        }
-        .new-badge {
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          background: rgba(239, 68, 68, 0.9);
-          color: white;
-          font-size: 0.7rem;
-          padding: 2px 6px;
-          border-radius: 10px;
-          animation: subtlePulse 2s infinite;
-          backdrop-filter: blur(4px);
-        }
-        .special-banner {
-          background: linear-gradient(90deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.9));
-          color: #0f172a;
-          padding: 10px 18px;
-          border-radius: 20px;
-          font-weight: 600;
-          text-align: center;
-          margin-bottom: 1.5rem;
-          animation: shimmer 3s infinite;
-          background-size: 200px 100%;
-          backdrop-filter: blur(4px);
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    // Check screen size for responsive design
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
+      setIsVerySmallMobile(window.innerWidth <= 333);
+    };
     
-    return () => clearInterval(interval);
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('resize', checkScreenSize);
+    };
   }, []);
   
   const sendOrder = (e) => {
@@ -178,14 +150,15 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
     },
   ];
   
-  // Styles with modern glassy design
-  const styles = {
+  // Glassy styles
+  const glassyStyle = {
     body: {
       fontFamily: "'Inter', system-ui, sans-serif",
       background: 'linear-gradient(135deg, #0f172a, #1e293b)',
       color: '#e2e8f0',
       minHeight: '100vh',
       paddingBottom: '5rem',
+      overflowX: 'hidden'
     },
     section: {
       padding: '3rem 1.5rem',
@@ -194,14 +167,15 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       animation: 'fadeInUp 0.8s ease',
     },
     orderBox: {
-      background: 'rgba(30, 41, 59, 0.7)',
+      background: 'rgba(255, 255, 255, 0.08)',
       padding: '2.5rem',
-      borderRadius: '20px',
+      borderRadius: '24px',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
       textAlign: 'center',
       marginBottom: '3rem',
-      backdropFilter: 'blur(12px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(16px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(16px)'
     },
     h2: {
       color: '#e2e8f0',
@@ -227,20 +201,21 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
     },
     input: {
       padding: '0.8rem 1.2rem',
-      background: 'rgba(15, 23, 42, 0.7)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      background: 'rgba(255, 255, 255, 0.08)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
       borderRadius: '12px',
       color: '#e2e8f0',
       minWidth: '220px',
       flex: '1',
-      backdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(8px)',
       fontSize: '1rem',
       outline: 'none',
       transition: 'all 0.2s ease',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     button: {
       padding: '0.8rem 1.5rem',
-      background: 'rgba(56, 189, 248, 0.9)',
+      background: 'rgba(56, 189, 248, 0.8)',
       color: '#0f172a',
       border: 'none',
       borderRadius: '12px',
@@ -248,8 +223,10 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       fontWeight: '600',
       flexShrink: '0',
       transition: 'all 0.3s ease',
-      backdropFilter: 'blur(4px)',
-      boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
+      backdropFilter: 'blur(8px)',
+      boxShadow: '0 4px 15px rgba(56, 189, 248, 0.3)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     quickAccess: {
       display: 'flex',
@@ -259,22 +236,23 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       marginBottom: '2.5rem',
     },
     quickButton: {
-      background: 'rgba(30, 41, 59, 0.7)',
+      background: 'rgba(255, 255, 255, 0.08)',
       color: '#e2e8f0',
       padding: '0.6rem 1.2rem',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      borderRadius: '10px',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      borderRadius: '12px',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
-      backdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(8px)',
       fontWeight: '500',
       fontSize: '0.9rem',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     floatBtn: {
       position: 'fixed',
       bottom: 25,
       right: 20,
-      background: 'rgba(37, 211, 102, 0.9)',
+      background: 'rgba(37, 211, 102, 0.8)',
       color: 'white',
       fontSize: '1.5rem',
       padding: '0.8rem 0.9rem',
@@ -282,8 +260,10 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)',
       zIndex: 999,
       textDecoration: 'none',
-      backdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(8px)',
       transition: 'all 0.3s ease',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     menuSection: {
       paddingTop: '1.5rem',
@@ -292,11 +272,12 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
       marginBottom: '2.5rem',
       animation: 'fadeInUp 0.8s ease',
       position: 'relative',
-      background: 'rgba(30, 41, 59, 0.7)',
-      borderRadius: '20px',
+      background: 'rgba(255, 255, 255, 0.08)',
+      borderRadius: '24px',
       padding: '2rem',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(16px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(16px)'
     },
     categoryTitle: {
       color: '#38bdf8',
@@ -318,11 +299,13 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
     statsContainer: {
       display: 'flex',
       justifyContent: 'space-around',
-      background: 'rgba(15, 23, 42, 0.5)',
-      borderRadius: '16px',
+      background: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: '20px',
       padding: '1.2rem',
       marginBottom: '1.5rem',
-      backdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     statItem: {
       textAlign: 'center',
@@ -346,51 +329,355 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
     },
     radioInput: {
       marginRight: '0.5rem',
+    },
+    newBadge: {
+      position: 'absolute',
+      top: '-8px',
+      right: '-8px',
+      background: 'rgba(239, 68, 68, 0.9)',
+      color: 'white',
+      fontSize: '0.7rem',
+      padding: '2px 6px',
+      borderRadius: '10px',
+      animation: 'subtlePulse 2s infinite',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(8px)'
+    },
+    specialBanner: {
+      background: 'linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(139, 92, 246, 0.8))',
+      color: '#0f172a',
+      padding: '10px 18px',
+      borderRadius: '20px',
+      fontWeight: '600',
+      textAlign: 'center',
+      marginBottom: '1.5rem',
+      animation: 'shimmer 3s infinite',
+      backgroundSize: '200px 100%',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(8px)'
+    },
+    // Mobile styles
+    mobileSection: {
+      padding: '2rem 1rem',
+    },
+    mobileOrderBox: {
+      padding: '2rem',
+      marginBottom: '2rem',
+    },
+    mobileH2: {
+      fontSize: '1.8rem',
+    },
+    mobileP: {
+      fontSize: '1rem',
+    },
+    mobileForm: {
+      gap: '1rem',
+    },
+    mobileInput: {
+      minWidth: '180px',
+      fontSize: '0.95rem',
+      padding: '0.7rem 1rem',
+    },
+    mobileButton: {
+      fontSize: '0.9rem',
+      padding: '0.7rem 1.2rem',
+    },
+    mobileQuickAccess: {
+      gap: '0.6rem',
+      marginBottom: '2rem',
+    },
+    mobileQuickButton: {
+      fontSize: '0.85rem',
+      padding: '0.5rem 1rem',
+    },
+    mobileFloatBtn: {
+      bottom: 20,
+      right: 15,
+      fontSize: '1.3rem',
+      padding: '0.7rem 0.8rem',
+    },
+    mobileCategory: {
+      padding: '1.5rem',
+      marginBottom: '2rem',
+    },
+    mobileCategoryTitle: {
+      fontSize: '1.2rem',
+    },
+    mobileMenuItem: {
+      fontSize: '0.95rem',
+    },
+    mobileStatsContainer: {
+      padding: '1rem',
+      marginBottom: '1.2rem',
+    },
+    mobileStatNumber: {
+      fontSize: '1.2rem',
+    },
+    mobileStatLabel: {
+      fontSize: '0.8rem',
+    },
+    mobileRadioLabel: {
+      fontSize: '0.9rem',
+    },
+    // Small mobile styles
+    smallMobileSection: {
+      padding: '1.5rem 0.8rem',
+    },
+    smallMobileOrderBox: {
+      padding: '1.5rem',
+      marginBottom: '1.5rem',
+    },
+    smallMobileH2: {
+      fontSize: '1.6rem',
+      marginBottom: '0.8rem',
+    },
+    smallMobileP: {
+      fontSize: '0.95rem',
+    },
+    smallMobileForm: {
+      gap: '0.8rem',
+    },
+    smallMobileInput: {
+      minWidth: '160px',
+      fontSize: '0.9rem',
+      padding: '0.6rem 0.9rem',
+    },
+    smallMobileButton: {
+      fontSize: '0.85rem',
+      padding: '0.6rem 1rem',
+    },
+    smallMobileQuickAccess: {
+      gap: '0.5rem',
+      marginBottom: '1.5rem',
+    },
+    smallMobileQuickButton: {
+      fontSize: '0.8rem',
+      padding: '0.4rem 0.8rem',
+    },
+    smallMobileFloatBtn: {
+      bottom: 15,
+      right: 10,
+      fontSize: '1.2rem',
+      padding: '0.6rem 0.7rem',
+    },
+    smallMobileCategory: {
+      padding: '1.2rem',
+      marginBottom: '1.5rem',
+    },
+    smallMobileCategoryTitle: {
+      fontSize: '1.1rem',
+    },
+    smallMobileMenuItem: {
+      fontSize: '0.9rem',
+    },
+    smallMobileStatsContainer: {
+      padding: '0.8rem',
+      marginBottom: '1rem',
+    },
+    smallMobileStatNumber: {
+      fontSize: '1.1rem',
+    },
+    smallMobileStatLabel: {
+      fontSize: '0.75rem',
+    },
+    smallMobileRadioLabel: {
+      fontSize: '0.85rem',
+    },
+    // Very small mobile styles
+    verySmallMobileSection: {
+      padding: '1.2rem 0.6rem',
+    },
+    verySmallMobileOrderBox: {
+      padding: '1.2rem',
+      marginBottom: '1.2rem',
+    },
+    verySmallMobileH2: {
+      fontSize: '1.4rem',
+      marginBottom: '0.6rem',
+    },
+    verySmallMobileP: {
+      fontSize: '0.9rem',
+    },
+    verySmallMobileForm: {
+      gap: '0.6rem',
+    },
+    verySmallMobileInput: {
+      minWidth: '140px',
+      fontSize: '0.85rem',
+      padding: '0.5rem 0.8rem',
+    },
+    verySmallMobileButton: {
+      fontSize: '0.8rem',
+      padding: '0.5rem 0.9rem',
+    },
+    verySmallMobileQuickAccess: {
+      gap: '0.4rem',
+      marginBottom: '1.2rem',
+    },
+    verySmallMobileQuickButton: {
+      fontSize: '0.75rem',
+      padding: '0.4rem 0.7rem',
+    },
+    verySmallMobileFloatBtn: {
+      bottom: 10,
+      right: 10,
+      fontSize: '1.1rem',
+      padding: '0.5rem 0.6rem',
+    },
+    verySmallMobileCategory: {
+      padding: '1rem',
+      marginBottom: '1.2rem',
+    },
+    verySmallMobileCategoryTitle: {
+      fontSize: '1rem',
+    },
+    verySmallMobileMenuItem: {
+      fontSize: '0.85rem',
+    },
+    verySmallMobileStatsContainer: {
+      padding: '0.6rem',
+      marginBottom: '0.8rem',
+    },
+    verySmallMobileStatNumber: {
+      fontSize: '1rem',
+    },
+    verySmallMobileStatLabel: {
+      fontSize: '0.7rem',
+    },
+    verySmallMobileRadioLabel: {
+      fontSize: '0.8rem',
     }
   };
   
+  // Get responsive styles
+  const getResponsiveStyle = (baseStyle, mobileStyle, smallMobileStyle, verySmallMobileStyle) => {
+    if (isVerySmallMobile && verySmallMobileStyle) return { ...baseStyle, ...verySmallMobileStyle };
+    if (isSmallMobile && smallMobileStyle) return { ...baseStyle, ...smallMobileStyle };
+    if (isMobile && mobileStyle) return { ...baseStyle, ...mobileStyle };
+    return baseStyle;
+  };
+  
   return (
-    <div style={styles.body}>
+    <div style={glassyStyle.body}>
+      <style>
+        {`
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes subtlePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+          }
+          @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+          }
+        `}
+      </style>
+      
       <Navbar />
-      <section style={styles.section}>
-        <div style={styles.orderBox}>
-          <h2 style={styles.h2}>Our Menu</h2>
-          <p style={styles.p}>{foodMessages[jokeIndex]}</p>
+      <section style={getResponsiveStyle(
+        glassyStyle.section,
+        glassyStyle.mobileSection,
+        glassyStyle.smallMobileSection,
+        glassyStyle.verySmallMobileSection
+      )}>
+        <div style={getResponsiveStyle(
+          glassyStyle.orderBox,
+          glassyStyle.mobileOrderBox,
+          glassyStyle.smallMobileOrderBox,
+          glassyStyle.verySmallMobileOrderBox
+        )}>
+          <h2 style={getResponsiveStyle(
+            glassyStyle.h2,
+            glassyStyle.mobileH2,
+            glassyStyle.smallMobileH2,
+            glassyStyle.verySmallMobileH2
+          )}>Our Menu</h2>
+          <p style={getResponsiveStyle(
+            glassyStyle.p,
+            glassyStyle.mobileP,
+            glassyStyle.smallMobileP,
+            glassyStyle.verySmallMobileP
+          )}>{foodMessages[jokeIndex]}</p>
           
-          <div className="special-banner">
+          <div style={glassyStyle.specialBanner}>
             🌟 {dailySpecial} 🌟
           </div>
           
-          <div style={styles.statsContainer}>
-            <div style={styles.statItem}>
-              <div style={styles.statNumber}>{visitorCount}+</div>
-              <div style={styles.statLabel}>Visitors Today</div>
+          <div style={getResponsiveStyle(
+            glassyStyle.statsContainer,
+            glassyStyle.mobileStatsContainer,
+            glassyStyle.smallMobileStatsContainer,
+            glassyStyle.verySmallMobileStatsContainer
+          )}>
+            <div style={glassyStyle.statItem}>
+              <div style={getResponsiveStyle(
+                glassyStyle.statNumber,
+                glassyStyle.mobileStatNumber,
+                glassyStyle.smallMobileStatNumber,
+                glassyStyle.verySmallMobileStatNumber
+              )}>{visitorCount}+</div>
+              <div style={getResponsiveStyle(
+                glassyStyle.statLabel,
+                glassyStyle.mobileStatLabel,
+                glassyStyle.smallMobileStatLabel,
+                glassyStyle.verySmallMobileStatLabel
+              )}>Visitors Today</div>
             </div>
-            <div style={styles.statItem}>
-              <div style={styles.statNumber}>{newItems.length}</div>
-              <div style={styles.statLabel}>New Items</div>
+            <div style={glassyStyle.statItem}>
+              <div style={getResponsiveStyle(
+                glassyStyle.statNumber,
+                glassyStyle.mobileStatNumber,
+                glassyStyle.smallMobileStatNumber,
+                glassyStyle.verySmallMobileStatNumber
+              )}>{newItems.length}</div>
+              <div style={getResponsiveStyle(
+                glassyStyle.statLabel,
+                glassyStyle.mobileStatLabel,
+                glassyStyle.smallMobileStatLabel,
+                glassyStyle.verySmallMobileStatLabel
+              )}>New Items</div>
             </div>
           </div>
           
-          <form onSubmit={sendOrder} style={styles.form}>
+          <form onSubmit={sendOrder} style={getResponsiveStyle(
+            glassyStyle.form,
+            glassyStyle.mobileForm,
+            glassyStyle.smallMobileForm,
+            glassyStyle.verySmallMobileForm
+          )}>
             <input
               type="text"
               placeholder="e.g. Ugali & Fish"
               value={foodName}
               onChange={(e) => setFoodName(e.target.value)}
               required
-              style={styles.input}
+              style={getResponsiveStyle(
+                glassyStyle.input,
+                glassyStyle.mobileInput,
+                glassyStyle.smallMobileInput,
+                glassyStyle.verySmallMobileInput
+              )}
             />
             {/* Order Type */}
             <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               {['pickup', 'eat', 'delivery'].map((type) => (
-                <label key={type} style={styles.radioLabel}>
+                <label key={type} style={getResponsiveStyle(
+                  glassyStyle.radioLabel,
+                  glassyStyle.mobileRadioLabel,
+                  glassyStyle.smallMobileRadioLabel,
+                  glassyStyle.verySmallMobileRadioLabel
+                )}>
                   <input
                     type="radio"
                     value={type}
                     checked={orderType === type}
                     onChange={(e) => setOrderType(e.target.value)}
-                    style={styles.radioInput}
+                    style={glassyStyle.radioInput}
                   />
                   {type === 'pickup' ? 'Pickup' : type === 'eat' ? 'Dine In' : 'Delivery'}
                 </label>
@@ -403,28 +690,43 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
-                style={styles.input}
+                style={getResponsiveStyle(
+                  glassyStyle.input,
+                  glassyStyle.mobileInput,
+                  glassyStyle.smallMobileInput,
+                  glassyStyle.verySmallMobileInput
+                )}
               />
             )}
             {/* Payment */}
             <div style={{ display: 'flex', gap: '1.2rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '0.5rem' }}>
-              <label style={styles.radioLabel}>
+              <label style={getResponsiveStyle(
+                glassyStyle.radioLabel,
+                glassyStyle.mobileRadioLabel,
+                glassyStyle.smallMobileRadioLabel,
+                glassyStyle.verySmallMobileRadioLabel
+              )}>
                 <input
                   type="radio"
                   value="arrival"
                   checked={paymentOption === 'arrival'}
                   onChange={(e) => setPaymentOption(e.target.value)}
-                  style={styles.radioInput}
+                  style={glassyStyle.radioInput}
                 />
                 Pay on Arrival
               </label>
-              <label style={styles.radioLabel}>
+              <label style={getResponsiveStyle(
+                glassyStyle.radioLabel,
+                glassyStyle.mobileRadioLabel,
+                glassyStyle.smallMobileRadioLabel,
+                glassyStyle.verySmallMobileRadioLabel
+              )}>
                 <input
                   type="radio"
                   value="mpesa"
                   checked={paymentOption === 'mpesa'}
                   onChange={(e) => setPaymentOption(e.target.value)}
-                  style={styles.radioInput}
+                  style={glassyStyle.radioInput}
                 />
                 Pay with Mpesa
               </label>
@@ -435,15 +737,25 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
                 placeholder="Mpesa Phone Number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                style={styles.input}
+                style={getResponsiveStyle(
+                  glassyStyle.input,
+                  glassyStyle.mobileInput,
+                  glassyStyle.smallMobileInput,
+                  glassyStyle.verySmallMobileInput
+                )}
                 required
               />
             )}
             <button 
               type="submit" 
               style={{
-                ...styles.button,
-                background: isSending ? 'rgba(100, 116, 139, 0.7)' : 'rgba(56, 189, 248, 0.9)',
+                ...getResponsiveStyle(
+                  glassyStyle.button,
+                  glassyStyle.mobileButton,
+                  glassyStyle.smallMobileButton,
+                  glassyStyle.verySmallMobileButton
+                ),
+                background: isSending ? 'rgba(100, 116, 139, 0.8)' : 'rgba(56, 189, 248, 0.8)',
                 cursor: isSending ? 'not-allowed' : 'pointer',
               }}
               disabled={isSending}
@@ -453,25 +765,55 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
           </form>
         </div>
         
-        <div style={styles.quickAccess}>
+        <div style={getResponsiveStyle(
+          glassyStyle.quickAccess,
+          glassyStyle.mobileQuickAccess,
+          glassyStyle.smallMobileQuickAccess,
+          glassyStyle.verySmallMobileQuickAccess
+        )}>
           {categories.map(cat => (
-            <button key={cat.id} onClick={() => scrollToSection(cat.id)} style={styles.quickButton}>
+            <button key={cat.id} onClick={() => scrollToSection(cat.id)} style={getResponsiveStyle(
+              glassyStyle.quickButton,
+              glassyStyle.mobileQuickButton,
+              glassyStyle.smallMobileQuickButton,
+              glassyStyle.verySmallMobileQuickButton
+            )}>
               {cat.title}
             </button>
           ))}
         </div>
         
-        <div style={styles.menuSection}>
-          <h2 style={styles.h2}>Menu Categories</h2>
+        <div style={glassyStyle.menuSection}>
+          <h2 style={getResponsiveStyle(
+            glassyStyle.h2,
+            glassyStyle.mobileH2,
+            glassyStyle.smallMobileH2,
+            glassyStyle.verySmallMobileH2
+          )}>Menu Categories</h2>
           {categories.map((cat, i) => (
-            <div key={i} id={cat.id} style={styles.category}>
-              {newItems.includes(cat.items[0]?.[0]) && <div className="new-badge">NEW</div>}
-              <h3 style={styles.categoryTitle}>{cat.title}</h3>
+            <div key={i} id={cat.id} style={getResponsiveStyle(
+              glassyStyle.category,
+              glassyStyle.mobileCategory,
+              glassyStyle.smallMobileCategory,
+              glassyStyle.verySmallMobileCategory
+            )}>
+              {newItems.includes(cat.items[0]?.[0]) && <div style={glassyStyle.newBadge}>NEW</div>}
+              <h3 style={getResponsiveStyle(
+                glassyStyle.categoryTitle,
+                glassyStyle.mobileCategoryTitle,
+                glassyStyle.smallMobileCategoryTitle,
+                glassyStyle.verySmallMobileCategoryTitle
+              )}>{cat.title}</h3>
               {cat.items.map(([name, price, isNew], j) => (
-                <div key={j} style={styles.menuItem}>
+                <div key={j} style={getResponsiveStyle(
+                  glassyStyle.menuItem,
+                  glassyStyle.mobileMenuItem,
+                  glassyStyle.smallMobileMenuItem,
+                  glassyStyle.verySmallMobileMenuItem
+                )}>
                   <p>{name}</p>
                   <span>{price}</span>
-                  {isNew && <div className="new-badge">NEW</div>}
+                  {isNew && <div style={glassyStyle.newBadge}>NEW</div>}
                 </div>
               ))}
             </div>
@@ -483,7 +825,12 @@ ${paymentOption === 'mpesa' ? 'Customer has paid. Please confirm.' : 'Customer w
         target="_blank"
         rel="noopener noreferrer"
         title="Order on WhatsApp"
-        style={styles.floatBtn}
+        style={getResponsiveStyle(
+          glassyStyle.floatBtn,
+          glassyStyle.mobileFloatBtn,
+          glassyStyle.smallMobileFloatBtn,
+          glassyStyle.verySmallMobileFloatBtn
+        )}
       >
         💬
       </a>
