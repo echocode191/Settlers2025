@@ -32,41 +32,34 @@ const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
 
+  const [showUpdateBtn, setShowUpdateBtn] = useState(false);
+
+  // ---- CSS Load Detection ----
   useEffect(() => {
-    // Check if CSS is loaded
     const checkCssLoaded = () => {
       const styles = document.getElementsByTagName('style');
       const links = document.getElementsByTagName('link');
-      
-      // Check if we have any styles or links loaded
       if (styles.length > 0 || links.length > 0) {
         setIsCssLoaded(true);
       }
     };
-    
-    // Initial check
     checkCssLoaded();
-    
-    // Fallback timeout in case CSS doesn't load
     const timeoutId = setTimeout(() => {
       setIsCssLoaded(true);
-    }, 300); // Adjust as needed
-    
-    // Listen for CSS load events
+    }, 300);
     window.addEventListener('load', checkCssLoaded);
-    
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener('load', checkCssLoaded);
     };
   }, []);
 
+  // ---- PWA Install Banner ----
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setShowBanner(true);
-      // Auto-hide banner after 7 seconds
       setTimeout(() => setShowBanner(false), 7000);
     });
   }, []);
@@ -83,7 +76,66 @@ const App = () => {
     }
   };
 
-  // Show loading spinner while CSS is loading
+  // ---- Check for new version ----
+  useEffect(() => {
+    let currentVersion = null;
+
+    const checkForUpdate = async () => {
+      try {
+        const res = await fetch('/meta.json?time=' + new Date().getTime());
+        const data = await res.json();
+        if (!currentVersion) {
+          currentVersion = data.version;
+        } else if (data.version !== currentVersion) {
+          setShowUpdateBtn(true);
+          // Auto-hide after 15s
+          setTimeout(() => setShowUpdateBtn(false), 15000);
+        }
+      } catch (err) {
+        console.error("Update check failed:", err);
+      }
+    };
+
+    checkForUpdate();
+    const intervalId = setInterval(checkForUpdate, 30000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleUpdate = () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration().then(reg => {
+        if (reg && reg.waiting) {
+          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+        reg?.unregister().then(() => {
+          window.location.reload(true);
+        });
+      });
+    } else {
+      window.location.reload(true);
+    }
+  };
+
+  // ---- Auto-refresh when reconnecting to internet ----
+  useEffect(() => {
+    const handleReconnect = () => {
+      if (navigator.onLine) {
+        console.log("Network reconnected — refreshing");
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(reg => reg.unregister());
+            window.location.reload(true);
+          });
+        } else {
+          window.location.reload(true);
+        }
+      }
+    };
+    window.addEventListener('online', handleReconnect);
+    return () => window.removeEventListener('online', handleReconnect);
+  }, []);
+
+  // ---- Loading Screen ----
   if (!isCssLoaded) {
     return (
       <div style={{
@@ -92,7 +144,7 @@ const App = () => {
         left: 0,
         width: '100%',
         height: '100%',
-        background: '#111', // Match your app's background
+        background: '#111',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -119,7 +171,7 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
-      {/* Install banner */}
+      {/* Install Banner */}
       {showBanner && (
         <div style={{
           position: 'fixed',
@@ -139,6 +191,26 @@ const App = () => {
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
         </div>
       )}
+
+      {/* Update Available Button */}
+      {showUpdateBtn && (
+        <div style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          background: '#111',
+          color: '#fff',
+          padding: '10px 15px',
+          borderRadius: '8px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+          cursor: 'pointer',
+          animation: 'fadeIn 0.5s ease',
+          zIndex: 9999
+        }} onClick={handleUpdate}>
+          🔄 New update available — click to refresh
+        </div>
+      )}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Redirect to="/" />} />
@@ -154,7 +226,7 @@ const App = () => {
   );
 };
 
-// Optional CSS animation (inject in your CSS file)
+// Animations
 const bannerAnimation = `
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
@@ -166,9 +238,12 @@ const bannerAnimation = `
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 `;
 
-// Inject animation to document
 if (typeof document !== 'undefined') {
   const style = document.createElement('style');
   style.innerHTML = bannerAnimation;
