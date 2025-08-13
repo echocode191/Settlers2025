@@ -1,65 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import Home from './pages/Home';
+import Menu from './pages/Menu';
+import Accommodation from './pages/Accommodation';
+import About from './pages/About';
+import Gallery from './pages/Gallery';
+import Location from './pages/Location';
+import Contact from './pages/Contact';
+import Offers from './pages/Offers';
 
-    <title>Settlers Inn | Where Settlers Still Eat Like Kings</title>
+// Import your CSS
+import './styles.css';
 
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="Settlers Inn | Where Settlers Still Eat Like Kings" />
-    <meta name="description" content="Settlers Inn — Authentic dishes & cozy stays in Kipkelion, Kenya Highlands. Come hungry, leave like a king!" />
-    <meta name="keywords" content="Settlers Inn, Kipkelion, Kenya hotels, local food, African cuisine, family restaurant, Highlands stay" />
-    <meta name="author" content="EchoBiz (Kimutai Gibson)" />
-    <meta name="theme-color" content="#0d1117" />
+// Scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+  return null;
+};
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://settlersinn.netlify.app/" />
-    <meta property="og:title" content="Settlers Inn | Where Settlers Still Eat Like Kings" />
-    <meta property="og:description" content="Authentic dishes & cozy stays in Kipkelion, Kenya Highlands. Come hungry, leave like a king!" />
-    <meta property="og:image" content="/assets/og-image.jpg" />
+const App = () => {
+  const [isAppReady, setIsAppReady] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showBanner, setShowBanner] = useState(false);
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Settlers Inn | Where Settlers Still Eat Like Kings" />
-    <meta name="twitter:description" content="Authentic dishes & cozy stays in Kipkelion, Kenya Highlands. Come hungry, leave like a king!" />
-    <meta name="twitter:image" content="/assets/favicon-64.jpg" />
+  useEffect(() => {
+    // Check if both CSS and fonts are loaded
+    const checkResourcesLoaded = () => {
+      // Check if CSS is loaded
+      const stylesLoaded = document.querySelectorAll('link[rel="stylesheet"]').length > 0 || 
+                          document.querySelectorAll('style').length > 1; // >1 because of critical CSS
+      
+      // Check if fonts are loaded
+      const fontsLoaded = document.fonts && document.fonts.ready ? 
+                         document.fonts.ready.then(() => true) : 
+                         Promise.resolve(true);
+      
+      fontsLoaded.then(() => {
+        if (stylesLoaded) {
+          setIsAppReady(true);
+          // Hide the loading screen
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+          }
+        }
+      });
+    };
 
-    <!-- PWA / Manifest -->
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="/assets/logo.png" sizes="180x180" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    // Initial check
+    checkResourcesLoaded();
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/logo.png" />
+    // Fallback timeout in case resources don't load
+    const timeoutId = setTimeout(() => {
+      setIsAppReady(true);
+      const loadingScreen = document.getElementById('loading-screen');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+      }
+    }, 1000); // Adjust as needed
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
+    // PWA install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowBanner(true);
+      // Auto-hide banner after 7 seconds
+      setTimeout(() => setShowBanner(false), 7000);
+    });
 
-    <!-- Facebook SDK (for reviews) -->
-    <script async defer crossorigin="anonymous"
-      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"
-      nonce="settlersInnScript">
-    </script>
-  </head>
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
-  <body style="margin:0; font-family: 'Fira Code', monospace; background-color:#0d1117; color:#c9d1d9;">
-    <noscript>
-      <strong style="color: white;">We're sorry but Settlers Inn requires JavaScript to run properly. Please enable it to continue.</strong>
-    </noscript>
+  const handleInstall = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const result = await deferredPrompt.userChoice;
+      if (result.outcome === 'accepted') {
+        console.log('User accepted install');
+      }
+      setDeferredPrompt(null);
+      setShowBanner(false);
+    }
+  };
 
-    <!-- Facebook Root -->
-    <div id="fb-root"></div>
+  // App is not ready yet, loading screen is shown via HTML
+  if (!isAppReady) {
+    return null;
+  }
 
-    <!-- React App Mount -->
-    <div id="root"></div>
+  return (
+    <Router>
+      <ScrollToTop />
+      {/* Install banner */}
+      {showBanner && (
+        <div style={installBannerStyle} onClick={handleInstall}>
+          📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
+        </div>
+      )}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/accommodation" element={<Accommodation />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/location" element={<Location />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/offers" element={<Offers />} />
+      </Routes>
+    </Router>
+  );
+};
 
-    <!-- Entry -->
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+// 🔥 Toast-like banner style
+const installBannerStyle = {
+  position: 'fixed',
+  top: '10px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  background: '#111',
+  color: '#fff',
+  padding: '10px 20px',
+  borderRadius: '8px',
+  fontSize: '15px',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+  zIndex: 9999,
+  cursor: 'pointer',
+  animation: 'fadeInOut 7s ease-in-out',
+};
+
+// Optional CSS animation (inject in your CSS file)
+const bannerAnimation = `
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
+`;
+
+// Inject animation to document
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.innerHTML = bannerAnimation;
+  document.head.appendChild(style);
+}
+
+export default App;
