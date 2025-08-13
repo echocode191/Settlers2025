@@ -15,6 +15,9 @@ const Location = () => {
   const [nearbyPlaces, setNearbyPlaces] = useState([]);
   const [visitorCount, setVisitorCount] = useState(0);
   const [routingLoaded, setRoutingLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSmallMobile, setIsSmallMobile] = useState(false);
+  const [isVerySmallMobile, setIsVerySmallMobile] = useState(false);
   
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
@@ -67,8 +70,19 @@ const Location = () => {
       setRoutingLoaded(true);
     }
     
+    // Check screen size for responsive design
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
+      setIsVerySmallMobile(window.innerWidth <= 333);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
     return () => {
       isMountedRef.current = false;
+      window.removeEventListener('resize', checkScreenSize);
     };
   }, []);
   
@@ -218,13 +232,14 @@ const Location = () => {
     window.open('https://maps.app.goo.gl/T4JeUH1KDCUrx9mK7', '_blank');
   };
   
-  // Styles with modern glassy design
-  const styles = {
+  // Glassy styles
+  const glassyStyle = {
     page: {
       background: 'linear-gradient(135deg, #0f172a, #1e293b)',
       color: '#e2e8f0',
-      fontFamily: "'Inter', system-ui, sans-serif",
+      fontFamily: "Inter, system-ui, sans-serif",
       minHeight: '100vh',
+      overflowX: 'hidden'
     },
     section: {
       maxWidth: '1100px',
@@ -247,13 +262,15 @@ const Location = () => {
       marginInline: 'auto',
     },
     mapContainer: {
-      height: mapExpanded ? 'min(80vh, 500px)' : '400px',
-      borderRadius: '20px',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      height: '400px',
+      borderRadius: '24px',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
       marginBottom: '2rem',
       position: 'relative',
       overflow: 'hidden',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     buttonContainer: {
       display: 'flex',
@@ -266,25 +283,28 @@ const Location = () => {
       padding: '0.8rem 1.5rem',
       fontSize: '0.95rem',
       borderRadius: '12px',
-      border: 'none',
-      backgroundColor: 'rgba(56, 189, 248, 0.9)',
+      
+      backgroundColor: 'rgba(56, 189, 248, 0.8)',
       color: '#0f172a',
       cursor: 'pointer',
       minWidth: '150px',
       transition: 'all 0.3s ease',
       fontWeight: '600',
-      backdropFilter: 'blur(4px)',
-      boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
+      backdropFilter: 'blur(8px)',
+      boxShadow: '0 4px 15px rgba(56, 189, 248, 0.3)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     distanceContainer: {
       textAlign: 'center',
       marginTop: '1.5rem',
       marginBottom: '1.5rem',
-      background: 'rgba(30, 41, 59, 0.7)',
-      borderRadius: '16px',
+      background: 'rgba(255, 255, 255, 0.08)',
+      borderRadius: '20px',
       padding: '1.5rem',
-      backdropFilter: 'blur(8px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(12px)'
     },
     distance: {
       color: '#38bdf8',
@@ -297,12 +317,13 @@ const Location = () => {
       marginTop: '0.8rem',
     },
     nearbyContainer: {
-      background: 'rgba(30, 41, 59, 0.7)',
-      borderRadius: '20px',
+      background: 'rgba(255, 255, 255, 0.08)',
+      borderRadius: '24px',
       padding: '2rem',
       marginBottom: '2.5rem',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(12px)'
     },
     nearbyTitle: {
       fontSize: '1.5rem',
@@ -317,15 +338,16 @@ const Location = () => {
       gap: '1.5rem',
     },
     nearbyItem: {
-      background: 'rgba(15, 23, 42, 0.6)',
-      borderRadius: '16px',
+      background: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: '20px',
       padding: '1.5rem',
-      backdropFilter: 'blur(4px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
       transition: 'all 0.3s ease',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     nearbyName: {
       fontWeight: '600',
@@ -340,12 +362,13 @@ const Location = () => {
     statsContainer: {
       display: 'flex',
       justifyContent: 'space-around',
-      background: 'rgba(30, 41, 59, 0.7)',
-      borderRadius: '20px',
+      background: 'rgba(255, 255, 255, 0.08)',
+      borderRadius: '24px',
       padding: '1.5rem',
       marginBottom: '2.5rem',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(12px)'
     },
     statItem: {
       textAlign: 'center',
@@ -366,13 +389,14 @@ const Location = () => {
       left: 0,
       width: '100%',
       height: '100%',
-      background: 'rgba(15, 23, 42, 0.8)',
-      backdropFilter: 'blur(8px)',
+      background: 'rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(12px)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: '20px',
+      borderRadius: '24px',
       zIndex: 1000,
+      WebkitBackdropFilter: 'blur(12px)'
     },
     loadingText: {
       color: '#e2e8f0',
@@ -386,49 +410,353 @@ const Location = () => {
       width: '30px',
       height: '30px',
       animation: 'spin 1s linear infinite',
+    },
+    // Mobile styles
+    mobileSection: {
+      padding: '2rem 1rem',
+    },
+    mobileTitle: {
+      fontSize: '1.8rem',
+    },
+    mobileSubtitle: {
+      fontSize: '1rem',
+      marginBottom: '2rem',
+    },
+    mobileMapContainer: {
+      height: '350px',
+      marginBottom: '1.5rem',
+    },
+    mobileButtonContainer: {
+      gap: '1rem',
+      marginBottom: '2rem',
+    },
+    mobileButton: {
+      padding: '0.7rem 1.2rem',
+      fontSize: '0.9rem',
+      minWidth: '130px',
+    },
+    mobileDistanceContainer: {
+      marginTop: '1.2rem',
+      marginBottom: '1.2rem',
+      padding: '1.2rem',
+    },
+    mobileDistance: {
+      fontSize: '1rem',
+    },
+    mobileJoke: {
+      fontSize: '0.9rem',
+    },
+    mobileNearbyContainer: {
+      padding: '1.5rem',
+      marginBottom: '2rem',
+    },
+    mobileNearbyTitle: {
+      fontSize: '1.3rem',
+      marginBottom: '1.2rem',
+    },
+    mobileNearbyList: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+      gap: '1.2rem',
+    },
+    mobileNearbyItem: {
+      padding: '1.2rem',
+    },
+    mobileNearbyName: {
+      fontSize: '1rem',
+    },
+    mobileNearbyDistance: {
+      fontSize: '0.9rem',
+    },
+    mobileStatsContainer: {
+      padding: '1.2rem',
+      marginBottom: '2rem',
+    },
+    mobileStatNumber: {
+      fontSize: '1.3rem',
+    },
+    mobileStatLabel: {
+      fontSize: '0.85rem',
+    },
+    // Small mobile styles
+    smallMobileSection: {
+      padding: '1.5rem 0.8rem',
+    },
+    smallMobileTitle: {
+      fontSize: '1.6rem',
+    },
+    smallMobileSubtitle: {
+      fontSize: '0.95rem',
+      marginBottom: '1.5rem',
+    },
+    smallMobileMapContainer: {
+      height: '300px',
+      marginBottom: '1.2rem',
+    },
+    smallMobileButtonContainer: {
+      gap: '0.8rem',
+      marginBottom: '1.5rem',
+    },
+    smallMobileButton: {
+      padding: '0.6rem 1rem',
+      fontSize: '0.85rem',
+      minWidth: '120px',
+    },
+    smallMobileDistanceContainer: {
+      marginTop: '1rem',
+      marginBottom: '1rem',
+      padding: '1rem',
+    },
+    smallMobileDistance: {
+      fontSize: '0.95rem',
+    },
+    smallMobileJoke: {
+      fontSize: '0.85rem',
+    },
+    smallMobileNearbyContainer: {
+      padding: '1.2rem',
+      marginBottom: '1.5rem',
+    },
+    smallMobileNearbyTitle: {
+      fontSize: '1.2rem',
+      marginBottom: '1rem',
+    },
+    smallMobileNearbyList: {
+      gridTemplateColumns: '1fr',
+      gap: '1rem',
+    },
+    smallMobileNearbyItem: {
+      padding: '1rem',
+    },
+    smallMobileNearbyName: {
+      fontSize: '0.95rem',
+    },
+    smallMobileNearbyDistance: {
+      fontSize: '0.85rem',
+    },
+    smallMobileStatsContainer: {
+      padding: '1rem',
+      marginBottom: '1.5rem',
+    },
+    smallMobileStatNumber: {
+      fontSize: '1.2rem',
+    },
+    smallMobileStatLabel: {
+      fontSize: '0.8rem',
+    },
+    // Very small mobile styles
+    verySmallMobileSection: {
+      padding: '1.2rem 0.6rem',
+    },
+    verySmallMobileTitle: {
+      fontSize: '1.4rem',
+    },
+    verySmallMobileSubtitle: {
+      fontSize: '0.9rem',
+      marginBottom: '1.2rem',
+    },
+    verySmallMobileMapContainer: {
+      height: '250px',
+      marginBottom: '1rem',
+    },
+    verySmallMobileButtonContainer: {
+      gap: '0.6rem',
+      marginBottom: '1.2rem',
+    },
+    verySmallMobileButton: {
+      padding: '0.5rem 0.8rem',
+      fontSize: '0.8rem',
+      minWidth: '110px',
+    },
+    verySmallMobileDistanceContainer: {
+      marginTop: '0.8rem',
+      marginBottom: '0.8rem',
+      padding: '0.8rem',
+    },
+    verySmallMobileDistance: {
+      fontSize: '0.9rem',
+    },
+    verySmallMobileJoke: {
+      fontSize: '0.8rem',
+    },
+    verySmallMobileNearbyContainer: {
+      padding: '1rem',
+      marginBottom: '1.2rem',
+    },
+    verySmallMobileNearbyTitle: {
+      fontSize: '1.1rem',
+      marginBottom: '0.8rem',
+    },
+    verySmallMobileNearbyList: {
+      gridTemplateColumns: '1fr',
+      gap: '0.8rem',
+    },
+    verySmallMobileNearbyItem: {
+      padding: '0.8rem',
+    },
+    verySmallMobileNearbyName: {
+      fontSize: '0.9rem',
+    },
+    verySmallMobileNearbyDistance: {
+      fontSize: '0.8rem',
+    },
+    verySmallMobileStatsContainer: {
+      padding: '0.8rem',
+      marginBottom: '1.2rem',
+    },
+    verySmallMobileStatNumber: {
+      fontSize: '1.1rem',
+    },
+    verySmallMobileStatLabel: {
+      fontSize: '0.75rem',
     }
   };
   
+  // Get responsive styles
+  const getResponsiveStyle = (baseStyle, mobileStyle, smallMobileStyle, verySmallMobileStyle) => {
+    if (isVerySmallMobile && verySmallMobileStyle) return { ...baseStyle, ...verySmallMobileStyle };
+    if (isSmallMobile && smallMobileStyle) return { ...baseStyle, ...smallMobileStyle };
+    if (isMobile && mobileStyle) return { ...baseStyle, ...mobileStyle };
+    return baseStyle;
+  };
+  
+  // Map expanded style
+  const mapExpandedStyle = {
+    height: isVerySmallMobile ? '200px' : isSmallMobile ? '250px' : isMobile ? '300px' : 'min(80vh, 500px)'
+  };
+  
   return (
-    <div style={styles.page}>
+    <div style={glassyStyle.page}>
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          .leaflet-container { 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 24px;
+          }
+          .settlers-marker { 
+            font-size: 1.5rem; 
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+          }
+          .user-marker { 
+            font-size: 1.4rem; 
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+          }
+          .leaflet-routing-container { 
+            display: none; 
+          }
+        `}
+      </style>
+      
       <Navbar />
-      <section style={styles.section}>
-        <h2 style={styles.title}>Find Us</h2>
-        <p style={styles.subtitle}>We're located in the Kenya Highlands. Here's how to get to Settlers Inn.</p>
+      <section style={getResponsiveStyle(
+        glassyStyle.section,
+        glassyStyle.mobileSection,
+        glassyStyle.smallMobileSection,
+        glassyStyle.verySmallMobileSection
+      )}>
+        <h2 style={getResponsiveStyle(
+          glassyStyle.title,
+          glassyStyle.mobileTitle,
+          glassyStyle.smallMobileTitle,
+          glassyStyle.verySmallMobileTitle
+        )}>Find Us</h2>
+        <p style={getResponsiveStyle(
+          glassyStyle.subtitle,
+          glassyStyle.mobileSubtitle,
+          glassyStyle.smallMobileSubtitle,
+          glassyStyle.verySmallMobileSubtitle
+        )}>We're located in the Kenya Highlands. Here's how to get to Settlers Inn.</p>
         
-        <div style={styles.statsContainer}>
-          <div style={styles.statItem}>
-            <div style={styles.statNumber}>{visitorCount}</div>
-            <div style={styles.statLabel}>Visitors Today</div>
+        <div style={getResponsiveStyle(
+          glassyStyle.statsContainer,
+          glassyStyle.mobileStatsContainer,
+          glassyStyle.smallMobileStatsContainer,
+          glassyStyle.verySmallMobileStatsContainer
+        )}>
+          <div style={glassyStyle.statItem}>
+            <div style={getResponsiveStyle(
+              glassyStyle.statNumber,
+              glassyStyle.mobileStatNumber,
+              glassyStyle.smallMobileStatNumber,
+              glassyStyle.verySmallMobileStatNumber
+            )}>{visitorCount}</div>
+            <div style={getResponsiveStyle(
+              glassyStyle.statLabel,
+              glassyStyle.mobileStatLabel,
+              glassyStyle.smallMobileStatLabel,
+              glassyStyle.verySmallMobileStatLabel
+            )}>Visitors Today</div>
           </div>
-          <div style={styles.statItem}>
-            <div style={styles.statNumber}>4.8★</div>
-            <div style={styles.statLabel}>Location Rating</div>
+          <div style={glassyStyle.statItem}>
+            <div style={getResponsiveStyle(
+              glassyStyle.statNumber,
+              glassyStyle.mobileStatNumber,
+              glassyStyle.smallMobileStatNumber,
+              glassyStyle.verySmallMobileStatNumber
+            )}>4.8★</div>
+            <div style={getResponsiveStyle(
+              glassyStyle.statLabel,
+              glassyStyle.mobileStatLabel,
+              glassyStyle.smallMobileStatLabel,
+              glassyStyle.verySmallMobileStatLabel
+            )}>Location Rating</div>
           </div>
-          <div style={styles.statItem}>
-            <div style={styles.statNumber}>24/7</div>
-            <div style={styles.statLabel}>Service</div>
+          <div style={glassyStyle.statItem}>
+            <div style={getResponsiveStyle(
+              glassyStyle.statNumber,
+              glassyStyle.mobileStatNumber,
+              glassyStyle.smallMobileStatNumber,
+              glassyStyle.verySmallMobileStatNumber
+            )}>24/7</div>
+            <div style={getResponsiveStyle(
+              glassyStyle.statLabel,
+              glassyStyle.mobileStatLabel,
+              glassyStyle.smallMobileStatLabel,
+              glassyStyle.verySmallMobileStatLabel
+            )}>Service</div>
           </div>
         </div>
         
-        <div style={styles.mapContainer}>
+        <div style={{
+          ...getResponsiveStyle(
+            glassyStyle.mapContainer,
+            glassyStyle.mobileMapContainer,
+            glassyStyle.smallMobileMapContainer,
+            glassyStyle.verySmallMobileMapContainer
+          ),
+          ...(mapExpanded && mapExpandedStyle)
+        }}>
           <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
           {isLocating && (
-            <div style={styles.loadingOverlay}>
+            <div style={glassyStyle.loadingOverlay}>
               <div>
-                <div style={styles.loadingText}>Finding your location...</div>
-                <div style={styles.spinner}></div>
+                <div style={glassyStyle.loadingText}>Finding your location...</div>
+                <div style={glassyStyle.spinner}></div>
               </div>
             </div>
           )}
         </div>
         
-        <div style={styles.buttonContainer}>
+        <div style={getResponsiveStyle(
+          glassyStyle.buttonContainer,
+          glassyStyle.mobileButtonContainer,
+          glassyStyle.smallMobileButtonContainer,
+          glassyStyle.verySmallMobileButtonContainer
+        )}>
           <button 
             onClick={locateMe} 
             style={{
-              ...styles.button,
-              background: isLocating ? 'rgba(100, 116, 139, 0.7)' : 'rgba(56, 189, 248, 0.9)',
+              ...getResponsiveStyle(
+                glassyStyle.button,
+                glassyStyle.mobileButton,
+                glassyStyle.smallMobileButton,
+                glassyStyle.verySmallMobileButton
+              ),
+              background: isLocating ? 'rgba(100, 116, 139, 0.8)' : 'rgba(56, 189, 248, 0.8)',
               cursor: isLocating ? 'not-allowed' : 'pointer',
             }}
             disabled={isLocating}
@@ -437,73 +765,122 @@ const Location = () => {
           </button>
           <button 
             onClick={flyToSettlers} 
-            style={{ ...styles.button, backgroundColor: 'rgba(34, 197, 94, 0.9)' }}
+            style={{
+              ...getResponsiveStyle(
+                glassyStyle.button,
+                glassyStyle.mobileButton,
+                glassyStyle.smallMobileButton,
+                glassyStyle.verySmallMobileButton
+              ),
+              backgroundColor: 'rgba(34, 197, 94, 0.8)'
+            }}
           >
             🚀 Fly to Settlers
           </button>
           <button 
             onClick={() => setMapExpanded(!mapExpanded)} 
-            style={styles.button}
+            style={getResponsiveStyle(
+              glassyStyle.button,
+              glassyStyle.mobileButton,
+              glassyStyle.smallMobileButton,
+              glassyStyle.verySmallMobileButton
+            )}
           >
             {mapExpanded ? '🗺️ Collapse Map' : '🔍 Expand Map'}
           </button>
           <button 
             onClick={openGoogleMaps} 
-            style={{ ...styles.button, backgroundColor: 'rgba(251, 191, 36, 0.9)', color: '#0f172a' }}
+            style={{
+              ...getResponsiveStyle(
+                glassyStyle.button,
+                glassyStyle.mobileButton,
+                glassyStyle.smallMobileButton,
+                glassyStyle.verySmallMobileButton
+              ),
+              backgroundColor: 'rgba(251, 191, 36, 0.8)',
+              color: '#0f172a'
+            }}
           >
             🌍 Google Maps
           </button>
         </div>
         
         {distance && (
-          <div style={styles.distanceContainer}>
-            <p style={styles.distance}>
+          <div style={getResponsiveStyle(
+            glassyStyle.distanceContainer,
+            glassyStyle.mobileDistanceContainer,
+            glassyStyle.smallMobileDistanceContainer,
+            glassyStyle.verySmallMobileDistanceContainer
+          )}>
+            <p style={getResponsiveStyle(
+              glassyStyle.distance,
+              glassyStyle.mobileDistance,
+              glassyStyle.smallMobileDistance,
+              glassyStyle.verySmallMobileDistance
+            )}>
               🛣️ You're approximately <strong>{distance} km</strong> away.
             </p>
-            <p style={styles.joke}>{joke}</p>
+            <p style={getResponsiveStyle(
+              glassyStyle.joke,
+              glassyStyle.mobileJoke,
+              glassyStyle.smallMobileJoke,
+              glassyStyle.verySmallMobileJoke
+            )}>{joke}</p>
           </div>
         )}
         
-        <div style={styles.nearbyContainer}>
-          <h3 style={styles.nearbyTitle}>📍 Nearby Places</h3>
-          <div style={styles.nearbyList}>
+        <div style={getResponsiveStyle(
+          glassyStyle.nearbyContainer,
+          glassyStyle.mobileNearbyContainer,
+          glassyStyle.smallMobileNearbyContainer,
+          glassyStyle.verySmallMobileNearbyContainer
+        )}>
+          <h3 style={getResponsiveStyle(
+            glassyStyle.nearbyTitle,
+            glassyStyle.mobileNearbyTitle,
+            glassyStyle.smallMobileNearbyTitle,
+            glassyStyle.verySmallMobileNearbyTitle
+          )}>📍 Nearby Places</h3>
+          <div style={getResponsiveStyle(
+            glassyStyle.nearbyList,
+            glassyStyle.mobileNearbyList,
+            glassyStyle.smallMobileNearbyList,
+            glassyStyle.verySmallMobileNearbyList
+          )}>
             {nearbyPlaces.map((place, index) => (
-              <div key={index} style={styles.nearbyItem}>
+              <div key={index} style={getResponsiveStyle(
+                glassyStyle.nearbyItem,
+                glassyStyle.mobileNearbyItem,
+                glassyStyle.smallMobileNearbyItem,
+                glassyStyle.verySmallMobileNearbyItem
+              )}>
                 <div>
-                  <div style={styles.nearbyName}>{place.name}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.3rem' }}>
+                  <div style={getResponsiveStyle(
+                    glassyStyle.nearbyName,
+                    glassyStyle.mobileNearbyName,
+                    glassyStyle.smallMobileNearbyName,
+                    glassyStyle.verySmallMobileNearbyName
+                  )}>{place.name}</div>
+                  <div style={{ 
+                    fontSize: isVerySmallMobile ? '0.7rem' : isSmallMobile ? '0.75rem' : '0.8rem', 
+                    color: '#94a3b8', 
+                    marginTop: '0.3rem' 
+                  }}>
                     {place.type}
                   </div>
                 </div>
-                <div style={styles.nearbyDistance}>{place.distance}</div>
+                <div style={getResponsiveStyle(
+                  glassyStyle.nearbyDistance,
+                  glassyStyle.mobileNearbyDistance,
+                  glassyStyle.smallMobileNearbyDistance,
+                  glassyStyle.verySmallMobileNearbyDistance
+                )}>{place.distance}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
       <Footer />
-      <style>{`
-        .leaflet-container { 
-          width: 100%; 
-          height: 100%; 
-          border-radius: 20px;
-        }
-        .settlers-marker { 
-          font-size: 1.5rem; 
-          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-        .user-marker { 
-          font-size: 1.4rem; 
-          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-        .leaflet-routing-container { 
-          display: none; 
-        }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 };
