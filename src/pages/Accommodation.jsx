@@ -3,7 +3,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-
 const MpesaPayment = ({ amount = '', item = 'booking' }) => {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
@@ -70,7 +69,6 @@ const MpesaPayment = ({ amount = '', item = 'booking' }) => {
     </div>
   );
 };
-
 const Accommodation = () => {
   const [dailySpecial, setDailySpecial] = useState("");
   const [lastUpdated, setLastUpdated] = useState("");
@@ -460,7 +458,6 @@ const Accommodation = () => {
     </div>
   );
 };
-
 // 🔧 Styles
 const inputStyle = {
   padding: '0.7rem 1rem',
@@ -475,7 +472,6 @@ const inputStyle = {
   transition: 'all 0.2s ease',
   outline: 'none',
 };
-
 const datePickerStyle = {
   padding: '0.7rem 1rem',
   width: '100%',
@@ -489,7 +485,6 @@ const datePickerStyle = {
   transition: 'all 0.2s ease',
   outline: 'none',
 };
-
 const labelStyle = {
   display: 'block',
   marginBottom: '0.5rem',
@@ -497,7 +492,6 @@ const labelStyle = {
   fontSize: '0.9rem',
   fontWeight: '500',
 };
-
 const buttonStyle = {
   background: 'rgba(56, 189, 248, 0.9)',
   color: '#0f172a',
@@ -516,7 +510,6 @@ const buttonStyle = {
   width: '100%',
   fontSize: '0.95rem'
 };
-
 const roomCardStyle = {
   background: 'rgba(30, 41, 59, 0.7)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -527,7 +520,6 @@ const roomCardStyle = {
   backdropFilter: 'blur(10px)',
   boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
 };
-
 const imageStyle = {
   width: '100%',
   height: '180px',
@@ -536,12 +528,10 @@ const imageStyle = {
   marginBottom: '1.2rem',
   transition: 'transform 0.3s ease'
 };
-
 const titleStyle = {
   marginBottom: '1.2rem',
   color: '#e2e8f0',
   fontSize: '1.4rem',
   fontWeight: '600'
 };
-
 export default Accommodation;
