@@ -32,8 +32,6 @@ const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
 
-  const [showUpdateBtn, setShowUpdateBtn] = useState(false);
-
   // ---- CSS Load Detection ----
   useEffect(() => {
     const checkCssLoaded = () => {
@@ -76,7 +74,7 @@ const App = () => {
     }
   };
 
-  // ---- Check for new version ----
+  // ---- Auto refresh if new version detected ----
   useEffect(() => {
     let currentVersion = null;
 
@@ -87,9 +85,15 @@ const App = () => {
         if (!currentVersion) {
           currentVersion = data.version;
         } else if (data.version !== currentVersion) {
-          setShowUpdateBtn(true);
-          // Auto-hide after 15s
-          setTimeout(() => setShowUpdateBtn(false), 15000);
+          console.log("New version detected — refreshing...");
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(regs => {
+              regs.forEach(reg => reg.unregister());
+              window.location.reload(true);
+            });
+          } else {
+            window.location.reload(true);
+          }
         }
       } catch (err) {
         console.error("Update check failed:", err);
@@ -101,26 +105,11 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleUpdate = () => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistration().then(reg => {
-        if (reg && reg.waiting) {
-          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-        }
-        reg?.unregister().then(() => {
-          window.location.reload(true);
-        });
-      });
-    } else {
-      window.location.reload(true);
-    }
-  };
-
-  // ---- Auto-refresh when reconnecting to internet ----
+  // ---- Auto refresh on network reconnect ----
   useEffect(() => {
     const handleReconnect = () => {
       if (navigator.onLine) {
-        console.log("Network reconnected — refreshing");
+        console.log("Network reconnected — refreshing...");
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.getRegistrations().then(regs => {
             regs.forEach(reg => reg.unregister());
@@ -171,6 +160,7 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
+
       {/* Install Banner */}
       {showBanner && (
         <div style={{
@@ -189,25 +179,6 @@ const App = () => {
           animation: 'fadeInOut 7s ease-in-out',
         }} onClick={handleInstall}>
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
-        </div>
-      )}
-
-      {/* Update Available Button */}
-      {showUpdateBtn && (
-        <div style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          background: '#111',
-          color: '#fff',
-          padding: '10px 15px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
-          cursor: 'pointer',
-          animation: 'fadeIn 0.5s ease',
-          zIndex: 9999
-        }} onClick={handleUpdate}>
-          🔄 New update available — click to refresh
         </div>
       )}
 
@@ -237,10 +208,6 @@ const bannerAnimation = `
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 `;
 
