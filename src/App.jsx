@@ -116,16 +116,18 @@ const App = () => {
           📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
         </div>
       )}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/accommodation" element={<Accommodation />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/location" element={<Location />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/offers" element={<Offers />} />
-      </Routes>
+    
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/home" element={<Navigate to="/" replace />} />
+  <Route path="/menu" element={<Menu />} />
+  <Route path="/accommodation" element={<Accommodation />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/gallery" element={<Gallery />} />
+  <Route path="/location" element={<Location />} />
+  <Route path="/contact" element={<Contact />} />
+  <Route path="/offers" element={<Offers />} />
+</Routes>
     </Router>
   );
 };
