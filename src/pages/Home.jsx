@@ -15,10 +15,6 @@ const Home = () => {
   const [activeDish, setActiveDish] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [fbLoaded, setFbLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSmallMobile, setIsSmallMobile] = useState(false);
-  const [isVerySmallMobile, setIsVerySmallMobile] = useState(false);
   
   const welcomingPhrases = [
     "🍲 Authentic flavors, memorable experiences",
@@ -49,16 +45,6 @@ const Home = () => {
   ];
   
   useEffect(() => {
-    // Check screen size for responsive design
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 768);
-      setIsSmallMobile(window.innerWidth <= 480);
-      setIsVerySmallMobile(window.innerWidth <= 333);
-    };
-    
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    
     // Initialize dynamic content
     const specials = [
       "Today's Special: Nyama Choma with Ugali - KES 800",
@@ -108,31 +94,29 @@ const Home = () => {
     };
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     
-    // Load Facebook SDK
+    // Facebook SDK - load only when section is visible
     const loadFacebookSDK = () => {
       if (typeof window !== 'undefined' && !window.FB) {
-        window.fbAsyncInit = function() {
-          window.FB.init({
-            appId: 'your-app-id', // Replace with your Facebook App ID
-            autoLogAppEvents: true,
-            xfbml: true,
-            version: 'v18.0'
-          });
-          setFbLoaded(true);
-        };
-        
-        (function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = "https://connect.facebook.net/en_US/sdk.js";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        const script = document.createElement("script");
+        script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
       }
     };
     
-    // Load Facebook SDK when component mounts
-    loadFacebookSDK();
+    // Use IntersectionObserver to load Facebook SDK when needed
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadFacebookSDK();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    const facebookSection = document.querySelector('.facebook-section');
+    if (facebookSection) observer.observe(facebookSection);
     
     return () => {
       clearInterval(interval);
@@ -141,7 +125,7 @@ const Home = () => {
       clearInterval(onlineInterval);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-      window.removeEventListener('resize', checkScreenSize);
+      if (facebookSection) observer.unobserve(facebookSection);
     };
   }, []);
   
@@ -324,7 +308,7 @@ const Home = () => {
       marginBottom: "1.8rem",
       animation: "shimmer 3s infinite",
       backgroundSize: "200px 100%",
-      boxShadow: "0 4px 15px rgba(56, 189, 248, 0.25)",
+      boxShadow: "0 4px 15px rgba(56, 189, 248, 0.3)",
       backdropFilter: "blur(8px)",
       border: "1px solid rgba(255, 255, 255, 0.2)",
       WebkitBackdropFilter: "blur(8px)"
@@ -452,13 +436,7 @@ const Home = () => {
       width: "100%"
     },
     facebookEmbed: {
-      width: "380px",
-      height: "500px",
-      background: "rgba(255, 255, 255, 0.08)",
-      backdropFilter: "blur(12px)",
-      borderRadius: "16px",
-      border: "1px solid rgba(255, 255, 255, 0.15)",
-      WebkitBackdropFilter: "blur(12px)"
+      width: "380px"
     },
     quickAccess: {
       position: "fixed",
@@ -560,13 +538,6 @@ const Home = () => {
       marginLeft: "10px",
       lineHeight: "1"
     },
-    loadingSpinner: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100%",
-      color: "#38bdf8"
-    },
     // Mobile styles
     mobileHeroSection: {
       height: "75vh",
@@ -625,11 +596,6 @@ const Home = () => {
       padding: "8px 14px",
       fontSize: "0.8rem"
     },
-    mobileFacebookEmbed: {
-      width: "100%",
-      maxWidth: "300px",
-      height: "400px"
-    },
     // Small mobile styles
     smallMobileHeroSection: {
       height: "70vh",
@@ -665,6 +631,12 @@ const Home = () => {
       padding: "10px",
       margin: "0 0.8rem",
       bottom: "-25px"
+    },
+    smallMobileStatNumber: {
+      fontSize: "1.1rem"
+    },
+    smallMobileStatLabel: {
+      fontSize: "0.75rem"
     },
     smallMobileSectionContainer: {
       padding: "1.5rem 0.8rem"
@@ -712,8 +684,7 @@ const Home = () => {
     },
     smallMobileFacebookEmbed: {
       width: "100%",
-      maxWidth: "280px",
-      height: "350px"
+      maxWidth: "300px"
     },
     smallMobileQuickAccess: {
       bottom: "10px",
@@ -772,6 +743,12 @@ const Home = () => {
       margin: "0 0.6rem",
       bottom: "-20px"
     },
+    verySmallMobileStatNumber: {
+      fontSize: "1rem"
+    },
+    verySmallMobileStatLabel: {
+      fontSize: "0.7rem"
+    },
     verySmallMobileSectionContainer: {
       padding: "1.2rem 0.6rem"
     },
@@ -818,8 +795,7 @@ const Home = () => {
     },
     verySmallMobileFacebookEmbed: {
       width: "100%",
-      maxWidth: "260px",
-      height: "300px"
+      maxWidth: "280px"
     },
     verySmallMobileQuickAccess: {
       bottom: "8px",
@@ -844,6 +820,24 @@ const Home = () => {
       fontSize: "0.75rem"
     }
   };
+  
+  // Responsive style detection
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSmallMobile, setIsSmallMobile] = useState(false);
+  const [isVerySmallMobile, setIsVerySmallMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
+      setIsVerySmallMobile(window.innerWidth <= 333);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Get responsive styles
   const getResponsiveStyle = (baseStyle, mobileStyle, smallMobileStyle, verySmallMobileStyle) => {
@@ -877,4 +871,373 @@ const Home = () => {
           }
           @keyframes gentleFloat {
             0%, 100% { transform: translateY(0px); }
-     
+            50% { transform: translateY(-8px); }
+          }
+        `}
+      </style>
+      
+      <Navbar />
+      {showInstallToast && (
+        <div style={glassyStyle.installToast} onClick={handleInstallClick}>
+          💡 Tip: Tap here to <strong>install Settlers Inn</strong> as an app!
+        </div>
+      )}
+      
+      {newContentCount > 0 && (
+        <div style={{
+          ...glassyStyle.newContentBanner,
+          ...(newContentCount > 0 && glassyStyle.newContentBannerVisible)
+        }}>
+          <span>🆕 {newContentCount} new updates!</span>
+          <button 
+            style={glassyStyle.closeButton}
+            onClick={() => setNewContentCount(0)}
+          >
+            ×
+          </button>
+        </div>
+      )}
+      
+      <section style={getResponsiveStyle(
+        glassyStyle.heroSection,
+        glassyStyle.mobileHeroSection,
+        glassyStyle.smallMobileHeroSection,
+        glassyStyle.verySmallMobileHeroSection
+      )}>
+        {/* Background image as fallback */}
+        <div style={glassyStyle.heroBackground}></div>
+        
+        {/* Video overlay */}
+        <div style={glassyStyle.heroOverlay}></div>
+        
+        {/* Video element - optimized loading */}
+        <video 
+          style={glassyStyle.heroVideo} 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          preload="none"
+          poster="/assets/hero-fallback.jpg"
+          onLoadedData={handleVideoLoad}
+        >
+          <source src="/assets/settlers.mp4" type="video/mp4" />
+          <source src="/assets/settlers.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+        
+        <div style={getResponsiveStyle(
+          glassyStyle.heroContent,
+          glassyStyle.mobileHeroContent,
+          glassyStyle.smallMobileHeroContent,
+          glassyStyle.verySmallMobileHeroContent
+        )}>
+          <h2 style={getResponsiveStyle(
+            glassyStyle.heroTitle,
+            glassyStyle.mobileHeroTitle,
+            glassyStyle.smallMobileHeroTitle,
+            glassyStyle.verySmallMobileHeroTitle
+          )}>Settlers Inn</h2>
+          <p style={getResponsiveStyle(
+            glassyStyle.heroPhrase,
+            glassyStyle.mobileHeroPhrase,
+            glassyStyle.smallMobileHeroPhrase,
+            glassyStyle.verySmallMobileHeroPhrase
+          )}>{welcomingPhrases[phraseIndex]}</p>
+          <p style={getResponsiveStyle(
+            glassyStyle.heroSubtitle,
+            glassyStyle.mobileHeroSubtitle,
+            glassyStyle.smallMobileHeroSubtitle,
+            glassyStyle.verySmallMobileHeroSubtitle
+          )}>Established 2021 | Kericho Highlands</p>
+          
+          <div style={getResponsiveStyle(
+            glassyStyle.heroButtons,
+            glassyStyle.mobileHeroButtons,
+            glassyStyle.smallMobileHeroButtons,
+            glassyStyle.verySmallMobileHeroButtons
+          )}>
+            <a href="/menu" style={{
+              ...glassyStyle.heroButton,
+              ...(isMobile && glassyStyle.mobileHeroButton),
+              ...(isSmallMobile && glassyStyle.smallMobileHeroButton),
+              ...(isVerySmallMobile && glassyStyle.verySmallMobileHeroButton)
+            }}>🍽️ Our Menu</a>
+            <a href="/accommodation" style={{
+              ...glassyStyle.heroButton,
+              ...glassyStyle.heroButtonBook,
+              ...(isMobile && glassyStyle.mobileHeroButton),
+              ...(isSmallMobile && glassyStyle.smallMobileHeroButton),
+              ...(isVerySmallMobile && glassyStyle.verySmallMobileHeroButton)
+            }}>🛏️ Book a Room</a>
+          </div>
+        </div>
+        
+        <div style={getResponsiveStyle(
+          glassyStyle.statsContainer,
+          glassyStyle.mobileStatsContainer,
+          glassyStyle.smallMobileStatsContainer,
+          glassyStyle.verySmallMobileStatsContainer
+        )}>
+          <div style={glassyStyle.statItem}>
+            <div style={getResponsiveStyle(
+              glassyStyle.statNumber,
+              null,
+              glassyStyle.smallMobileStatNumber,
+              glassyStyle.verySmallMobileStatNumber
+            )}>{visitorCount}+</div>
+            <div style={getResponsiveStyle(
+              glassyStyle.statLabel,
+              null,
+              glassyStyle.smallMobileStatLabel,
+              glassyStyle.verySmallMobileStatLabel
+            )}>Guests Since 2021</div>
+          </div>
+          <div style={glassyStyle.statItem}>
+            <div style={getResponsiveStyle(
+              glassyStyle.statNumber,
+              null,
+              glassyStyle.smallMobileStatNumber,
+              glassyStyle.verySmallMobileStatNumber
+            )}>{currentTime}</div>
+            <div style={getResponsiveStyle(
+              glassyStyle.statLabel,
+              null,
+              glassyStyle.smallMobileStatLabel,
+              glassyStyle.verySmallMobileStatLabel
+            )}>Local Time</div>
+          </div>
+          <div style={glassyStyle.statItem}>
+            <div style={getResponsiveStyle(
+              glassyStyle.statNumber,
+              null,
+              glassyStyle.smallMobileStatNumber,
+              glassyStyle.verySmallMobileStatNumber
+            )}>{isOnline ? 'Open' : 'Busy'}</div>
+            <div style={getResponsiveStyle(
+              glassyStyle.statLabel,
+              null,
+              glassyStyle.smallMobileStatLabel,
+              glassyStyle.verySmallMobileStatLabel
+            )}>Status</div>
+          </div>
+        </div>
+      </section>
+      
+      <section style={getResponsiveStyle(
+        glassyStyle.sectionContainer,
+        glassyStyle.mobileSectionContainer,
+        glassyStyle.smallMobileSectionContainer,
+        glassyStyle.verySmallMobileSectionContainer
+      )}>
+        <div style={getResponsiveStyle(
+          glassyStyle.introSection,
+          null,
+          glassyStyle.smallMobileIntroSection,
+          glassyStyle.verySmallMobileIntroSection
+        )}>
+          <div style={getResponsiveStyle(
+            glassyStyle.specialBanner,
+            null,
+            glassyStyle.smallMobileSpecialBanner,
+            glassyStyle.verySmallMobileSpecialBanner
+          )}>
+            🌟 {dailySpecial} 🌟
+          </div>
+          <p style={getResponsiveStyle(
+            glassyStyle.introText,
+            null,
+            glassyStyle.smallMobileIntroText,
+            glassyStyle.verySmallMobileIntroText
+          )}>
+            Nestled in the heart of Kenya's highlands, Settlers Inn offers a perfect blend of comfort, 
+            cuisine, and hospitality. Since our opening in 2021, we've been dedicated to providing 
+            authentic experiences and memorable meals for our guests.
+          </p>
+        </div>
+      </section>
+      
+      <section style={getResponsiveStyle(
+        glassyStyle.sectionContainer,
+        glassyStyle.mobileSectionContainer,
+        glassyStyle.smallMobileSectionContainer,
+        glassyStyle.verySmallMobileSectionContainer
+      )}>
+        <div style={getResponsiveStyle(
+          glassyStyle.featuredDishes,
+          glassyStyle.mobileFeaturedDishes,
+          glassyStyle.smallMobileFeaturedDishes,
+          glassyStyle.verySmallMobileFeaturedDishes
+        )}>
+          {featuredDishes.map((dish, i) => (
+            <div 
+              key={i} 
+              style={{
+                ...glassyStyle.dishCard,
+                ...(activeDish === i && glassyStyle.dishCardActive)
+              }}
+              onMouseEnter={() => setActiveDish(i)}
+            >
+              <div style={glassyStyle.dishImageContainer}>
+                <img 
+                  src={`/assets/${dish.img}`} 
+                  alt={dish.title} 
+                  style={glassyStyle.dishImage}
+                  loading="lazy"
+                  width="280"
+                  height="220"
+                />
+                {i === 0 && <div style={glassyStyle.newBadge}>NEW</div>}
+              </div>
+              <div style={getResponsiveStyle(
+                glassyStyle.dishContent,
+                null,
+                glassyStyle.smallMobileDishContent,
+                glassyStyle.verySmallMobileDishContent
+              )}>
+                <h3 style={getResponsiveStyle(
+                  glassyStyle.dishTitle,
+                  null,
+                  glassyStyle.smallMobileDishTitle,
+                  glassyStyle.verySmallMobileDishTitle
+                )}>{dish.emoji} {dish.title}</h3>
+                <p style={getResponsiveStyle(
+                  glassyStyle.dishDesc,
+                  null,
+                  glassyStyle.smallMobileDishDesc,
+                  glassyStyle.verySmallMobileDishDesc
+                )}>{dish.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <section style={getResponsiveStyle(
+        glassyStyle.sectionContainer,
+        glassyStyle.mobileSectionContainer,
+        glassyStyle.smallMobileSectionContainer,
+        glassyStyle.verySmallMobileSectionContainer
+      )}>
+        <div style={getResponsiveStyle(
+          glassyStyle.reviewsSection,
+          null,
+          glassyStyle.smallMobileReviewsSection,
+          glassyStyle.verySmallMobileReviewsSection
+        )}>
+          <h2 style={getResponsiveStyle(
+            glassyStyle.reviewsTitle,
+            null,
+            glassyStyle.smallMobileReviewsTitle,
+            glassyStyle.verySmallMobileReviewsTitle
+          )}>💬 Guest Experiences</h2>
+          <div style={glassyStyle.reviewRotator}>
+            <p style={getResponsiveStyle(
+              glassyStyle.reviewText,
+              null,
+              glassyStyle.smallMobileReviewText,
+              glassyStyle.verySmallMobileReviewText
+            )}>{reviews[reviewIndex]}</p>
+          </div>
+        </div>
+      </section>
+      
+      <section style={getResponsiveStyle(
+        glassyStyle.sectionContainer,
+        glassyStyle.mobileSectionContainer,
+        glassyStyle.smallMobileSectionContainer,
+        glassyStyle.verySmallMobileSectionContainer
+      )}>
+        <div style={glassyStyle.facebookSection}>
+          <h2 style={getResponsiveStyle(
+            glassyStyle.facebookTitle,
+            null,
+            glassyStyle.smallMobileFacebookTitle,
+            glassyStyle.verySmallMobileFacebookTitle
+          )}>💬 Facebook Reviews</h2>
+          <div style={glassyStyle.facebookContainer}>
+            <div 
+              className="fb-xfbml-parse-ignore facebook-embed"
+              data-href="https://www.facebook.com/settlersinn1/"
+              data-tabs="timeline"
+              data-width="380"
+              data-height="400"
+              data-small-header="false"
+              data-adapt-container-width="true"
+              data-hide-cover="false"
+              data-show-facepile="true"
+              style={getResponsiveStyle(
+                glassyStyle.facebookEmbed,
+                null,
+                glassyStyle.smallMobileFacebookEmbed,
+                glassyStyle.verySmallMobileFacebookEmbed
+              )}
+            >
+              <blockquote cite="https://www.facebook.com/settlersinn1/">
+                <a href="https://www.facebook.com/settlersinn1/">Settlers Inn</a>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <Footer />
+      
+      <div style={{
+        ...glassyStyle.quickAccess,
+        ...(isScrolled && glassyStyle.quickAccessVisible),
+        ...(isMobile && glassyStyle.mobileQuickAccess),
+        ...(isSmallMobile && glassyStyle.smallMobileQuickAccess),
+        ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickAccess)
+      }}>
+        <a href="tel:0748778388" style={{
+          ...glassyStyle.quickLink,
+          ...(isMobile && glassyStyle.mobileQuickLink),
+          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
+          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
+        }}>📞</a>
+        <a href="https://maps.app.goo.gl/hvW5TubkM8WGcfAs5" target="_blank" rel="noreferrer" style={{
+          ...glassyStyle.quickLink,
+          ...(isMobile && glassyStyle.mobileQuickLink),
+          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
+          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
+        }}>🧭</a>
+        <a href="/accommodation" style={{
+          ...glassyStyle.quickLink,
+          ...(isMobile && glassyStyle.mobileQuickLink),
+          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
+          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
+        }}>🛏️</a>
+        <a href="/gallery" style={{
+          ...glassyStyle.quickLink,
+          ...(isMobile && glassyStyle.mobileQuickLink),
+          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
+          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
+        }}>📷</a>
+        <a href="/menu" style={{
+          ...glassyStyle.quickLink,
+          ...(isMobile && glassyStyle.mobileQuickLink),
+          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
+          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
+        }}>🥘</a>
+        <a href="https://wa.me/254748778388" target="_blank" rel="noreferrer" style={{
+          ...glassyStyle.quickLink,
+          ...(isMobile && glassyStyle.mobileQuickLink),
+          ...(isSmallMobile && glassyStyle.smallMobileQuickLink),
+          ...(isVerySmallMobile && glassyStyle.verySmallMobileQuickLink)
+        }}>💬</a>
+      </div>
+      
+      <p style={getResponsiveStyle(
+        glassyStyle.footerText,
+        null,
+        glassyStyle.smallMobileFooterText,
+        glassyStyle.verySmallMobileFooterText
+      )}>
+        &copy; {new Date().getFullYear()} Settlers Inn — Established 2021 | Built by EchoCode
+      </p>
+    </div>
+  );
+}
+
+export default Home;
