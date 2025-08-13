@@ -14,6 +14,9 @@ const Offers = () => {
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [newOffers, setNewOffers] = useState(0);
   const [visitorCount, setVisitorCount] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSmallMobile, setIsSmallMobile] = useState(false);
+  const [isVerySmallMobile, setIsVerySmallMobile] = useState(false);
   
   const textareaRef = useRef(null);
   
@@ -62,68 +65,20 @@ const Offers = () => {
       setMessageIndex((prev) => (prev + 1) % promotionalMessages.length);
     }, 5000);
     
-    // Animation styles
-    if (typeof document !== 'undefined') {
-      const style = document.createElement("style");
-      style.innerHTML = `
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes subtlePulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.8; }
-        }
-        @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200px 0; }
-          100% { background-position: calc(200px + 100%) 0; }
-        }
-        .new-offers-banner {
-          background: linear-gradient(90deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.9));
-          color: #0f172a;
-          padding: 10px 18px;
-          border-radius: 20px;
-          font-weight: 600;
-          text-align: center;
-          margin-bottom: 1.5rem;
-          animation: shimmer 3s infinite;
-          background-size: 200px 100%;
-          backdrop-filter: blur(4px);
-        }
-        .stats-container {
-          display: flex;
-          justify-content: space-around;
-          background: rgba(30, 41, 59, 0.7);
-          border-radius: 16px;
-          padding: 1.2rem;
-          margin-top: 1rem;
-          backdrop-filter: 'blur(4px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-        }
-        .stat-item {
-          text-align: center;
-        }
-        .stat-number {
-          font-size: 1.3rem;
-          color: #38bdf8;
-          font-weight: 600;
-        }
-        .stat-label {
-          font-size: 0.85rem;
-          color: #94a3b8;
-          margin-top: '0.3rem',
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    // Check screen size for responsive design
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
+      setIsVerySmallMobile(window.innerWidth <= 333);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
     
     return () => {
       clearInterval(countdownInterval);
       clearInterval(messageInterval);
+      window.removeEventListener('resize', checkScreenSize);
     };
   }, []);
   
@@ -152,8 +107,8 @@ const Offers = () => {
     window.open(url, "_blank");
   };
   
-  // Styles with modern glassy design
-  const styles = {
+  // Glassy styles
+  const glassyStyle = {
     wrapper: {
       fontFamily: "'Inter', system-ui, sans-serif",
       background: 'linear-gradient(135deg, #0f172a, #1e293b)',
@@ -163,6 +118,7 @@ const Offers = () => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      overflowX: 'hidden'
     },
     funHeader: {
       fontSize: '1.2rem',
@@ -173,15 +129,16 @@ const Offers = () => {
       fontWeight: '500',
     },
     card: {
-      background: 'rgba(30, 41, 59, 0.7)',
+      background: 'rgba(255, 255, 255, 0.08)',
       padding: '2.5rem',
-      borderRadius: '20px',
+      borderRadius: '24px',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
       maxWidth: '600px',
       width: '100%',
       animation: 'fadeInUp 0.8s ease',
-      backdropFilter: 'blur(12px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(16px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(16px)'
     },
     title: {
       color: '#e2e8f0',
@@ -197,8 +154,9 @@ const Offers = () => {
       color: '#e2e8f0',
       fontSize: '1rem',
       marginBottom: '1.2rem',
-      backdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(8px)',
       border: '1px solid rgba(56, 189, 248, 0.3)',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     timer: {
       color: '#38bdf8',
@@ -218,7 +176,8 @@ const Offers = () => {
       color: '#fff',
       transition: 'all 0.3s ease',
       fontWeight: '600',
-      backdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     spinner: {
       border: '4px solid rgba(56, 189, 248, 0.2)',
@@ -239,13 +198,14 @@ const Offers = () => {
       padding: '0.8rem',
       fontSize: '1rem',
       borderRadius: '12px',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      backgroundColor: 'rgba(15, 23, 42, 0.7)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      backgroundColor: 'rgba(255, 255, 255, 0.08)',
       color: '#e2e8f0',
       marginTop: '0.8rem',
       outline: 'none',
-      backdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(8px)',
       transition: 'all 0.2s ease',
+      WebkitBackdropFilter: 'blur(8px)'
     },
     label: {
       color: '#38bdf8',
@@ -253,40 +213,210 @@ const Offers = () => {
       fontWeight: '500',
       display: 'block',
       marginBottom: '0.5rem',
+    },
+    newOffersBanner: {
+      background: 'linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(139, 92, 246, 0.8))',
+      color: '#0f172a',
+      padding: '10px 18px',
+      borderRadius: '20px',
+      fontWeight: '600',
+      textAlign: 'center',
+      marginBottom: '1.5rem',
+      animation: 'shimmer 3s infinite',
+      backgroundSize: '200px 100%',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      WebkitBackdropFilter: 'blur(8px)'
+    },
+    statsContainer: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      background: 'rgba(255, 255, 255, 0.05)',
+      borderRadius: '20px',
+      padding: '1.2rem',
+      marginTop: '1rem',
+      backdropFilter: 'blur(8px)',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
+      WebkitBackdropFilter: 'blur(8px)'
+    },
+    statItem: {
+      textAlign: 'center',
+    },
+    statNumber: {
+      fontSize: '1.3rem',
+      color: '#38bdf8',
+      fontWeight: '600',
+    },
+    statLabel: {
+      fontSize: '0.85rem',
+      color: '#94a3b8',
+      marginTop: '0.3rem',
+    },
+    // Mobile styles
+    mobileWrapper: {
+      padding: '2rem 1rem',
+    },
+    mobileFunHeader: {
+      fontSize: '1.1rem',
+    },
+    mobileCard: {
+      padding: '2rem',
+    },
+    mobileTitle: {
+      fontSize: '1.8rem',
+    },
+    mobileDescription: {
+      fontSize: '1rem',
+    },
+    mobileButton: {
+      padding: '0.8rem 1.8rem',
+      fontSize: '1rem',
+    },
+    mobileTextarea: {
+      fontSize: '0.95rem',
+    },
+    mobileLabel: {
+      fontSize: '0.95rem',
+    },
+    // Small mobile styles
+    smallMobileWrapper: {
+      padding: '1.5rem 0.8rem',
+    },
+    smallMobileFunHeader: {
+      fontSize: '1rem',
+    },
+    smallMobileCard: {
+      padding: '1.5rem',
+    },
+    smallMobileTitle: {
+      fontSize: '1.6rem',
+    },
+    smallMobileDescription: {
+      fontSize: '0.95rem',
+    },
+    smallMobileButton: {
+      padding: '0.7rem 1.5rem',
+      fontSize: '0.95rem',
+    },
+    smallMobileTextarea: {
+      fontSize: '0.9rem',
+    },
+    smallMobileLabel: {
+      fontSize: '0.9rem',
+    },
+    // Very small mobile styles
+    verySmallMobileWrapper: {
+      padding: '1.2rem 0.6rem',
+    },
+    verySmallMobileFunHeader: {
+      fontSize: '0.95rem',
+    },
+    verySmallMobileCard: {
+      padding: '1.2rem',
+    },
+    verySmallMobileTitle: {
+      fontSize: '1.4rem',
+    },
+    verySmallMobileDescription: {
+      fontSize: '0.9rem',
+    },
+    verySmallMobileButton: {
+      padding: '0.6rem 1.2rem',
+      fontSize: '0.9rem',
+    },
+    verySmallMobileTextarea: {
+      fontSize: '0.85rem',
+    },
+    verySmallMobileLabel: {
+      fontSize: '0.85rem',
     }
+  };
+  
+  // Get responsive styles
+  const getResponsiveStyle = (baseStyle, mobileStyle, smallMobileStyle, verySmallMobileStyle) => {
+    if (isVerySmallMobile && verySmallMobileStyle) return { ...baseStyle, ...verySmallMobileStyle };
+    if (isSmallMobile && smallMobileStyle) return { ...baseStyle, ...smallMobileStyle };
+    if (isMobile && mobileStyle) return { ...baseStyle, ...mobileStyle };
+    return baseStyle;
   };
   
   return (
     <>
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes subtlePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+          }
+          @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+          }
+        `}
+      </style>
+      
       <Navbar />
-      <div style={styles.wrapper}>
-        <h2 style={styles.funHeader}>{promotionalMessages[messageIndex]}</h2>
+      <div style={getResponsiveStyle(
+        glassyStyle.wrapper,
+        glassyStyle.mobileWrapper,
+        glassyStyle.smallMobileWrapper,
+        glassyStyle.verySmallMobileWrapper
+      )}>
+        <h2 style={getResponsiveStyle(
+          glassyStyle.funHeader,
+          glassyStyle.mobileFunHeader,
+          glassyStyle.smallMobileFunHeader,
+          glassyStyle.verySmallMobileFunHeader
+        )}>{promotionalMessages[messageIndex]}</h2>
         
         {newOffers > 0 && (
-          <div className="new-offers-banner">
+          <div style={glassyStyle.newOffersBanner}>
             🆕 {newOffers} new offers added this week!
           </div>
         )}
         
-        <div style={styles.card}>
-          <h1 style={styles.title}>10% OFF — This Week Only!</h1>
+        <div style={getResponsiveStyle(
+          glassyStyle.card,
+          glassyStyle.mobileCard,
+          glassyStyle.smallMobileCard,
+          glassyStyle.verySmallMobileCard
+        )}>
+          <h1 style={getResponsiveStyle(
+            glassyStyle.title,
+            glassyStyle.mobileTitle,
+            glassyStyle.smallMobileTitle,
+            glassyStyle.verySmallMobileTitle
+          )}>10% OFF — This Week Only!</h1>
           {!expired && (
-            <div style={styles.countdown}>
-              ⏳ Offer ends in: <strong style={styles.timer}>{countdown}</strong>
+            <div style={glassyStyle.countdown}>
+              ⏳ Offer ends in: <strong style={glassyStyle.timer}>{countdown}</strong>
             </div>
           )}
-          <p style={styles.description}>
+          <p style={getResponsiveStyle(
+            glassyStyle.description,
+            glassyStyle.mobileDescription,
+            glassyStyle.smallMobileDescription,
+            glassyStyle.verySmallMobileDescription
+          )}>
             Enjoy authentic Kenyan meals and comfortable stays at Settlers Inn. This special offer is available for a limited time.
           </p>
           
-          <div className="stats-container">
-            <div className="stat-item">
-              <div className="stat-number">{visitorCount}+</div>
-              <div className="stat-label">Visitors Today</div>
+          <div style={glassyStyle.statsContainer}>
+            <div style={glassyStyle.statItem}>
+              <div style={glassyStyle.statNumber}>{visitorCount}+</div>
+              <div style={glassyStyle.statLabel}>Visitors Today</div>
             </div>
-            <div className="stat-item">
-              <div className="stat-number">{claimed ? 'Claimed' : 'Available'}</div>
-              <div className="stat-label">Offer Status</div>
+            <div style={glassyStyle.statItem}>
+              <div style={glassyStyle.statNumber}>{claimed ? 'Claimed' : 'Available'}</div>
+              <div style={glassyStyle.statLabel}>Offer Status</div>
             </div>
           </div>
           
@@ -295,10 +425,16 @@ const Offers = () => {
               onClick={handleClaim}
               disabled={expired}
               style={{
-                ...styles.button,
-                backgroundColor: expired ? 'rgba(100, 116, 139, 0.7)' : 'rgba(37, 211, 102, 0.9)',
+                ...getResponsiveStyle(
+                  glassyStyle.button,
+                  glassyStyle.mobileButton,
+                  glassyStyle.smallMobileButton,
+                  glassyStyle.verySmallMobileButton
+                ),
+                backgroundColor: expired ? 'rgba(100, 116, 139, 0.8)' : 'rgba(37, 211, 102, 0.8)',
                 cursor: expired ? 'not-allowed' : 'pointer',
-                boxShadow: expired ? 'none' : '0 4px 15px rgba(37, 211, 102, 0.25)',
+                boxShadow: expired ? 'none' : '0 4px 15px rgba(37, 211, 102, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
               }}
             >
               {expired ? "Offer Expired" : "Claim Offer Now"}
@@ -307,8 +443,8 @@ const Offers = () => {
           
           {fakeLoading && (
             <div style={{ marginTop: "1.5rem" }}>
-              <div style={styles.spinner}></div>
-              <p style={styles.joke}>{joke}</p>
+              <div style={glassyStyle.spinner}></div>
+              <p style={glassyStyle.joke}>{joke}</p>
               <p style={{ color: "#38bdf8", fontSize: "0.9rem" }}>Processing your request...</p>
             </div>
           )}
@@ -316,9 +452,15 @@ const Offers = () => {
           {claimed && !fakeLoading && !feedbackStep && (
             <button
               style={{ 
-                ...styles.button, 
-                backgroundColor: 'rgba(100, 116, 139, 0.7)', 
-                cursor: 'not-allowed' 
+                ...getResponsiveStyle(
+                  glassyStyle.button,
+                  glassyStyle.mobileButton,
+                  glassyStyle.smallMobileButton,
+                  glassyStyle.verySmallMobileButton
+                ), 
+                backgroundColor: 'rgba(100, 116, 139, 0.8)', 
+                cursor: 'not-allowed',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
               }}
               disabled
             >
@@ -328,7 +470,12 @@ const Offers = () => {
           
           {feedbackStep && (
             <div style={{ marginTop: "1.5rem", textAlign: "left" }}>
-              <label style={styles.label}>
+              <label style={getResponsiveStyle(
+                glassyStyle.label,
+                glassyStyle.mobileLabel,
+                glassyStyle.smallMobileLabel,
+                glassyStyle.verySmallMobileLabel
+              )}>
                 What would you like to order or book?
               </label>
               <textarea
@@ -337,16 +484,27 @@ const Offers = () => {
                 placeholder="e.g. I'd like to reserve a room for Friday and order chicken stew"
                 value={feedbackMessage}
                 onChange={(e) => setFeedbackMessage(e.target.value)}
-                style={styles.textarea}
+                style={getResponsiveStyle(
+                  glassyStyle.textarea,
+                  glassyStyle.mobileTextarea,
+                  glassyStyle.smallMobileTextarea,
+                  glassyStyle.verySmallMobileTextarea
+                )}
               />
               <button
                 onClick={handleSend}
                 style={{
-                  ...styles.button,
+                  ...getResponsiveStyle(
+                    glassyStyle.button,
+                    glassyStyle.mobileButton,
+                    glassyStyle.smallMobileButton,
+                    glassyStyle.verySmallMobileButton
+                  ),
                   marginTop: "1rem",
-                  backgroundColor: 'rgba(56, 189, 248, 0.9)',
+                  backgroundColor: 'rgba(56, 189, 248, 0.8)',
                   color: '#0f172a',
-                  boxShadow: '0 4px 15px rgba(56, 189, 248, 0.25)',
+                  boxShadow: '0 4px 15px rgba(56, 189, 248, 0.3)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)'
                 }}
               >
                 Send via WhatsApp
