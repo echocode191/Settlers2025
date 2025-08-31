@@ -3,167 +3,120 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Home = () => {
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [reviewIndex, setReviewIndex] = useState(0);
-  const [showInstallToast, setShowInstallToast] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [dailySpecial, setDailySpecial] = useState("");
-  const [visitorCount, setVisitorCount] = useState(0);
-  const [isOnline, setIsOnline] = useState(true);
-  const [currentTime, setCurrentTime] = useState("");
-  const [newContentCount, setNewContentCount] = useState(0);
-  const [activeDish, setActiveDish] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  // ... existing state declarations ...
   
-  const welcomingPhrases = [
-    "🍲 Authentic flavors, memorable experiences",
-    "😋 Where local cuisine meets warm hospitality",
-    "🛏️ Your comfortable retreat in the highlands",
-    "☕ Savor moments that matter",
-    "🚀 Settlers Inn — your home away from home"
-  ];
-  
-  const reviews = [
-    "The perfect spot for a weekend getaway in Kericho. — Mercy K.",
-    "Their coffee is exceptional — reminds me of Nairobi's best cafes. — Brian N.",
-    "Clean rooms, friendly staff, and delicious food. Highly recommend. — Jane M.",
-    "The chapati and sausage combo is my go-to breakfast. — Kiprotich L.",
-    "Impressed by their conference facilities and catering service. — Ivy W.",
-    "The egg pancakes are a must-try! Will definitely come back. — Moffat M.",
-    "Consistently great service every time I visit. — Susan W.",
-    "Loved the peaceful room with the beautiful morning view. — Dennis K.",
-    "Settlers Inn has become my regular dining spot. — Terry N.",
-    "Their nyama stew and ugali combo is absolutely delicious. — Juma B."
-  ];
-  
-  const featuredDishes = [
-    { img: "chapati 1.jpg", emoji: "🥙", title: "Fresh Chapatis", desc: "Soft, flaky, and made to order daily." },
-    { img: "fish x chips.jpg", emoji: "🐟", title: "Fish & Chips", desc: "Fresh tilapia with crispy seasoned fries." },
-    { img: "cofee.jpg", emoji: "☕", title: "Highland Coffee", desc: "Premium Kenyan coffee, locally sourced." },
-    { img: "ugali x greens x meat.jpg", emoji: "🍛", title: "Traditional Platter", desc: "Ugali with sukuma wiki and nyama choma." }
-  ];
-  
+  // Seasonal theme state
+  const [seasonalTheme, setSeasonalTheme] = useState({
+    month: 'september',
+    colors: {
+      primary: '#d2691e',      // Chocolate
+      secondary: '#ff8c00',    // Dark orange
+      accent: '#8B4513',       // Saddle brown
+      background: '#fff8dc',   // Cornsilk
+      text: '#5d4037',         // Dark brown
+      highlight: '#ffd700',     // Gold
+    },
+    emojis: {
+      welcome: '🍂',
+      special: '🍁',
+      review: '🍂',
+      facebook: '🍂',
+      footer: '🍂',
+    },
+    phrases: [
+      "🍂 Autumn flavors, memorable experiences",
+      "🍁 Where local cuisine meets warm hospitality",
+      "🛏️ Your comfortable retreat in the highlands",
+      "☕ Savor moments that matter",
+      "🚀 Settlers Inn — your home away from home"
+    ]
+  });
+
+  // Update theme based on current month
   useEffect(() => {
-    // Initialize dynamic content
-    const specials = [
-      "Today's Special: Nyama Choma with Ugali - KES 800",
-      "Weekend Deal: Family Platter for 4 - KES 2500",
-      "New Item: Grilled Tilapia with Chips - KES 700",
-      "Chef's Choice: Beef Stew with Rice - KES 650"
-    ];
-    setDailySpecial(specials[Math.floor(Math.random() * specials.length)]);
-    setVisitorCount(Math.floor(Math.random() * 300) + 800);
-    
-    // Update time
-    const updateTime = () => {
-      const now = new Date();
-      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 60000);
-    
-    // Combine intervals to reduce timers
-    const interval = setInterval(() => {
-      setPhraseIndex(prev => (prev + 1) % welcomingPhrases.length);
-      setReviewIndex(prev => (prev + 1) % reviews.length);
-      setActiveDish(prev => (prev + 1) % featuredDishes.length);
-    }, 7000);
-    
-    // Simulate new content being added
-    const contentInterval = setInterval(() => {
-      setNewContentCount(prev => prev + 1);
-    }, 45000);
-    
-    // Simulate online status
-    const onlineInterval = setInterval(() => {
-      setIsOnline(Math.random() > 0.15);
-    }, 45000);
-    
-    // Scroll detection for animations
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    
-    // Install prompt
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstallToast(true);
-    };
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-    
-    // Facebook SDK - load only when section is visible
-    const loadFacebookSDK = () => {
-      if (typeof window !== 'undefined' && !window.FB) {
-        const script = document.createElement("script");
-        script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
-        script.async = true;
-        script.defer = true;
-        document.body.appendChild(script);
+    const updateSeasonalTheme = () => {
+      const currentMonth = new Date().getMonth(); // 0-11 (8=Sep, 9=Oct)
+      
+      if (currentMonth === 8) { // September
+        setSeasonalTheme({
+          month: 'september',
+          colors: {
+            primary: '#d2691e',      // Chocolate
+            secondary: '#ff8c00',    // Dark orange
+            accent: '#8B4513',       // Saddle brown
+            background: '#fff8dc',   // Cornsilk
+            text: '#5d4037',         // Dark brown
+            highlight: '#ffd700',     // Gold
+          },
+          emojis: {
+            welcome: '🍂',
+            special: '🍁',
+            review: '🍂',
+            facebook: '🍂',
+            footer: '🍂',
+          },
+          phrases: [
+            "🍂 Autumn flavors, memorable experiences",
+            "🍁 Where local cuisine meets warm hospitality",
+            "🛏️ Your comfortable retreat in the highlands",
+            "☕ Savor moments that matter",
+            "🚀 Settlers Inn — your home away from home"
+          ]
+        });
+      } else if (currentMonth === 9) { // October
+        setSeasonalTheme({
+          month: 'october',
+          colors: {
+            primary: '#4b0082',      // Indigo
+            secondary: '#8b008b',    // Dark magenta
+            accent: '#ff4500',       // Orange red
+            background: '#2c2c2c',   // Dark gray
+            text: '#f5f5f5',         // Light gray
+            highlight: '#ff8c00',    // Dark orange
+          },
+          emojis: {
+            welcome: '🎃',
+            special: '👻',
+            review: '🎃',
+            facebook: '🎃',
+            footer: '🎃',
+          },
+          phrases: [
+            "🎃 Spooky flavors, memorable experiences",
+            "👻 Where local cuisine meets haunted hospitality",
+            "🛏️ Your cozy retreat in the highlands",
+            "☕ Savor chilling moments that matter",
+            "🚀 Settlers Inn — your haunted home away from home"
+          ]
+        });
       }
     };
+
+    // Initial theme setup
+    updateSeasonalTheme();
     
-    // Use IntersectionObserver to load Facebook SDK when needed
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          loadFacebookSDK();
-          observer.disconnect();
-        }
-      });
-    }, { threshold: 0.1 });
+    // Set up timer to check for month change (check once per day)
+    const themeTimer = setInterval(updateSeasonalTheme, 86400000); // 24 hours
     
-    const facebookSection = document.querySelector('.facebook-section');
-    if (facebookSection) observer.observe(facebookSection);
-    
-    return () => {
-      clearInterval(interval);
-      clearInterval(timer);
-      clearInterval(contentInterval);
-      clearInterval(onlineInterval);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-      if (facebookSection) observer.unobserve(facebookSection);
-    };
+    return () => clearInterval(themeTimer);
   }, []);
-  
-  const handleInstallClick = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      setDeferredPrompt(null);
-      setShowInstallToast(false);
-    }
-  };
-  
-  const handleVideoLoad = () => {
-    setVideoLoaded(true);
-  };
-  
-  // Responsive style detection
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSmallMobile, setIsSmallMobile] = useState(false);
-  const [isVerySmallMobile, setIsVerySmallMobile] = useState(false);
-  
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-      setIsSmallMobile(window.innerWidth <= 480);
-      setIsVerySmallMobile(window.innerWidth <= 333);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-  
+
+  // ... existing useEffect ...
+
   return (
     <div className="home-container">
       <style>
         {`
-          /* Base styles */
+          /* Base styles with seasonal theme variables */
+          :root {
+            --primary: ${seasonalTheme.colors.primary};
+            --secondary: ${seasonalTheme.colors.secondary};
+            --accent: ${seasonalTheme.colors.accent};
+            --background: ${seasonalTheme.colors.background};
+            --text: ${seasonalTheme.colors.text};
+            --highlight: ${seasonalTheme.colors.highlight};
+          }
+          
           * {
             margin: 0;
             padding: 0;
@@ -172,9 +125,10 @@ const Home = () => {
           
           body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
+            background-color: var(--background);
+            color: var(--text);
             line-height: 1.6;
+            transition: background-color 0.5s ease, color 0.5s ease;
           }
           
           .home-container {
@@ -183,7 +137,7 @@ const Home = () => {
             flex-direction: column;
           }
           
-          /* Hero Section */
+          /* Hero Section with seasonal theme */
           .hero-section {
             position: relative;
             height: 100vh;
@@ -254,7 +208,7 @@ const Home = () => {
             display: inline-block;
             padding: 14px 28px;
             background-color: #fff;
-            color: #212529;
+            color: var(--text);
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
@@ -269,7 +223,7 @@ const Home = () => {
           }
           
           .hero-button.primary {
-            background-color: #0d6efd;
+            background-color: var(--primary);
             color: white;
           }
           
@@ -306,7 +260,7 @@ const Home = () => {
             opacity: 0.8;
           }
           
-          /* Section Styles */
+          /* Section Styles with seasonal theme */
           .section {
             padding: 5rem 1rem;
             max-width: 1200px;
@@ -321,11 +275,12 @@ const Home = () => {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             text-align: center;
             margin-bottom: 3rem;
+            transition: background-color 0.5s ease;
           }
           
           .special-banner {
             display: inline-block;
-            background: linear-gradient(90deg, #0d6efd, #6f42c1);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             color: white;
             padding: 10px 20px;
             border-radius: 50px;
@@ -336,7 +291,7 @@ const Home = () => {
           
           .intro-text {
             font-size: 1.1rem;
-            color: #495057;
+            color: var(--text);
             max-width: 800px;
             margin: 0 auto;
           }
@@ -365,7 +320,7 @@ const Home = () => {
           .dish-card.active {
             transform: translateY(-10px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            border: 2px solid #0d6efd;
+            border: 2px solid var(--primary);
           }
           
           .dish-image-container {
@@ -389,7 +344,7 @@ const Home = () => {
             position: absolute;
             top: 15px;
             right: 15px;
-            background-color: #dc3545;
+            background-color: var(--accent);
             color: white;
             padding: 5px 12px;
             border-radius: 20px;
@@ -404,12 +359,13 @@ const Home = () => {
           .dish-title {
             font-size: 1.4rem;
             margin-bottom: 0.5rem;
-            color: #212529;
+            color: var(--text);
             font-weight: 600;
           }
           
           .dish-desc {
-            color: #6c757d;
+            color: var(--text);
+            opacity: 0.8;
             font-size: 1rem;
           }
           
@@ -421,12 +377,13 @@ const Home = () => {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             text-align: center;
             margin-bottom: 3rem;
+            transition: background-color 0.5s ease;
           }
           
           .reviews-title {
             font-size: 2.2rem;
             margin-bottom: 2rem;
-            color: #212529;
+            color: var(--text);
             font-weight: 700;
           }
           
@@ -440,7 +397,7 @@ const Home = () => {
           .review-text {
             font-size: 1.2rem;
             font-style: italic;
-            color: #495057;
+            color: var(--text);
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.8;
@@ -455,7 +412,7 @@ const Home = () => {
           .facebook-title {
             font-size: 2.2rem;
             margin-bottom: 2rem;
-            color: #212529;
+            color: var(--text);
             font-weight: 700;
           }
           
@@ -502,15 +459,15 @@ const Home = () => {
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background-color: #f8f9fa;
-            color: #0d6efd;
+            background-color: var(--background);
+            color: var(--primary);
             text-decoration: none;
             font-size: 1.2rem;
             transition: all 0.2s ease;
           }
           
           .quick-link:hover {
-            background-color: #0d6efd;
+            background-color: var(--primary);
             color: white;
           }
           
@@ -520,8 +477,8 @@ const Home = () => {
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #212529;
-            color: #fff;
+            background-color: var(--text);
+            color: var(--background);
             padding: 14px 24px;
             border-radius: 50px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -538,7 +495,7 @@ const Home = () => {
             position: fixed;
             top: 100px;
             right: 20px;
-            background: linear-gradient(90deg, #dc3545, #fd7e14);
+            background: linear-gradient(90deg, var(--accent), var(--highlight));
             color: white;
             padding: 10px 18px;
             border-radius: 50px;
@@ -571,7 +528,7 @@ const Home = () => {
           .footer-text {
             text-align: center;
             margin-top: 3rem;
-            color: #6c757d;
+            color: var(--text);
             font-size: 0.9rem;
             padding: 0 1rem;
           }
@@ -587,6 +544,45 @@ const Home = () => {
             15% { opacity: 1; transform: translate(-50%, 0); }
             85% { opacity: 1; }
             100% { opacity: 0; transform: translate(-50%, 10px); }
+          }
+          
+          /* Seasonal decorative elements */
+          .seasonal-decoration {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+          }
+          
+          .decoration-1 {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+          }
+          
+          .decoration-2 {
+            top: 20%;
+            right: 8%;
+            animation-delay: 1s;
+          }
+          
+          .decoration-3 {
+            bottom: 15%;
+            left: 10%;
+            animation-delay: 2s;
+          }
+          
+          .decoration-4 {
+            bottom: 25%;
+            right: 5%;
+            animation-delay: 3s;
+          }
+          
+          @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
           }
           
           /* Responsive Styles */
@@ -631,6 +627,10 @@ const Home = () => {
               width: 100%;
               max-width: 380px;
             }
+            
+            .seasonal-decoration {
+              font-size: 1.5rem;
+            }
           }
           
           @media (max-width: 480px) {
@@ -674,6 +674,10 @@ const Home = () => {
               width: 36px;
               height: 36px;
               font-size: 1rem;
+            }
+            
+            .seasonal-decoration {
+              font-size: 1.2rem;
             }
           }
           
@@ -729,6 +733,10 @@ const Home = () => {
               height: 32px;
               font-size: 0.9rem;
             }
+            
+            .seasonal-decoration {
+              font-size: 1rem;
+            }
           }
         `}
       </style>
@@ -753,6 +761,20 @@ const Home = () => {
       )}
       
       <section className="hero-section">
+        {/* Seasonal decorative elements */}
+        <div className="seasonal-decoration decoration-1">
+          {seasonalTheme.month === 'september' ? '🍂' : '🎃'}
+        </div>
+        <div className="seasonal-decoration decoration-2">
+          {seasonalTheme.month === 'september' ? '🍁' : '👻'}
+        </div>
+        <div className="seasonal-decoration decoration-3">
+          {seasonalTheme.month === 'september' ? '🍄' : '🦇'}
+        </div>
+        <div className="seasonal-decoration decoration-4">
+          {seasonalTheme.month === 'september' ? '🌰' : '🕷️'}
+        </div>
+        
         <video 
           className="hero-video" 
           autoPlay 
@@ -770,7 +792,7 @@ const Home = () => {
         
         <div className="hero-content">
           <h1 className="hero-title">Settlers Inn</h1>
-          <p className="hero-phrase">{welcomingPhrases[phraseIndex]}</p>
+          <p className="hero-phrase">{seasonalTheme.phrases[phraseIndex]}</p>
           <p className="hero-subtitle">Established 2021 | Kericho Highlands</p>
           
           <div className="hero-buttons">
@@ -798,7 +820,7 @@ const Home = () => {
       <section className="section">
         <div className="intro-section">
           <div className="special-banner">
-            🌟 {dailySpecial} 🌟
+            {seasonalTheme.emojis.special} {dailySpecial} {seasonalTheme.emojis.special}
           </div>
           <p className="intro-text">
             Nestled in the heart of Kenya's highlands, Settlers Inn offers a perfect blend of comfort, 
@@ -838,7 +860,7 @@ const Home = () => {
       
       <section className="section">
         <div className="reviews-section">
-          <h2 className="reviews-title">💬 Guest Experiences</h2>
+          <h2 className="reviews-title">{seasonalTheme.emojis.review} Guest Experiences</h2>
           <div className="review-rotator">
             <p className="review-text">{reviews[reviewIndex]}</p>
           </div>
@@ -847,7 +869,7 @@ const Home = () => {
       
       <section className="section">
         <div className="facebook-section">
-          <h2 className="facebook-title">💬 Facebook Reviews</h2>
+          <h2 className="facebook-title">{seasonalTheme.emojis.facebook} Facebook Reviews</h2>
           <div className="facebook-container">
             <div 
               className="fb-xfbml-parse-ignore facebook-embed"
@@ -880,7 +902,7 @@ const Home = () => {
       </div>
       
       <p className="footer-text">
-        &copy; {new Date().getFullYear()} Settlers Inn — Established 2021 | Built by EchoCode
+        &copy; {new Date().getFullYear()} Settlers Inn — Established 2021 | Built by EchoCode {seasonalTheme.emojis.footer}
       </p>
     </div>
   );
