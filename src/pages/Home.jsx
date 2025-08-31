@@ -3,7 +3,24 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Home = () => {
-  // ... existing state declarations ...
+  // Original state declarations
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const [showInstallToast, setShowInstallToast] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [dailySpecial, setDailySpecial] = useState("");
+  const [visitorCount, setVisitorCount] = useState(0);
+  const [isOnline, setIsOnline] = useState(true);
+  const [currentTime, setCurrentTime] = useState("");
+  const [newContentCount, setNewContentCount] = useState(0);
+  const [activeDish, setActiveDish] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  
+  // Responsive state
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSmallMobile, setIsSmallMobile] = useState(false);
+  const [isVerySmallMobile, setIsVerySmallMobile] = useState(false);
   
   // Seasonal theme state
   const [seasonalTheme, setSeasonalTheme] = useState({
@@ -31,7 +48,35 @@ const Home = () => {
       "🚀 Settlers Inn — your home away from home"
     ]
   });
-
+  
+  const welcomingPhrases = [
+    "🍲 Authentic flavors, memorable experiences",
+    "😋 Where local cuisine meets warm hospitality",
+    "🛏️ Your comfortable retreat in the highlands",
+    "☕ Savor moments that matter",
+    "🚀 Settlers Inn — your home away from home"
+  ];
+  
+  const reviews = [
+    "The perfect spot for a weekend getaway in Kericho. — Mercy K.",
+    "Their coffee is exceptional — reminds me of Nairobi's best cafes. — Brian N.",
+    "Clean rooms, friendly staff, and delicious food. Highly recommend. — Jane M.",
+    "The chapati and sausage combo is my go-to breakfast. — Kiprotich L.",
+    "Impressed by their conference facilities and catering service. — Ivy W.",
+    "The egg pancakes are a must-try! Will definitely come back. — Moffat M.",
+    "Consistently great service every time I visit. — Susan W.",
+    "Loved the peaceful room with the beautiful morning view. — Dennis K.",
+    "Settlers Inn has become my regular dining spot. — Terry N.",
+    "Their nyama stew and ugali combo is absolutely delicious. — Juma B."
+  ];
+  
+  const featuredDishes = [
+    { img: "chapati 1.jpg", emoji: "🥙", title: "Fresh Chapatis", desc: "Soft, flaky, and made to order daily." },
+    { img: "fish x chips.jpg", emoji: "🐟", title: "Fish & Chips", desc: "Fresh tilapia with crispy seasoned fries." },
+    { img: "cofee.jpg", emoji: "☕", title: "Highland Coffee", desc: "Premium Kenyan coffee, locally sourced." },
+    { img: "ugali x greens x meat.jpg", emoji: "🍛", title: "Traditional Platter", desc: "Ugali with sukuma wiki and nyama choma." }
+  ];
+  
   // Update theme based on current month
   useEffect(() => {
     const updateSeasonalTheme = () => {
@@ -100,9 +145,118 @@ const Home = () => {
     
     return () => clearInterval(themeTimer);
   }, []);
-
-  // ... existing useEffect ...
-
+  
+  useEffect(() => {
+    // Initialize dynamic content
+    const specials = [
+      "Today's Special: Nyama Choma with Ugali - KES 800",
+      "Weekend Deal: Family Platter for 4 - KES 2500",
+      "New Item: Grilled Tilapia with Chips - KES 700",
+      "Chef's Choice: Beef Stew with Rice - KES 650"
+    ];
+    setDailySpecial(specials[Math.floor(Math.random() * specials.length)]);
+    setVisitorCount(Math.floor(Math.random() * 300) + 800);
+    
+    // Update time
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 60000);
+    
+    // Combine intervals to reduce timers
+    const interval = setInterval(() => {
+      setPhraseIndex(prev => (prev + 1) % welcomingPhrases.length);
+      setReviewIndex(prev => (prev + 1) % reviews.length);
+      setActiveDish(prev => (prev + 1) % featuredDishes.length);
+    }, 7000);
+    
+    // Simulate new content being added
+    const contentInterval = setInterval(() => {
+      setNewContentCount(prev => prev + 1);
+    }, 45000);
+    
+    // Simulate online status
+    const onlineInterval = setInterval(() => {
+      setIsOnline(Math.random() > 0.15);
+    }, 45000);
+    
+    // Scroll detection for animations
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    
+    // Install prompt
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallToast(true);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    
+    // Facebook SDK - load only when section is visible
+    const loadFacebookSDK = () => {
+      if (typeof window !== 'undefined' && !window.FB) {
+        const script = document.createElement("script");
+        script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0";
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+      }
+    };
+    
+    // Use IntersectionObserver to load Facebook SDK when needed
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadFacebookSDK();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    const facebookSection = document.querySelector('.facebook-section');
+    if (facebookSection) observer.observe(facebookSection);
+    
+    return () => {
+      clearInterval(interval);
+      clearInterval(timer);
+      clearInterval(contentInterval);
+      clearInterval(onlineInterval);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      if (facebookSection) observer.unobserve(facebookSection);
+    };
+  }, []);
+  
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      setDeferredPrompt(null);
+      setShowInstallToast(false);
+    }
+  };
+  
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
+  
+  // Responsive style detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
+      setIsVerySmallMobile(window.innerWidth <= 333);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
   return (
     <div className="home-container">
       <style>
