@@ -277,7 +277,7 @@ const App = () => {
           cursor: 'pointer',
           animation: 'fadeInOut 7s ease-in-out',
         }} onClick={handleInstall}>
-          📲 Tap to install <strong>Settlers Inn</strong> to your device! (10s offer)
+          📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
         </div>
       )}
 
