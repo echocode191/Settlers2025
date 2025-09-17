@@ -26,12 +26,12 @@ const Home = () => {
   const [seasonalTheme, setSeasonalTheme] = useState({
     month: 'september',
     colors: {
-      primary: '#d2691e',      // Chocolate
-      secondary: '#ff8c00',    // Dark orange
-      accent: '#8B4513',       // Saddle brown
-      background: '#fff8dc',   // Cornsilk
-      text: '#5d4037',         // Dark brown
-      highlight: '#ffd700',     // Gold
+      primary: '#4a6fa5',      // Professional blue
+      secondary: '#166088',    // Darker blue
+      accent: '#4fc3dc',       // Light teal
+      background: '#f8f9fa',   // Light gray
+      text: '#2c3e50',         // Dark blue-gray
+      highlight: '#4fc3dc',    // Light teal
     },
     emojis: {
       welcome: '🍂',
@@ -41,7 +41,7 @@ const Home = () => {
       footer: '🍂',
     },
     phrases: [
-      "🍂 Autumn flavors, memorable experiences",
+      "🍂 Exceptional flavors, memorable experiences",
       "🍁 Where local cuisine meets warm hospitality",
       "🛏️ Your comfortable retreat in the highlands",
       "☕ Savor moments that matter",
@@ -86,12 +86,12 @@ const Home = () => {
         setSeasonalTheme({
           month: 'september',
           colors: {
-            primary: '#d2691e',      // Chocolate
-            secondary: '#ff8c00',    // Dark orange
-            accent: '#8B4513',       // Saddle brown
-            background: '#fff8dc',   // Cornsilk
-            text: '#5d4037',         // Dark brown
-            highlight: '#ffd700',     // Gold
+            primary: '#4a6fa5',      // Professional blue
+            secondary: '#166088',    // Darker blue
+            accent: '#4fc3dc',       // Light teal
+            background: '#f8f9fa',   // Light gray
+            text: '#2c3e50',         // Dark blue-gray
+            highlight: '#4fc3dc',    // Light teal
           },
           emojis: {
             welcome: '🍂',
@@ -101,7 +101,7 @@ const Home = () => {
             footer: '🍂',
           },
           phrases: [
-            "🍂 Autumn flavors, memorable experiences",
+            "🍂 Exceptional flavors, memorable experiences",
             "🍁 Where local cuisine meets warm hospitality",
             "🛏️ Your comfortable retreat in the highlands",
             "☕ Savor moments that matter",
@@ -112,12 +112,12 @@ const Home = () => {
         setSeasonalTheme({
           month: 'october',
           colors: {
-            primary: '#4b0082',      // Indigo
-            secondary: '#8b008b',    // Dark magenta
-            accent: '#ff4500',       // Orange red
-            background: '#2c2c2c',   // Dark gray
-            text: '#f5f5f5',         // Light gray
-            highlight: '#ff8c00',    // Dark orange
+            primary: '#4a6fa5',      // Professional blue
+            secondary: '#166088',    // Darker blue
+            accent: '#4fc3dc',       // Light teal
+            background: '#f8f9fa',   // Light gray
+            text: '#2c3e50',         // Dark blue-gray
+            highlight: '#4fc3dc',    // Light teal
           },
           emojis: {
             welcome: '🎃',
@@ -127,11 +127,11 @@ const Home = () => {
             footer: '🎃',
           },
           phrases: [
-            "🎃 Spooky flavors, memorable experiences",
-            "👻 Where local cuisine meets haunted hospitality",
-            "🛏️ Your cozy retreat in the highlands",
-            "☕ Savor chilling moments that matter",
-            "🚀 Settlers Inn — your haunted home away from home"
+            "🎃 Seasonal flavors, memorable experiences",
+            "👻 Where local cuisine meets warm hospitality",
+            "🛏️ Your comfortable retreat in the highlands",
+            "☕ Savor moments that matter",
+            "🚀 Settlers Inn — your home away from home"
           ]
         });
       }
@@ -281,7 +281,7 @@ const Home = () => {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.5;
             transition: background-color 0.5s ease, color 0.5s ease;
           }
           
@@ -291,18 +291,18 @@ const Home = () => {
             flex-direction: column;
           }
           
-          /* Hero Section with seasonal theme */
+          /* Hero Section with glassmorphism */
           .hero-section {
             position: relative;
-            height: 100vh;
-            min-height: 600px;
+            height: 90vh;
+            min-height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             color: #fff;
             text-align: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
                         url('/assets/hero-fallback.jpg') center/cover no-repeat;
           }
           
@@ -319,84 +319,86 @@ const Home = () => {
           .hero-content {
             position: relative;
             z-index: 2;
-            padding: 2rem;
-            max-width: 800px;
+            padding: 1.5rem;
+            max-width: 600px;
             width: 90%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             animation: fadeIn 1.5s ease-in-out;
           }
           
           .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.5px;
           }
           
           .hero-phrase {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 300;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
             opacity: 0.9;
           }
           
           .hero-subtitle {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
             opacity: 0.8;
           }
           
           .hero-buttons {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
             flex-wrap: wrap;
           }
           
           .hero-button {
             display: inline-block;
-            padding: 14px 28px;
-            background-color: #fff;
-            color: var(--text);
-            border-radius: 50px;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 30px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 500;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
           }
           
           .hero-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
           }
           
           .hero-button.primary {
             background-color: var(--primary);
             color: white;
+            border: 1px solid var(--primary);
           }
           
           .stats-container {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: center;
-            gap: 3rem;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
+            gap: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
-            margin: 0 20px;
-            max-width: 600px;
+            border-radius: 12px;
+            margin: 0 15px;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
+            border: 1px solid rgba(255, 255, 255, 0.18);
           }
           
           .stat-item {
@@ -404,82 +406,88 @@ const Home = () => {
           }
           
           .stat-number {
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 600;
             color: #fff;
           }
           
           .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             opacity: 0.8;
           }
           
-          /* Section Styles with seasonal theme */
+          /* Section Styles with glassmorphism */
           .section {
-            padding: 5rem 1rem;
+            padding: 3rem 1rem;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
           }
           
           .intro-section {
-            background-color: #fff;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: 16px;
-            padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
             transition: background-color 0.5s ease;
           }
           
           .special-banner {
             display: inline-block;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
           }
           
           .intro-text {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--text);
             max-width: 800px;
             margin: 0 auto;
+            line-height: 1.6;
           }
           
           /* Featured Dishes */
           .featured-dishes {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
           }
           
           .dish-card {
-            background-color: #fff;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
           }
           
           .dish-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
           }
           
           .dish-card.active {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            border: 2px solid var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--primary);
           }
           
           .dish-image-container {
             position: relative;
-            height: 200px;
+            height: 180px;
             overflow: hidden;
           }
           
@@ -496,23 +504,23 @@ const Home = () => {
           
           .new-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background-color: var(--accent);
             color: white;
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 500;
           }
           
           .dish-content {
-            padding: 1.5rem;
+            padding: 1.2rem;
           }
           
           .dish-title {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
             color: var(--text);
             font-weight: 600;
           }
@@ -520,85 +528,92 @@ const Home = () => {
           .dish-desc {
             color: var(--text);
             opacity: 0.8;
-            font-size: 1rem;
+            font-size: 0.9rem;
           }
           
           /* Reviews Section */
           .reviews-section {
-            background-color: #fff;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: 16px;
-            padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
             transition: background-color 0.5s ease;
           }
           
           .reviews-title {
-            font-size: 2.2rem;
-            margin-bottom: 2rem;
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
             color: var(--text);
-            font-weight: 700;
+            font-weight: 600;
           }
           
           .review-rotator {
-            min-height: 100px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
           }
           
           .review-text {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-style: italic;
             color: var(--text);
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.8;
+            line-height: 1.6;
           }
           
           /* Facebook Section */
           .facebook-section {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
           }
           
           .facebook-title {
-            font-size: 2.2rem;
-            margin-bottom: 2rem;
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
             color: var(--text);
-            font-weight: 700;
+            font-weight: 600;
           }
           
           .facebook-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
           }
           
           .facebook-embed {
-            width: 380px;
-            height: 400px;
+            width: 340px;
+            height: 350px;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
           }
           
           /* Quick Access */
           .quick-access {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: #fff;
-            border-radius: 50px;
-            padding: 12px;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 10px;
             display: flex;
-            gap: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            gap: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             z-index: 100;
             transition: transform 0.3s ease, opacity 0.3s ease;
             transform: translateY(100px);
             opacity: 0;
+            border: 1px solid rgba(255, 255, 255, 0.5);
           }
           
           .quick-access.visible {
@@ -610,13 +625,13 @@ const Home = () => {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background-color: var(--background);
+            background: rgba(255, 255, 255, 0.5);
             color: var(--primary);
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.2s ease;
           }
           
@@ -631,31 +646,33 @@ const Home = () => {
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: var(--text);
-            color: var(--background);
-            padding: 14px 24px;
-            border-radius: 50px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: var(--text);
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            font-size: 0.85rem;
             z-index: 10000;
             max-width: 90%;
             text-align: center;
             cursor: pointer;
             animation: fadeInOut 7s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.5);
           }
           
           /* New Content Banner */
           .new-content-banner {
             position: fixed;
-            top: 100px;
-            right: 20px;
+            top: 80px;
+            right: 15px;
             background: linear-gradient(90deg, var(--accent), var(--highlight));
             color: white;
-            padding: 10px 18px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             z-index: 100;
             display: flex;
             align-items: center;
@@ -672,19 +689,20 @@ const Home = () => {
             background: none;
             border: none;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            margin-left: 10px;
+            margin-left: 8px;
             line-height: 1;
           }
           
           /* Footer */
           .footer-text {
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 2rem;
             color: var(--text);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             padding: 0 1rem;
+            opacity: 0.8;
           }
           
           /* Animations */
@@ -703,8 +721,8 @@ const Home = () => {
           /* Seasonal decorative elements */
           .seasonal-decoration {
             position: absolute;
-            font-size: 2rem;
-            opacity: 0.7;
+            font-size: 1.5rem;
+            opacity: 0.6;
             animation: float 6s ease-in-out infinite;
             z-index: 1;
           }
@@ -735,7 +753,7 @@ const Home = () => {
           
           @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
             100% { transform: translateY(0px) rotate(0deg); }
           }
           
@@ -743,15 +761,15 @@ const Home = () => {
           @media (max-width: 768px) {
             .hero-section {
               height: 80vh;
-              min-height: 500px;
+              min-height: 450px;
             }
             
             .hero-title {
-              font-size: 2.5rem;
+              font-size: 2rem;
             }
             
             .hero-phrase {
-              font-size: 1.2rem;
+              font-size: 1rem;
             }
             
             .hero-buttons {
@@ -765,12 +783,12 @@ const Home = () => {
             
             .stats-container {
               flex-direction: column;
-              gap: 1rem;
-              bottom: 20px;
+              gap: 0.8rem;
+              bottom: 15px;
             }
             
             .section {
-              padding: 3rem 1rem;
+              padding: 2rem 1rem;
             }
             
             .featured-dishes {
@@ -779,42 +797,42 @@ const Home = () => {
             
             .facebook-embed {
               width: 100%;
-              max-width: 380px;
+              max-width: 340px;
             }
             
             .seasonal-decoration {
-              font-size: 1.5rem;
+              font-size: 1.2rem;
             }
           }
           
           @media (max-width: 480px) {
             .hero-section {
-              height: 70vh;
-              min-height: 450px;
+              height: 75vh;
+              min-height: 400px;
             }
             
             .hero-title {
-              font-size: 2rem;
-            }
-            
-            .hero-phrase {
-              font-size: 1rem;
-            }
-            
-            .hero-content {
-              padding: 1.5rem;
-            }
-            
-            .intro-section, .reviews-section {
-              padding: 2rem 1.5rem;
-            }
-            
-            .reviews-title, .facebook-title {
               font-size: 1.8rem;
             }
             
+            .hero-phrase {
+              font-size: 0.9rem;
+            }
+            
+            .hero-content {
+              padding: 1.2rem;
+            }
+            
+            .intro-section, .reviews-section {
+              padding: 1.5rem 1.2rem;
+            }
+            
+            .reviews-title, .facebook-title {
+              font-size: 1.4rem;
+            }
+            
             .review-text {
-              font-size: 1rem;
+              font-size: 0.9rem;
             }
             
             .quick-access {
@@ -831,50 +849,50 @@ const Home = () => {
             }
             
             .seasonal-decoration {
-              font-size: 1.2rem;
+              font-size: 1rem;
             }
           }
           
           @media (max-width: 333px) {
             .hero-title {
-              font-size: 1.8rem;
+              font-size: 1.6rem;
             }
             
             .hero-phrase {
-              font-size: 0.9rem;
+              font-size: 0.85rem;
             }
             
             .hero-subtitle {
-              font-size: 0.9rem;
+              font-size: 0.8rem;
             }
             
             .hero-button {
-              padding: 12px 20px;
-              font-size: 0.9rem;
+              padding: 10px 18px;
+              font-size: 0.85rem;
             }
             
             .section {
-              padding: 2rem 0.8rem;
+              padding: 1.5rem 0.8rem;
             }
             
             .intro-section, .reviews-section {
-              padding: 1.5rem 1rem;
+              padding: 1.2rem 0.8rem;
             }
             
             .dish-title {
-              font-size: 1.2rem;
+              font-size: 1rem;
             }
             
             .dish-desc {
-              font-size: 0.9rem;
+              font-size: 0.85rem;
             }
             
             .reviews-title, .facebook-title {
-              font-size: 1.5rem;
+              font-size: 1.2rem;
             }
             
             .review-text {
-              font-size: 0.9rem;
+              font-size: 0.85rem;
             }
             
             .quick-access {
@@ -889,7 +907,7 @@ const Home = () => {
             }
             
             .seasonal-decoration {
-              font-size: 1rem;
+              font-size: 0.9rem;
             }
           }
         `}
