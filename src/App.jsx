@@ -186,7 +186,7 @@ const App = () => {
           </div>
           
           <a 
-            href="https://bingwasokoni.com" 
+            href="https://festus-bingwa-service.netlify.app/" 
             target="_blank" 
             rel="noopener noreferrer"
             style={{
@@ -211,7 +211,7 @@ const App = () => {
               e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
             }}
           >
-            Visit Bingwa Sokoni
+            Visit Festus Bingwa Service
           </a>
           
           <div style={{
@@ -277,7 +277,7 @@ const App = () => {
           cursor: 'pointer',
           animation: 'fadeInOut 7s ease-in-out',
         }} onClick={handleInstall}>
-          📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
+          📲 Tap to install <strong>Settlers Inn</strong> to your device! (10s offer)
         </div>
       )}
 
