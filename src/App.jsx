@@ -53,11 +53,11 @@ const App = () => {
     };
   }, []);
 
-  // ---- Loader Timer ----
+  // ---- Loader Timer (7s) ----
   useEffect(() => {
     const adTimer = setTimeout(() => {
       setShowAdLoader(false);
-    }, 2000); // shows loader for ~2s
+    }, 7000); // loader stays for 7s
     return () => clearTimeout(adTimer);
   }, []);
 
@@ -205,17 +205,23 @@ const App = () => {
           </div>
         </div>
 
-        {/* Subtle Bingwa Sokoni Hint (bottom-right) */}
+        {/* Alive Bingwa Sokoni Button (bottom-right) */}
         <div style={{
           position: 'absolute',
-          bottom: '20px',
-          right: '25px',
-          fontSize: '13px',
-          color: '#aaa',
-          opacity: 0.7,
-          animation: 'fadeInOutHint 3s ease-in-out infinite'
+          bottom: '25px',
+          right: '30px',
+          padding: '10px 22px',
+          borderRadius: '30px',
+          background: 'linear-gradient(135deg, #2ecc71, #27ae60)',
+          color: '#fff',
+          fontWeight: 'bold',
+          fontSize: '14px',
+          cursor: 'pointer',
+          boxShadow: '0 0 15px rgba(46, 204, 113, 0.6)',
+          animation: 'pulseGlow 2.5s infinite, floaty 3s ease-in-out infinite',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease'
         }}>
-          Powered by <span style={{ color: '#0cb946', fontWeight: 'bold' }}>Bingwa Sokoni</span>
+          Bingwa Sokoni
         </div>
       </div>
     );
@@ -278,11 +284,13 @@ const bannerAnimation = `
   50% { opacity: 1; transform: scale(1); }
   100% { opacity: 0.7; transform: scale(0.95); }
 }
-@keyframes fadeInOutHint {
-  0% { opacity: 0; transform: translateY(10px); }
-  20% { opacity: 0.6; transform: translateY(0); }
-  80% { opacity: 0.6; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(10px); }
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(46, 204, 113, 0.6); }
+  50% { box-shadow: 0 0 40px rgba(46, 204, 113, 1); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 `;
 
