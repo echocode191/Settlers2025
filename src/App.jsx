@@ -53,12 +53,11 @@ const App = () => {
     };
   }, []);
 
-  // ---- Ad Timer ----
+  // ---- Loader Timer ----
   useEffect(() => {
     const adTimer = setTimeout(() => {
       setShowAdLoader(false);
-    }, 7000); // Ad shows for exactly 7 seconds
-    
+    }, 2000); // shows loader for ~2s
     return () => clearTimeout(adTimer);
   }, []);
 
@@ -87,7 +86,6 @@ const App = () => {
   // ---- Auto refresh if new version detected ----
   useEffect(() => {
     let currentVersion = null;
-
     const checkForUpdate = async () => {
       try {
         const res = await fetch('/meta.json?time=' + new Date().getTime());
@@ -134,7 +132,7 @@ const App = () => {
     return () => window.removeEventListener('online', handleReconnect);
   }, []);
 
-  // ---- Ad Loading Screen ----
+  // ---- Clean Loading Screen ----
   if (!isCssLoaded || showAdLoader) {
     return (
       <div style={{
@@ -152,73 +150,27 @@ const App = () => {
         flexDirection: 'column',
         fontFamily: 'Arial, sans-serif'
       }}>
-        <div style={{ 
-          textAlign: 'center', 
-          maxWidth: '500px',
+        {/* Main Loader */}
+        <div style={{
+          textAlign: 'center',
           padding: '30px',
-          borderRadius: '10px',
-          background: 'rgba(0, 0, 0, 0.6)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+          borderRadius: '12px',
+          background: 'rgba(0, 0, 0, 0.55)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
+          animation: 'fadeInOutLoader 2.5s ease-in-out infinite'
         }}>
-          <div style={{ 
-            fontSize: '24px', 
-            fontWeight: 'bold', 
-            marginBottom: '20px',
-            color: '#fff'
-          }}>
-            Loading Settlers Inn...
-          </div>
-          
-          <div style={{ 
-            marginBottom: '25px', 
-            fontSize: '18px',
-            lineHeight: '1.5'
-          }}>
-            This site is powered by <span style={{ color: '#3498db', fontWeight: 'bold' }}>Echocode</span> and in partnership with <span style={{ color: '#0cb946', fontWeight: 'bold' }}>Safaricom</span>
-          </div>
-          
-          <div style={{ 
-            marginBottom: '30px',
-            fontSize: '16px',
-            color: '#ddd'
-          }}>
-            Click the link below to get the best offers!
-          </div>
-          
-          <a 
-            href="https://festus-bingwa-service.netlify.app/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              padding: '12px 25px',
-              background: 'linear-gradient(45deg, #3498db, #0cb946)',
-              color: '#fff',
-              textDecoration: 'none',
-              borderRadius: '30px',
-              fontWeight: 'bold',
-              fontSize: '16px',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-              marginBottom: '20px'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.transform = 'translateY(-2px)';
-              e.target.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.3)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
-            }}
-          >
-            Visit Festus Bingwa Service
-          </a>
-          
           <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '20px'
+            fontSize: '22px',
+            fontWeight: 'bold',
+            marginBottom: '20px',
+            letterSpacing: '1px',
+            color: '#eee'
           }}>
+            Loading...
+          </div>
+
+          {/* Animated Dots */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
             <div className="loader-dots">
               <div style={{
                 width: '10px',
@@ -252,6 +204,19 @@ const App = () => {
             </div>
           </div>
         </div>
+
+        {/* Subtle Bingwa Sokoni Hint (bottom-right) */}
+        <div style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '25px',
+          fontSize: '13px',
+          color: '#aaa',
+          opacity: 0.7,
+          animation: 'fadeInOutHint 3s ease-in-out infinite'
+        }}>
+          Powered by <span style={{ color: '#0cb946', fontWeight: 'bold' }}>Bingwa Sokoni</span>
+        </div>
       </div>
     );
   }
@@ -277,7 +242,7 @@ const App = () => {
           cursor: 'pointer',
           animation: 'fadeInOut 7s ease-in-out',
         }} onClick={handleInstall}>
-          📲 Tap to install <strong>Settlers Inn</strong> to your device! (7s offer 😅)
+          📲 Tap to install <strong>Settlers Inn</strong> to your device!
         </div>
       )}
 
@@ -305,11 +270,19 @@ const bannerAnimation = `
   100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
 @keyframes bounce {
-  0%, 80%, 100% { 
-    transform: scale(0);
-  } 40% { 
-    transform: scale(1.0);
-  }
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+@keyframes fadeInOutLoader {
+  0% { opacity: 0.7; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.7; transform: scale(0.95); }
+}
+@keyframes fadeInOutHint {
+  0% { opacity: 0; transform: translateY(10px); }
+  20% { opacity: 0.6; transform: translateY(0); }
+  80% { opacity: 0.6; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(10px); }
 }
 `;
 
