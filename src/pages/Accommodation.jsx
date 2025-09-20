@@ -22,96 +22,32 @@ const MpesaPayment = ({ amount = '', item = 'booking' }) => {
     }, 1500);
   };
   
-  // Glassy styles
-  const glassyStyle = {
-    container: {
-      marginTop: '1rem',
-      position: 'relative'
-    },
-    heading: {
-      marginBottom: '0.5rem',
-      color: '#38bdf8'
-    },
-    input: {
-      padding: '0.7rem 1rem',
-      width: '100%',
-      marginBottom: '1rem',
-      borderRadius: '10px',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      background: 'rgba(255, 255, 255, 0.08)',
-      color: '#e2e8f0',
-      fontSize: '0.95rem',
-      backdropFilter: 'blur(8px)',
-      transition: 'all 0.2s ease',
-      outline: 'none',
-      WebkitBackdropFilter: 'blur(8px)'
-    },
-    button: {
-      background: 'rgba(37, 211, 102, 0.8)',
-      color: '#0f172a',
-      padding: '0.8rem 1.5rem',
-      borderRadius: '10px',
-      border: 'none',
-      cursor: 'pointer',
-      fontWeight: '600',
-      textDecoration: 'none',
-      display: 'inline-block',
-      marginTop: '0.8rem',
-      transition: 'all 0.3s ease',
-      backdropFilter: 'blur(8px)',
-      boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)',
-      textAlign: 'center',
-      width: '100%',
-      fontSize: '0.95rem',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      WebkitBackdropFilter: 'blur(8px)'
-    },
-    processingOverlay: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      background: 'rgba(255, 255, 255, 0.1)',
-      color: '#e2e8f0',
-      padding: '12px 20px',
-      borderRadius: '12px',
-      zIndex: 10,
-      backdropFilter: 'blur(12px)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      WebkitBackdropFilter: 'blur(12px)'
-    }
-  };
-  
   return (
-    <div style={glassyStyle.container}>
-      <h4 style={glassyStyle.heading}>Confirm M-PESA Payment</h4>
+    <div className="mpesa-payment">
+      <h4 className="mpesa-heading">Confirm M-PESA Payment</h4>
       <input
         type="text"
         placeholder="Phone Number (07...)"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
-        style={glassyStyle.input}
+        className="mpesa-input glass"
       />
       <input
         type="text"
         placeholder="M-PESA Code"
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        style={glassyStyle.input}
+        className="mpesa-input glass"
       />
       <button 
         onClick={sendToWhatsApp} 
-        style={{
-          ...glassyStyle.button,
-          background: isProcessing ? 'rgba(85, 85, 85, 0.8)' : 'rgba(37, 211, 102, 0.8)',
-          cursor: isProcessing ? 'not-allowed' : 'pointer',
-        }}
+        className={`mpesa-button glass ${isProcessing ? 'processing' : ''}`}
         disabled={isProcessing}
       >
         {isProcessing ? '⏳ Processing...' : '📤 Confirm via WhatsApp'}
       </button>
       {isProcessing && (
-        <div style={glassyStyle.processingOverlay}>
+        <div className="processing-overlay glass">
           Processing payment...
         </div>
       )}
@@ -214,336 +150,72 @@ const Accommodation = () => {
     
     const isNew = type === 'conference'; // Simulate new feature
     
-    // Glassy styles
-    const glassyStyle = {
-      roomCard: {
-        background: 'rgba(255, 255, 255, 0.08)',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        borderRadius: '20px',
-        padding: '1.8rem',
-        textAlign: 'left',
-        position: 'relative',
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
-        transition: 'all 0.3s ease',
-        WebkitBackdropFilter: 'blur(16px)'
-      },
-      roomCardHover: {
-        transform: 'translateY(-5px)',
-        boxShadow: '0 12px 30px rgba(0, 0, 0, 0.2)'
-      },
-      newBadge: {
-        position: 'absolute',
-        top: '-8px',
-        right: '-8px',
-        background: 'rgba(239, 68, 68, 0.9)',
-        color: 'white',
-        fontSize: '0.7rem',
-        padding: '2px 6px',
-        borderRadius: '10px',
-        animation: 'subtlePulse 2s infinite',
-        backdropFilter: 'blur(8px)',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        WebkitBackdropFilter: 'blur(8px)'
-      },
-      image: {
-        width: '100%',
-        height: '180px',
-        objectFit: 'cover',
-        borderRadius: '12px',
-        marginBottom: '1.2rem',
-        transition: 'transform 0.3s ease'
-      },
-      title: {
-        marginBottom: '1.2rem',
-        color: '#e2e8f0',
-        fontSize: '1.4rem',
-        fontWeight: '600'
-      },
-      label: {
-        display: 'block',
-        marginBottom: '0.5rem',
-        color: '#cbd5e1',
-        fontSize: '0.9rem',
-        fontWeight: '500'
-      },
-      input: {
-        padding: '0.7rem 1rem',
-        width: '100%',
-        marginBottom: '1rem',
-        borderRadius: '10px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        background: 'rgba(255, 255, 255, 0.08)',
-        color: '#e2e8f0',
-        fontSize: '0.95rem',
-        backdropFilter: 'blur(8px)',
-        transition: 'all 0.2s ease',
-        outline: 'none',
-        WebkitBackdropFilter: 'blur(8px)'
-      },
-      checkboxLabel: {
-        display: 'block',
-        marginTop: '0.8rem',
-        color: '#cbd5e1',
-        fontSize: '0.9rem',
-        cursor: 'pointer'
-      },
-      total: {
-        color: '#38bdf8',
-        fontWeight: '600',
-        margin: '1rem 0',
-        fontSize: '1.1rem'
-      },
-      button: {
-        background: 'rgba(56, 189, 248, 0.8)',
-        color: '#0f172a',
-        padding: '0.8rem 1.5rem',
-        borderRadius: '10px',
-        border: 'none',
-        cursor: 'pointer',
-        fontWeight: '600',
-        textDecoration: 'none',
-        display: 'inline-block',
-        marginTop: '0.8rem',
-        transition: 'all 0.3s ease',
-        backdropFilter: 'blur(8px)',
-        boxShadow: '0 4px 15px rgba(56, 189, 248, 0.3)',
-        textAlign: 'center',
-        width: '100%',
-        fontSize: '0.95rem',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        WebkitBackdropFilter: 'blur(8px)'
-      },
-      // Mobile styles
-      mobileRoomCard: {
-        padding: '1.2rem'
-      },
-      mobileImage: {
-        height: '160px'
-      },
-      mobileTitle: {
-        fontSize: '1.2rem'
-      },
-      // Small mobile styles
-      smallMobileRoomCard: {
-        padding: '1rem'
-      },
-      smallMobileImage: {
-        height: '140px'
-      },
-      smallMobileTitle: {
-        fontSize: '1.1rem'
-      },
-      smallMobileLabel: {
-        fontSize: '0.85rem'
-      },
-      smallMobileInput: {
-        fontSize: '0.9rem',
-        padding: '0.6rem 0.8rem'
-      },
-      smallMobileCheckboxLabel: {
-        fontSize: '0.85rem'
-      },
-      smallMobileTotal: {
-        fontSize: '1rem'
-      },
-      smallMobileButton: {
-        fontSize: '0.9rem',
-        padding: '0.6rem 1.2rem'
-      },
-      // Very small mobile styles
-      verySmallMobileRoomCard: {
-        padding: '0.8rem'
-      },
-      verySmallMobileImage: {
-        height: '120px'
-      },
-      verySmallMobileTitle: {
-        fontSize: '1rem'
-      },
-      verySmallMobileLabel: {
-        fontSize: '0.8rem'
-      },
-      verySmallMobileInput: {
-        fontSize: '0.85rem',
-        padding: '0.5rem 0.7rem'
-      },
-      verySmallMobileCheckboxLabel: {
-        fontSize: '0.8rem'
-      },
-      verySmallMobileTotal: {
-        fontSize: '0.95rem'
-      },
-      verySmallMobileButton: {
-        fontSize: '0.85rem',
-        padding: '0.5rem 1rem'
-      }
-    };
-    
-    // Get responsive styles
-    const getResponsiveStyle = (baseStyle, mobileStyle, smallMobileStyle, verySmallMobileStyle) => {
-      if (isVerySmallMobile && verySmallMobileStyle) return { ...baseStyle, ...verySmallMobileStyle };
-      if (isSmallMobile && smallMobileStyle) return { ...baseStyle, ...smallMobileStyle };
-      if (isMobile && mobileStyle) return { ...baseStyle, ...mobileStyle };
-      return baseStyle;
-    };
-    
     return (
       <div 
-        style={{
-          ...getResponsiveStyle(
-            glassyStyle.roomCard,
-            glassyStyle.mobileRoomCard,
-            glassyStyle.smallMobileRoomCard,
-            glassyStyle.verySmallMobileRoomCard
-          ),
-          ...(isHovered && glassyStyle.roomCardHover)
-        }}
+        className={`room-card glass ${isHovered ? 'hovered' : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {isNew && <div style={glassyStyle.newBadge}>NEW</div>}
-        <img 
-          src={image} 
-          alt={title} 
-          style={getResponsiveStyle(
-            glassyStyle.image,
-            glassyStyle.mobileImage,
-            glassyStyle.smallMobileImage,
-            glassyStyle.verySmallMobileImage
-          )} 
-        />
-        <h3 style={getResponsiveStyle(
-          glassyStyle.title,
-          glassyStyle.mobileTitle,
-          glassyStyle.smallMobileTitle,
-          glassyStyle.verySmallMobileTitle
-        )}>{title}</h3>
+        {isNew && <div className="new-badge">NEW</div>}
+        <img src={image} alt={title} className="room-image" />
+        <h3 className="room-title">{title}</h3>
         {type !== 'conference' ? (
           <>
-            <label style={getResponsiveStyle(
-              glassyStyle.label,
-              null,
-              glassyStyle.smallMobileLabel,
-              glassyStyle.verySmallMobileLabel
-            )}>Check-In Date:</label>
+            <label className="form-label">Check-In Date:</label>
             <DatePicker 
               selected={checkIn} 
               onChange={setCheckIn}
-              className="date-picker"
-              style={getResponsiveStyle(
-                glassyStyle.input,
-                null,
-                glassyStyle.smallMobileInput,
-                glassyStyle.verySmallMobileInput
-              )}
+              className="date-picker glass"
             />
-            <label style={getResponsiveStyle(
-              glassyStyle.label,
-              null,
-              glassyStyle.smallMobileLabel,
-              glassyStyle.verySmallMobileLabel
-            )}>Check-Out Date:</label>
+            <label className="form-label">Check-Out Date:</label>
             <DatePicker 
               selected={checkOut} 
               onChange={setCheckOut}
-              className="date-picker"
-              style={getResponsiveStyle(
-                glassyStyle.input,
-                null,
-                glassyStyle.smallMobileInput,
-                glassyStyle.verySmallMobileInput
-              )}
+              className="date-picker glass"
             />
-            <label style={getResponsiveStyle(
-              glassyStyle.label,
-              null,
-              glassyStyle.smallMobileLabel,
-              glassyStyle.verySmallMobileLabel
-            )}>Guests:</label>
+            <label className="form-label">Guests:</label>
             <input
               type="number"
               min="1"
               value={guests}
               onChange={(e) => setGuests(parseInt(e.target.value))}
-              style={getResponsiveStyle(
-                glassyStyle.input,
-                null,
-                glassyStyle.smallMobileInput,
-                glassyStyle.verySmallMobileInput
-              )}
+              className="form-input glass"
             />
-            <label style={getResponsiveStyle(
-              glassyStyle.checkboxLabel,
-              null,
-              glassyStyle.smallMobileCheckboxLabel,
-              glassyStyle.verySmallMobileCheckboxLabel
-            )}>
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={breakfast}
                 onChange={(e) => setBreakfast(e.target.checked)}
-                style={{ marginRight: '0.5rem' }}
+                className="checkbox-input"
               />{' '}
               Add Breakfast (KES 500/guest)
             </label>
           </>
         ) : (
           <>
-            <label style={getResponsiveStyle(
-              glassyStyle.label,
-              null,
-              glassyStyle.smallMobileLabel,
-              glassyStyle.verySmallMobileLabel
-            )}>Booking Date:</label>
+            <label className="form-label">Booking Date:</label>
             <DatePicker 
               selected={checkIn} 
               onChange={setCheckIn}
-              className="date-picker"
-              style={getResponsiveStyle(
-                glassyStyle.input,
-                null,
-                glassyStyle.smallMobileInput,
-                glassyStyle.verySmallMobileInput
-              )}
+              className="date-picker glass"
             />
-            <label style={getResponsiveStyle(
-              glassyStyle.label,
-              null,
-              glassyStyle.smallMobileLabel,
-              glassyStyle.verySmallMobileLabel
-            )}>Session:</label>
+            <label className="form-label">Session:</label>
             <select
               value={sessionType}
               onChange={(e) => setSessionType(e.target.value)}
-              style={getResponsiveStyle(
-                glassyStyle.input,
-                null,
-                glassyStyle.smallMobileInput,
-                glassyStyle.verySmallMobileInput
-              )}
+              className="form-select glass"
             >
               <option value="half">Half Day – KES 2,000</option>
               <option value="full">Full Day – KES 5,000</option>
             </select>
           </>
         )}
-        <p style={getResponsiveStyle(
-          glassyStyle.total,
-          null,
-          glassyStyle.smallMobileTotal,
-          glassyStyle.verySmallMobileTotal
-        )}>Total: KES {total}</p>
+        <p className="room-total">Total: KES {total}</p>
         <a
           href={`https://wa.me/254748778388?text=${message}`}
           target="_blank"
           rel="noopener noreferrer"
-          style={getResponsiveStyle(
-            glassyStyle.button,
-            null,
-            glassyStyle.smallMobileButton,
-            glassyStyle.verySmallMobileButton
-          )}
+          className="reserve-button glass"
         >
           🛌 Reserve Now (Pay on Arrival)
         </a>
@@ -552,330 +224,653 @@ const Accommodation = () => {
     );
   };
   
-  // Glassy styles
-  const glassyStyle = {
-    body: {
-      background: 'linear-gradient(135deg, #0f172a, #1e293b)',
-      color: '#e2e8f0',
-      fontFamily: 'Inter, system-ui, sans-serif',
-      minHeight: '100vh',
-      overflowX: 'hidden'
-    },
-    section: {
-      maxWidth: '1000px',
-      margin: 'auto',
-      padding: '3rem 1.5rem',
-      animation: 'fadeInUp 0.8s ease'
-    },
-    header: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '1.5rem',
-      flexWrap: 'wrap'
-    },
-    heading: {
-      color: '#e2e8f0',
-      fontSize: '2.2rem',
-      fontWeight: '600',
-      marginBottom: '0.5rem'
-    },
-    lastUpdated: {
-      fontSize: '0.85rem',
-      color: '#94a3b8',
-      background: 'rgba(255, 255, 255, 0.08)',
-      padding: '6px 12px',
-      borderRadius: '20px',
-      backdropFilter: 'blur(8px)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      WebkitBackdropFilter: 'blur(8px)'
-    },
-    specialBanner: {
-      background: 'linear-gradient(90deg, rgba(56, 189, 248, 0.8), rgba(139, 92, 246, 0.8))',
-      color: '#0f172a',
-      padding: '10px 18px',
-      borderRadius: '20px',
-      fontWeight: '600',
-      textAlign: 'center',
-      marginBottom: '1.5rem',
-      animation: 'shimmer 3s infinite',
-      backgroundSize: '200px 100%',
-      backdropFilter: 'blur(8px)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      WebkitBackdropFilter: 'blur(8px)'
-    },
-    description: {
-      marginBottom: '1.5rem',
-      lineHeight: '1.6',
-      color: '#cbd5e1',
-      fontSize: '1rem'
-    },
-    paymentInfo: {
-      background: 'rgba(255, 255, 255, 0.08)',
-      border: '1px solid rgba(56, 189, 248, 0.3)',
-      padding: '1.5rem',
-      borderRadius: '16px',
-      marginBottom: '2.5rem',
-      color: '#e2e8f0',
-      fontSize: '0.95rem',
-      backdropFilter: 'blur(12px)',
-      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.15)',
-      WebkitBackdropFilter: 'blur(12px)'
-    },
-    paymentInfoHeading: {
-      color: '#38bdf8',
-      fontSize: '1.1rem'
-    },
-    paymentInfoText: {
-      color: '#38bdf8'
-    },
-    mediaScroll: {
-      display: 'flex',
-      overflowX: 'auto',
-      gap: '1.2rem',
-      paddingBottom: '1.5rem',
-      scrollSnapType: 'x mandatory',
-      marginBottom: '2.5rem',
-      scrollbarWidth: 'thin',
-      scrollbarColor: 'rgba(56, 189, 248, 0.3) transparent'
-    },
-    mediaItem: {
-      flex: '0 0 auto',
-      width: '240px',
-      scrollSnapAlign: 'start',
-      position: 'relative',
-      borderRadius: '12px',
-      overflow: 'hidden',
-      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
-      border: '1px solid rgba(255, 255, 255, 0.2)'
-    },
-    mediaItemImage: {
-      width: '100%',
-      height: '180px',
-      objectFit: 'cover'
-    },
-    newBadge: {
-      position: 'absolute',
-      top: '10px',
-      left: '10px',
-      background: 'rgba(255, 255, 255, 0.1)',
-      color: '#38bdf8',
-      padding: '4px 10px',
-      borderRadius: '6px',
-      fontSize: '0.75rem',
-      fontWeight: '600',
-      backdropFilter: 'blur(8px)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      WebkitBackdropFilter: 'blur(8px)'
-    },
-    roomGrid: {
-      display: 'grid',
-      gap: '2.5rem',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))'
-    },
-    // Mobile styles
-    mobileSection: {
-      padding: '2rem 1rem'
-    },
-    mobileHeading: {
-      fontSize: '1.8rem'
-    },
-    mobileMediaScroll: {
-      gap: '0.8rem'
-    },
-    mobileMediaItem: {
-      width: '180px'
-    },
-    mobileRoomGrid: {
-      gap: '1.8rem'
-    },
-    // Small mobile styles
-    smallMobileSection: {
-      padding: '1.5rem 0.8rem'
-    },
-    smallMobileHeading: {
-      fontSize: '1.6rem'
-    },
-    smallMobileDescription: {
-      fontSize: '0.95rem'
-    },
-    smallMobilePaymentInfo: {
-      padding: '1.2rem',
-      fontSize: '0.9rem'
-    },
-    smallMobilePaymentInfoHeading: {
-      fontSize: '1rem'
-    },
-    smallMobileMediaScroll: {
-      gap: '0.7rem'
-    },
-    smallMobileMediaItem: {
-      width: '160px'
-    },
-    smallMobileMediaItemImage: {
-      height: '160px'
-    },
-    smallMobileRoomGrid: {
-      gap: '1.5rem'
-    },
-    // Very small mobile styles
-    verySmallMobileSection: {
-      padding: '1.2rem 0.6rem'
-    },
-    verySmallMobileHeading: {
-      fontSize: '1.4rem'
-    },
-    verySmallMobileDescription: {
-      fontSize: '0.9rem'
-    },
-    verySmallMobilePaymentInfo: {
-      padding: '1rem',
-      fontSize: '0.85rem'
-    },
-    verySmallMobilePaymentInfoHeading: {
-      fontSize: '0.95rem'
-    },
-    verySmallMobileMediaScroll: {
-      gap: '0.6rem'
-    },
-    verySmallMobileMediaItem: {
-      width: '140px'
-    },
-    verySmallMobileMediaItemImage: {
-      height: '140px'
-    },
-    verySmallMobileRoomGrid: {
-      gap: '1.2rem'
-    }
-  };
-  
-  // Get responsive styles
-  const getResponsiveStyle = (baseStyle, mobileStyle, smallMobileStyle, verySmallMobileStyle) => {
-    if (isVerySmallMobile && verySmallMobileStyle) return { ...baseStyle, ...verySmallMobileStyle };
-    if (isSmallMobile && smallMobileStyle) return { ...baseStyle, ...smallMobileStyle };
-    if (isMobile && mobileStyle) return { ...baseStyle, ...mobileStyle };
-    return baseStyle;
-  };
-  
   return (
-    <div style={glassyStyle.body}>
+    <div className="accommodation-container">
       <style>
         {`
+          /* Base styles with glassmorphism theme */
+          :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --accent: #4facfe;
+            --background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            --text: #ffffff;
+            --highlight: #4facfe;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: rgba(31, 38, 135, 0.15);
+          }
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+          }
+          
+          .accommodation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px;
+          }
+          
+          /* Glassmorphism utility class */
+          .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            transition: transform 0.3s ease;
+          }
+          
+          .glass:hover {
+            transform: translateY(-5px);
+          }
+          
+          /* Section Styles */
+          .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            animation: fadeInUp 0.8s ease;
+          }
+          
+          /* Header Styles */
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+          }
+          
+          .heading {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+          }
+          
+          .last-updated {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+          }
+          
+          /* Special Banner */
+          .special-banner {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            text-align: center;
+            width: 100%;
+          }
+          
+          /* Description */
+          .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--text);
+            opacity: 0.9;
+            text-align: center;
+          }
+          
+          /* Payment Info */
+          .payment-info {
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            font-size: 1rem;
+            line-height: 1.6;
+          }
+          
+          .payment-info strong {
+            color: var(--highlight);
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 0.8rem;
+          }
+          
+          .payment-info .highlight {
+            color: var(--highlight);
+            font-weight: 600;
+          }
+          
+          /* Media Scroll */
+          .media-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding-bottom: 1.5rem;
+            margin-bottom: 3rem;
+            scroll-snap-type: x mandatory;
+          }
+          
+          .media-scroll::-webkit-scrollbar {
+            height: 8px;
+          }
+          
+          .media-scroll::-webkit-scrollbar-track {
+            background: var(--glass-bg);
+            border-radius: 4px;
+          }
+          
+          .media-scroll::-webkit-scrollbar-thumb {
+            background: var(--highlight);
+            border-radius: 4px;
+          }
+          
+          .media-item {
+            flex: 0 0 auto;
+            width: 280px;
+            scroll-snap-align: start;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+          }
+          
+          .media-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+          }
+          
+          .new-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(255, 65, 108, 0.4);
+            animation: subtlePulse 2s infinite;
+          }
+          
+          /* Room Grid */
+          .room-grid {
+            display: grid;
+            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          }
+          
+          /* Room Card */
+          .room-card {
+            padding: 2rem;
+            text-align: left;
+            position: relative;
+            transition: all 0.3s ease;
+          }
+          
+          .room-card.hovered {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.3);
+          }
+          
+          .room-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.5s ease;
+          }
+          
+          .room-card:hover .room-image {
+            transform: scale(1.03);
+          }
+          
+          .room-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            font-weight: 600;
+          }
+          
+          .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 500;
+          }
+          
+          .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 1.2rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+          }
+          
+          .form-input:focus, .form-select:focus {
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
+          }
+          
+          .checkbox-label {
+            display: block;
+            margin-top: 1rem;
+            margin-bottom: 1.2rem;
+            color: var(--text);
+            font-size: 1rem;
+            cursor: pointer;
+          }
+          
+          .checkbox-input {
+            margin-right: 0.5rem;
+          }
+          
+          .room-total {
+            color: var(--highlight);
+            font-weight: 600;
+            margin: 1.5rem 0;
+            font-size: 1.3rem;
+          }
+          
+          .reserve-button {
+            display: inline-block;
+            padding: 14px 24px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            text-align: center;
+            width: 100%;
+            font-size: 1rem;
+          }
+          
+          .reserve-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+          }
+          
+          /* Mpesa Payment */
+          .mpesa-payment {
+            margin-top: 1rem;
+            position: relative;
+          }
+          
+          .mpesa-heading {
+            margin-bottom: 1rem;
+            color: var(--highlight);
+            font-size: 1.2rem;
+            font-weight: 600;
+          }
+          
+          .mpesa-input {
+            padding: 12px 16px;
+            width: 100%;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+          }
+          
+          .mpesa-input:focus {
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
+          }
+          
+          .mpesa-button {
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            text-align: center;
+            width: 100%;
+            font-size: 1rem;
+          }
+          
+          .mpesa-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+          }
+          
+          .mpesa-button.processing {
+            background: rgba(100, 116, 139, 0.8);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+          }
+          
+          .processing-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 25px;
+            border-radius: 12px;
+            z-index: 10;
+            font-weight: 500;
+          }
+          
+          /* Date Picker */
+          .react-datepicker {
+            background-color: var(--glass-bg) !important;
+            border: 1px solid var(--glass-border) !important;
+            color: var(--text) !important;
+            backdrop-filter: blur(12px) !important;
+            border-radius: 12px !important;
+          }
+          
+          .react-datepicker__header {
+            background-color: var(--glass-bg) !important;
+            border-bottom: 1px solid var(--glass-border) !important;
+          }
+          
+          .react-datepicker__day--selected,
+          .react-datepicker__day--keyboard-selected {
+            background-color: var(--highlight) !important;
+            color: var(--background) !important;
+            border-radius: 50% !important;
+          }
+          
+          .react-datepicker__day:hover {
+            background-color: rgba(79, 172, 254, 0.3) !important;
+            border-radius: 50% !important;
+          }
+          
+          /* Animations */
           @keyframes fadeInUp {
-            from {opacity: 0; transform: translateY(20px);}
-            to {opacity: 1; transform: translateY(0);}
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
           }
-          @keyframes shimmer {
-            0% { background-position: -200px 0; }
-            100% { background-position: calc(200px + 100%) 0; }
-          }
+          
           @keyframes subtlePulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.8; }
           }
-          .react-datepicker {
-            background-color: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            color: #e2e8f0 !important;
-            backdrop-filter: blur(12px) !important;
-            border-radius: 12px !important;
-            WebkitBackdropFilter: blur(12px) !important;
+          
+          /* Responsive Styles */
+          @media (max-width: 768px) {
+            .section {
+              padding: 2rem 1rem;
+            }
+            
+            .heading {
+              font-size: 2rem;
+            }
+            
+            .media-scroll {
+              gap: 1rem;
+            }
+            
+            .media-item {
+              width: 220px;
+            }
+            
+            .media-image {
+              height: 160px;
+            }
+            
+            .room-grid {
+              gap: 1.8rem;
+            }
+            
+            .room-card {
+              padding: 1.5rem;
+            }
+            
+            .room-image {
+              height: 180px;
+            }
+            
+            .room-title {
+              font-size: 1.3rem;
+            }
           }
-          .react-datepicker__header {
-            background-color: rgba(255, 255, 255, 0.08) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+          
+          @media (max-width: 480px) {
+            .section {
+              padding: 1.5rem 0.8rem;
+            }
+            
+            .heading {
+              font-size: 1.7rem;
+            }
+            
+            .description {
+              font-size: 1rem;
+            }
+            
+            .payment-info {
+              padding: 1.5rem;
+              font-size: 0.9rem;
+            }
+            
+            .media-scroll {
+              gap: 0.8rem;
+            }
+            
+            .media-item {
+              width: 180px;
+            }
+            
+            .media-image {
+              height: 140px;
+            }
+            
+            .room-grid {
+              gap: 1.5rem;
+            }
+            
+            .room-card {
+              padding: 1.2rem;
+            }
+            
+            .room-image {
+              height: 160px;
+            }
+            
+            .room-title {
+              font-size: 1.2rem;
+            }
+            
+            .form-label {
+              font-size: 0.9rem;
+            }
+            
+            .form-input, .form-select {
+              padding: 10px 14px;
+              font-size: 0.9rem;
+            }
+            
+            .checkbox-label {
+              font-size: 0.9rem;
+            }
+            
+            .room-total {
+              font-size: 1.1rem;
+            }
+            
+            .reserve-button {
+              padding: 12px 20px;
+              font-size: 0.9rem;
+            }
+            
+            .mpesa-heading {
+              font-size: 1.1rem;
+            }
+            
+            .mpesa-input {
+              padding: 10px 14px;
+              font-size: 0.9rem;
+            }
+            
+            .mpesa-button {
+              padding: 10px 16px;
+              font-size: 0.9rem;
+            }
           }
-          .react-datepicker__day--selected,
-          .react-datepicker__day--keyboard-selected {
-            background-color: #38bdf8 !important;
-            color: #0f172a !important;
-            border-radius: 50% !important;
-          }
-          .react-datepicker__day:hover {
-            background-color: rgba(56, 189, 248, 0.3) !important;
-            border-radius: 50% !important;
+          
+          @media (max-width: 333px) {
+            .section {
+              padding: 1.2rem 0.6rem;
+            }
+            
+            .heading {
+              font-size: 1.5rem;
+            }
+            
+            .description {
+              font-size: 0.95rem;
+            }
+            
+            .payment-info {
+              padding: 1.2rem;
+              font-size: 0.85rem;
+            }
+            
+            .media-scroll {
+              gap: 0.6rem;
+            }
+            
+            .media-item {
+              width: 160px;
+            }
+            
+            .media-image {
+              height: 120px;
+            }
+            
+            .room-grid {
+              gap: 1.2rem;
+            }
+            
+            .room-card {
+              padding: 1rem;
+            }
+            
+            .room-image {
+              height: 140px;
+            }
+            
+            .room-title {
+              font-size: 1.1rem;
+            }
+            
+            .form-label {
+              font-size: 0.85rem;
+            }
+            
+            .form-input, .form-select {
+              padding: 8px 12px;
+              font-size: 0.85rem;
+            }
+            
+            .checkbox-label {
+              font-size: 0.85rem;
+            }
+            
+            .room-total {
+              font-size: 1rem;
+            }
+            
+            .reserve-button {
+              padding: 10px 16px;
+              font-size: 0.85rem;
+            }
+            
+            .mpesa-heading {
+              font-size: 1rem;
+            }
+            
+            .mpesa-input {
+              padding: 8px 12px;
+              font-size: 0.85rem;
+            }
+            
+            .mpesa-button {
+              padding: 8px 14px;
+              font-size: 0.85rem;
+            }
           }
         `}
       </style>
       
       <Navbar />
-      <section style={getResponsiveStyle(
-        glassyStyle.section,
-        glassyStyle.mobileSection,
-        glassyStyle.smallMobileSection,
-        glassyStyle.verySmallMobileSection
-      )}>
-        <div style={glassyStyle.header}>
-          <h2 style={getResponsiveStyle(
-            glassyStyle.heading,
-            glassyStyle.mobileHeading,
-            glassyStyle.smallMobileHeading,
-            glassyStyle.verySmallMobileHeading
-          )}>
-            🏨 Settlers Inn Booking
-          </h2>
-          <div style={glassyStyle.lastUpdated}>
+      <section className="section">
+        <div className="header">
+          <h2 className="heading">🏨 Settlers Inn Booking</h2>
+          <div className="last-updated glass">
             {lastUpdated}
           </div>
         </div>
         
-        <div className="special-banner" style={glassyStyle.specialBanner}>
+        <div className="special-banner">
           🌟 {dailySpecial} 🌟
         </div>
         
-        <p style={getResponsiveStyle(
-          glassyStyle.description,
-          null,
-          glassyStyle.smallMobileDescription,
-          glassyStyle.verySmallMobileDescription
-        )}>
+        <p className="description">
           You can book with M-PESA or choose to pay on arrival.
         </p>
         
-        <div style={getResponsiveStyle(
-          glassyStyle.paymentInfo,
-          null,
-          glassyStyle.smallMobilePaymentInfo,
-          glassyStyle.verySmallMobilePaymentInfo
-        )}>
-          <strong style={getResponsiveStyle(
-            glassyStyle.paymentInfoHeading,
-            null,
-            glassyStyle.smallMobilePaymentInfoHeading,
-            glassyStyle.verySmallMobilePaymentInfoHeading
-          )}>📱 How to Pay via M-PESA</strong><br />
-          1. Go to <strong style={glassyStyle.paymentInfoText}>Lipa na M-PESA</strong> → Paybill<br />
-          2. Enter Paybill Number: <strong style={glassyStyle.paymentInfoText}>522533</strong><br />
-          3. Account Number: <strong style={glassyStyle.paymentInfoText}>5936175</strong><br />
+        <div className="payment-info glass">
+          <strong>📱 How to Pay via M-PESA</strong><br />
+          1. Go to <span className="highlight">Lipa na M-PESA</span> → Paybill<br />
+          2. Enter Paybill Number: <span className="highlight">522533</span><br />
+          3. Account Number: <span className="highlight">5936175</span><br />
           4. Enter Amount<br />
           5. Enter your PIN and confirm<br /><br />
           ✅ Then enter the M-PESA Code below to confirm, or skip to pay later.
         </div>
         
-        <div className="media-scroll" style={getResponsiveStyle(
-          glassyStyle.mediaScroll,
-          glassyStyle.mobileMediaScroll,
-          glassyStyle.smallMobileMediaScroll,
-          glassyStyle.verySmallMobileMediaScroll
-        )}>
+        <div className="media-scroll">
           {mediaItems.map((src, i) => {
             const isVideo = src.endsWith('.mp4');
             return (
-              <div key={i} style={getResponsiveStyle(
-                glassyStyle.mediaItem,
-                glassyStyle.mobileMediaItem,
-                glassyStyle.smallMobileMediaItem,
-                glassyStyle.verySmallMobileMediaItem
-              )}>
+              <div key={i} className="media-item glass">
                 {isVideo ? (
                   <video 
                     src={src} 
-                    style={getResponsiveStyle(
-                      glassyStyle.mediaItemImage,
-                      null,
-                      glassyStyle.smallMobileMediaItemImage,
-                      glassyStyle.verySmallMobileMediaItemImage
-                    )} 
+                    className="media-image" 
                     autoPlay 
                     loop 
                     muted 
@@ -885,16 +880,11 @@ const Accommodation = () => {
                   <img 
                     src={src} 
                     alt={`media-${i}`} 
-                    style={getResponsiveStyle(
-                      glassyStyle.mediaItemImage,
-                      null,
-                      glassyStyle.smallMobileMediaItemImage,
-                      glassyStyle.verySmallMobileMediaItemImage
-                    )} 
+                    className="media-image" 
                   />
                 )}
                 {i === 0 && (
-                  <div style={glassyStyle.newBadge}>
+                  <div className="new-badge">
                     NEW
                   </div>
                 )}
@@ -903,12 +893,7 @@ const Accommodation = () => {
           })}
         </div>
         
-        <div style={getResponsiveStyle(
-          glassyStyle.roomGrid,
-          glassyStyle.mobileRoomGrid,
-          glassyStyle.smallMobileRoomGrid,
-          glassyStyle.verySmallMobileRoomGrid
-        )}>
+        <div className="room-grid">
           <RoomCard type="standard" />
           <RoomCard type="family" />
           <RoomCard type="conference" />
