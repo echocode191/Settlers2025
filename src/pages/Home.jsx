@@ -261,14 +261,17 @@ const Home = () => {
     <div className="home-container">
       <style>
         {`
-          /* Base styles with seasonal theme variables */
+          /* Base styles with glassmorphism theme */
           :root {
-            --primary: ${seasonalTheme.colors.primary};
-            --secondary: ${seasonalTheme.colors.secondary};
-            --accent: ${seasonalTheme.colors.accent};
-            --background: ${seasonalTheme.colors.background};
-            --text: ${seasonalTheme.colors.text};
-            --highlight: ${seasonalTheme.colors.highlight};
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --accent: #4facfe;
+            --background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            --text: #ffffff;
+            --highlight: #4facfe;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: rgba(31, 38, 135, 0.15);
           }
           
           * {
@@ -279,10 +282,12 @@ const Home = () => {
           
           body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background);
+            background: var(--background);
             color: var(--text);
             line-height: 1.5;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
           }
           
           .home-container {
@@ -291,7 +296,16 @@ const Home = () => {
             flex-direction: column;
           }
           
-          /* Hero Section with glassmorphism */
+          /* Glassmorphism utility class */
+          .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+          }
+          
+          /* Hero Section with enhanced glassmorphism */
           .hero-section {
             position: relative;
             height: 90vh;
@@ -302,8 +316,6 @@ const Home = () => {
             overflow: hidden;
             color: #fff;
             text-align: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
-                        url('/assets/hero-fallback.jpg') center/cover no-repeat;
           }
           
           .hero-video {
@@ -319,35 +331,36 @@ const Home = () => {
           .hero-content {
             position: relative;
             z-index: 2;
-            padding: 1.5rem;
+            padding: 2rem;
             max-width: 600px;
             width: 90%;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.18);
             animation: fadeIn 1.5s ease-in-out;
+            transition: transform 0.3s ease;
+          }
+          
+          .hero-content:hover {
+            transform: translateY(-5px);
           }
           
           .hero-title {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            letter-spacing: -0.5px;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
           }
           
           .hero-phrase {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
             font-weight: 400;
-            opacity: 0.9;
+            opacity: 0.95;
           }
           
           .hero-subtitle {
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.8;
+            font-size: 1rem;
+            margin-bottom: 1.8rem;
+            opacity: 0.85;
           }
           
           .hero-buttons {
@@ -359,27 +372,28 @@ const Home = () => {
           
           .hero-button {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: #fff;
             border-radius: 30px;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
+            font-weight: 600;
+            font-size: 1rem;
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            border: none;
           }
           
           .hero-button:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
           }
           
-          .hero-button.primary {
-            background-color: var(--primary);
-            color: white;
-            border: 1px solid var(--primary);
+          .hero-button.secondary {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
           }
           
           .stats-container {
@@ -391,14 +405,9 @@ const Home = () => {
             justify-content: center;
             gap: 1.5rem;
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            margin: 0 15px;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
-            border: 1px solid rgba(255, 255, 255, 0.18);
           }
           
           .stat-item {
@@ -406,14 +415,14 @@ const Home = () => {
           }
           
           .stat-number {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: #fff;
           }
           
           .stat-label {
-            font-size: 0.8rem;
-            opacity: 0.8;
+            font-size: 0.85rem;
+            opacity: 0.85;
           }
           
           /* Section Styles with glassmorphism */
@@ -425,69 +434,63 @@ const Home = () => {
           }
           
           .intro-section {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
             text-align: center;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: background-color 0.5s ease;
+            margin-bottom: 2.5rem;
+            transition: transform 0.3s ease;
+          }
+          
+          .intro-section:hover {
+            transform: translateY(-5px);
           }
           
           .special-banner {
             display: inline-block;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             color: white;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 30px;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
           }
           
           .intro-text {
-            font-size: 0.95rem;
-            color: var(--text);
+            font-size: 1.1rem;
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.7;
           }
           
           /* Featured Dishes */
           .featured-dishes {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
           }
           
           .dish-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
           }
           
           .dish-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
           }
           
           .dish-card.active {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
           }
           
           .dish-image-container {
             position: relative;
-            height: 180px;
+            height: 200px;
             overflow: hidden;
           }
           
@@ -504,86 +507,85 @@ const Home = () => {
           
           .new-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--accent);
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             color: white;
-            padding: 4px 10px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
           }
           
           .dish-content {
-            padding: 1.2rem;
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
           }
           
           .dish-title {
-            font-size: 1.1rem;
-            margin-bottom: 0.4rem;
-            color: var(--text);
+            font-size: 1.3rem;
+            margin-bottom: 0.6rem;
             font-weight: 600;
           }
           
           .dish-desc {
-            color: var(--text);
-            opacity: 0.8;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.5;
           }
           
           /* Reviews Section */
           .reviews-section {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
             text-align: center;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: background-color 0.5s ease;
+            margin-bottom: 2.5rem;
+            transition: transform 0.3s ease;
+          }
+          
+          .reviews-section:hover {
+            transform: translateY(-5px);
           }
           
           .reviews-title {
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            color: var(--text);
+            font-size: 1.8rem;
+            margin-bottom: 1.8rem;
             font-weight: 600;
           }
           
           .review-rotator {
-            min-height: 80px;
+            min-height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
           }
           
           .review-text {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-style: italic;
-            color: var(--text);
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.7;
           }
           
           /* Facebook Section */
           .facebook-section {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
           }
           
           .facebook-title {
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            color: var(--text);
+            font-size: 1.8rem;
+            margin-bottom: 1.8rem;
             font-weight: 600;
           }
           
           .facebook-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
           }
           
           .facebook-embed {
@@ -591,29 +593,19 @@ const Home = () => {
             height: 350px;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
           }
           
           /* Quick Access */
           .quick-access {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 10px;
+            bottom: 25px;
+            right: 25px;
             display: flex;
-            gap: 10px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            gap: 12px;
             z-index: 100;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.4s ease, opacity 0.4s ease;
             transform: translateY(100px);
             opacity: 0;
-            border: 1px solid rgba(255, 255, 255, 0.5);
           }
           
           .quick-access.visible {
@@ -625,54 +617,52 @@ const Home = () => {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            color: var(--primary);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text);
             text-decoration: none;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
           }
           
           .quick-link:hover {
-            background-color: var(--primary);
-            color: white;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.5);
           }
           
           /* Install Toast */
           .install-toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            color: var(--text);
-            padding: 12px 20px;
-            border-radius: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            font-size: 0.85rem;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 0.95rem;
             z-index: 10000;
             max-width: 90%;
             text-align: center;
             cursor: pointer;
             animation: fadeInOut 7s ease-in-out;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            font-weight: 500;
           }
           
           /* New Content Banner */
           .new-content-banner {
             position: fixed;
-            top: 80px;
-            right: 15px;
-            background: linear-gradient(90deg, var(--accent), var(--highlight));
-            color: white;
-            padding: 8px 14px;
+            top: 90px;
+            right: 20px;
+            padding: 10px 18px;
             border-radius: 30px;
-            font-weight: 500;
-            font-size: 0.85rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
             z-index: 100;
             display: flex;
             align-items: center;
@@ -689,42 +679,42 @@ const Home = () => {
             background: none;
             border: none;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            margin-left: 8px;
+            margin-left: 10px;
             line-height: 1;
           }
           
           /* Footer */
           .footer-text {
             text-align: center;
-            margin-top: 2rem;
-            color: var(--text);
-            font-size: 0.85rem;
+            margin-top: 2.5rem;
+            font-size: 0.9rem;
             padding: 0 1rem;
             opacity: 0.8;
           }
           
           /* Animations */
           @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
           }
           
           @keyframes fadeInOut {
-            0% { opacity: 0; transform: translate(-50%, 10px); }
+            0% { opacity: 0; transform: translate(-50%, 20px); }
             15% { opacity: 1; transform: translate(-50%, 0); }
             85% { opacity: 1; }
-            100% { opacity: 0; transform: translate(-50%, 10px); }
+            100% { opacity: 0; transform: translate(-50%, 20px); }
           }
           
           /* Seasonal decorative elements */
           .seasonal-decoration {
             position: absolute;
-            font-size: 1.5rem;
-            opacity: 0.6;
-            animation: float 6s ease-in-out infinite;
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: float 7s ease-in-out infinite;
             z-index: 1;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
           }
           
           .decoration-1 {
@@ -753,7 +743,7 @@ const Home = () => {
           
           @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
             100% { transform: translateY(0px) rotate(0deg); }
           }
           
@@ -765,7 +755,7 @@ const Home = () => {
             }
             
             .hero-title {
-              font-size: 2rem;
+              font-size: 2.2rem;
             }
             
             .hero-phrase {
@@ -783,7 +773,7 @@ const Home = () => {
             
             .stats-container {
               flex-direction: column;
-              gap: 0.8rem;
+              gap: 1rem;
               bottom: 15px;
             }
             
@@ -792,7 +782,8 @@ const Home = () => {
             }
             
             .featured-dishes {
-              grid-template-columns: 1fr;
+              grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+              gap: 1.5rem;
             }
             
             .facebook-embed {
@@ -801,6 +792,18 @@ const Home = () => {
             }
             
             .seasonal-decoration {
+              font-size: 1.5rem;
+            }
+            
+            .quick-access {
+              bottom: 20px;
+              right: 20px;
+              gap: 10px;
+            }
+            
+            .quick-link {
+              width: 45px;
+              height: 45px;
               font-size: 1.2rem;
             }
           }
@@ -812,34 +815,94 @@ const Home = () => {
             }
             
             .hero-title {
-              font-size: 1.8rem;
+              font-size: 1.9rem;
+            }
+            
+            .hero-phrase {
+              font-size: 0.95rem;
+            }
+            
+            .hero-subtitle {
+              font-size: 0.9rem;
+            }
+            
+            .hero-content {
+              padding: 1.5rem;
+            }
+            
+            .intro-section, .reviews-section {
+              padding: 1.8rem 1.5rem;
+            }
+            
+            .reviews-title, .facebook-title {
+              font-size: 1.5rem;
+            }
+            
+            .review-text {
+              font-size: 1rem;
+            }
+            
+            .quick-access {
+              bottom: 15px;
+              right: 15px;
+            }
+            
+            .quick-link {
+              width: 40px;
+              height: 40px;
+              font-size: 1.1rem;
+            }
+            
+            .seasonal-decoration {
+              font-size: 1.2rem;
+            }
+          }
+          
+          @media (max-width: 333px) {
+            .hero-title {
+              font-size: 1.7rem;
             }
             
             .hero-phrase {
               font-size: 0.9rem;
             }
             
-            .hero-content {
-              padding: 1.2rem;
+            .hero-subtitle {
+              font-size: 0.85rem;
             }
             
-            .intro-section, .reviews-section {
-              padding: 1.5rem 1.2rem;
-            }
-            
-            .reviews-title, .facebook-title {
-              font-size: 1.4rem;
-            }
-            
-            .review-text {
+            .hero-button {
+              padding: 10px 18px;
               font-size: 0.9rem;
             }
             
+            .section {
+              padding: 1.5rem 1rem;
+            }
+            
+            .intro-section, .reviews-section {
+              padding: 1.5rem 1rem;
+            }
+            
+            .dish-title {
+              font-size: 1.1rem;
+            }
+            
+            .dish-desc {
+              font-size: 0.9rem;
+            }
+            
+            .reviews-title, .facebook-title {
+              font-size: 1.3rem;
+            }
+            
+            .review-text {
+              font-size: 0.95rem;
+            }
+            
             .quick-access {
-              bottom: 15px;
-              right: 15px;
-              padding: 8px;
-              gap: 8px;
+              bottom: 10px;
+              right: 10px;
             }
             
             .quick-link {
@@ -852,76 +915,18 @@ const Home = () => {
               font-size: 1rem;
             }
           }
-          
-          @media (max-width: 333px) {
-            .hero-title {
-              font-size: 1.6rem;
-            }
-            
-            .hero-phrase {
-              font-size: 0.85rem;
-            }
-            
-            .hero-subtitle {
-              font-size: 0.8rem;
-            }
-            
-            .hero-button {
-              padding: 10px 18px;
-              font-size: 0.85rem;
-            }
-            
-            .section {
-              padding: 1.5rem 0.8rem;
-            }
-            
-            .intro-section, .reviews-section {
-              padding: 1.2rem 0.8rem;
-            }
-            
-            .dish-title {
-              font-size: 1rem;
-            }
-            
-            .dish-desc {
-              font-size: 0.85rem;
-            }
-            
-            .reviews-title, .facebook-title {
-              font-size: 1.2rem;
-            }
-            
-            .review-text {
-              font-size: 0.85rem;
-            }
-            
-            .quick-access {
-              bottom: 10px;
-              right: 10px;
-            }
-            
-            .quick-link {
-              width: 32px;
-              height: 32px;
-              font-size: 0.9rem;
-            }
-            
-            .seasonal-decoration {
-              font-size: 0.9rem;
-            }
-          }
         `}
       </style>
       
       <Navbar />
       {showInstallToast && (
-        <div className="install-toast" onClick={handleInstallClick}>
+        <div className="install-toast glass" onClick={handleInstallClick}>
           💡 Tip: Tap here to <strong>install Settlers Inn</strong> as an app!
         </div>
       )}
       
       {newContentCount > 0 && (
-        <div className={`new-content-banner ${newContentCount > 0 ? 'visible' : ''}`}>
+        <div className={`new-content-banner glass ${newContentCount > 0 ? 'visible' : ''}`}>
           <span>🆕 {newContentCount} new updates!</span>
           <button 
             className="close-button"
@@ -962,18 +967,18 @@ const Home = () => {
           Your browser does not support the video tag.
         </video>
         
-        <div className="hero-content">
+        <div className="hero-content glass">
           <h1 className="hero-title">Settlers Inn</h1>
           <p className="hero-phrase">{seasonalTheme.phrases[phraseIndex]}</p>
           <p className="hero-subtitle">Established 2021 | Kericho Highlands</p>
           
           <div className="hero-buttons">
             <a href="/menu" className="hero-button">🍽️ Our Menu</a>
-            <a href="/accommodation" className="hero-button primary">🛏️ Book a Room</a>
+            <a href="/accommodation" className="hero-button secondary">🛏️ Book a Room</a>
           </div>
         </div>
         
-        <div className="stats-container">
+        <div className="stats-container glass">
           <div className="stat-item">
             <div className="stat-number">{visitorCount}+</div>
             <div className="stat-label">Guests Since 2021</div>
@@ -990,7 +995,7 @@ const Home = () => {
       </section>
       
       <section className="section">
-        <div className="intro-section">
+        <div className="intro-section glass">
           <div className="special-banner">
             {seasonalTheme.emojis.special} {dailySpecial} {seasonalTheme.emojis.special}
           </div>
@@ -1007,7 +1012,7 @@ const Home = () => {
           {featuredDishes.map((dish, i) => (
             <div 
               key={i} 
-              className={`dish-card ${activeDish === i ? 'active' : ''}`}
+              className={`dish-card glass ${activeDish === i ? 'active' : ''}`}
               onMouseEnter={() => setActiveDish(i)}
             >
               <div className="dish-image-container">
@@ -1031,7 +1036,7 @@ const Home = () => {
       </section>
       
       <section className="section">
-        <div className="reviews-section">
+        <div className="reviews-section glass">
           <h2 className="reviews-title">{seasonalTheme.emojis.review} Guest Experiences</h2>
           <div className="review-rotator">
             <p className="review-text">{reviews[reviewIndex]}</p>
@@ -1044,7 +1049,7 @@ const Home = () => {
           <h2 className="facebook-title">{seasonalTheme.emojis.facebook} Facebook Reviews</h2>
           <div className="facebook-container">
             <div 
-              className="fb-xfbml-parse-ignore facebook-embed"
+              className="fb-xfbml-parse-ignore facebook-embed glass"
               data-href="https://www.facebook.com/settlersinn1/"
               data-tabs="timeline"
               data-width="380"
