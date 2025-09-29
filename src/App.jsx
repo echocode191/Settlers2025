@@ -141,7 +141,7 @@ const App = () => {
         left: 0,
         width: '100%',
         height: '100%',
-        background: 'linear-gradient(135deg, #111, #222)',
+        background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -153,74 +153,85 @@ const App = () => {
         {/* Main Loader */}
         <div style={{
           textAlign: 'center',
-          padding: '30px',
-          borderRadius: '12px',
-          background: 'rgba(0, 0, 0, 0.55)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
-          animation: 'fadeInOutLoader 2.5s ease-in-out infinite'
+          padding: '40px',
+          borderRadius: '20px',
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 8px 32px rgba(31, 38, 135, 0.37)',
+          border: '1px solid rgba(255, 255, 255, 0.18)',
+          animation: 'fadeInOutLoader 2.5s ease-in-out infinite',
+          transform: 'perspective(1000px) rotateX(5deg)',
+          transformStyle: 'preserve-3d'
         }}>
           {/* Welcome Message */}
           <div style={{
-            fontSize: '28px',
+            fontSize: '32px',
             fontWeight: 'bold',
             marginBottom: '15px',
             letterSpacing: '1px',
-            color: '#eee'
+            color: '#fff',
+            textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            transform: 'translateZ(20px)'
           }}>
             Welcome to Settlers Inn
           </div>
           
           <div style={{
-            fontSize: '18px',
+            fontSize: '20px',
             marginBottom: '25px',
-            color: '#ddd',
-            lineHeight: '1.5'
+            color: '#f0f0f0',
+            lineHeight: '1.5',
+            transform: 'translateZ(15px)'
           }}>
             Preparing your premium experience...
           </div>
           
           {/* Loading Text */}
           <div style={{
-            fontSize: '22px',
+            fontSize: '24px',
             fontWeight: 'bold',
             marginBottom: '20px',
             letterSpacing: '1px',
-            color: '#eee'
+            color: '#fff',
+            transform: 'translateZ(10px)'
           }}>
             Loading...
           </div>
 
           {/* Animated Dots */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', transform: 'translateZ(5px)' }}>
             <div className="loader-dots">
               <div style={{
-                width: '10px',
-                height: '10px',
-                margin: '0 5px',
-                backgroundColor: '#3498db',
-                borderRadius: '50%',
-                display: 'inline-block',
-                animation: 'bounce 1.4s infinite ease-in-out both'
-              }}></div>
-              <div style={{
-                width: '10px',
-                height: '10px',
-                margin: '0 5px',
-                backgroundColor: '#3498db',
+                width: '12px',
+                height: '12px',
+                margin: '0 6px',
+                backgroundColor: '#fff',
                 borderRadius: '50%',
                 display: 'inline-block',
                 animation: 'bounce 1.4s infinite ease-in-out both',
-                animationDelay: '0.16s'
+                boxShadow: '0 0 10px rgba(255,255,255,0.7)'
               }}></div>
               <div style={{
-                width: '10px',
-                height: '10px',
-                margin: '0 5px',
-                backgroundColor: '#3498db',
+                width: '12px',
+                height: '12px',
+                margin: '0 6px',
+                backgroundColor: '#fff',
                 borderRadius: '50%',
                 display: 'inline-block',
                 animation: 'bounce 1.4s infinite ease-in-out both',
-                animationDelay: '0.32s'
+                animationDelay: '0.16s',
+                boxShadow: '0 0 10px rgba(255,255,255,0.7)'
+              }}></div>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                margin: '0 6px',
+                backgroundColor: '#fff',
+                borderRadius: '50%',
+                display: 'inline-block',
+                animation: 'bounce 1.4s infinite ease-in-out both',
+                animationDelay: '0.32s',
+                boxShadow: '0 0 10px rgba(255,255,255,0.7)'
               }}></div>
             </div>
           </div>
@@ -233,38 +244,32 @@ const App = () => {
           rel="noopener noreferrer"
           style={{
             position: 'absolute',
-            bottom: '25px',
+            bottom: '30px',
             right: '30px',
-            padding: '12px 24px',
-            borderRadius: '30px',
-            background: 'rgba(255, 255, 255, 0.1)',
+            padding: '15px 25px',
+            borderRadius: '50px',
+            background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
             color: '#fff',
             fontWeight: 'bold',
-            fontSize: '14px',
+            fontSize: '16px',
             cursor: 'pointer',
             textDecoration: 'none',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            backdropFilter: 'blur(10px)',
+            boxShadow: '0 0 20px rgba(245, 87, 108, 0.7)',
             transition: 'all 0.3s ease',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-            e.currentTarget.style.transform = 'translateY(0)';
+            gap: '10px',
+            animation: 'glow 2s infinite alternate, bounce 2s infinite',
+            transform: 'perspective(1000px) rotateX(-10deg)',
+            transformStyle: 'preserve-3d'
           }}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
             <line x1="12" y1="22.08" x2="12" y2="12"></line>
           </svg>
-          Data Purchase
+          Bingwa Sokoni Data Purchase
         </a>
       </div>
     );
@@ -281,12 +286,12 @@ const App = () => {
           top: '10px',
           left: '50%',
           transform: 'translateX(-50%)',
-          background: '#111',
+          background: 'linear-gradient(45deg, #6a11cb 0%, #2575fc 100%)',
           color: '#fff',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          fontSize: '15px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+          padding: '12px 24px',
+          borderRadius: '30px',
+          fontSize: '16px',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
           zIndex: 9999,
           cursor: 'pointer',
           animation: 'fadeInOut 7s ease-in-out',
@@ -327,13 +332,13 @@ const bannerAnimation = `
   50% { opacity: 1; transform: scale(1); }
   100% { opacity: 0.7; transform: scale(0.95); }
 }
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 15px rgba(46, 204, 113, 0.6); }
-  50% { box-shadow: 0 0 40px rgba(46, 204, 113, 1); }
+@keyframes glow {
+  0% { box-shadow: 0 0 20px rgba(245, 87, 108, 0.7); }
+  100% { box-shadow: 0 0 30px rgba(245, 87, 108, 1), 0 0 40px rgba(245, 87, 108, 0.8); }
 }
-@keyframes floaty {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) perspective(1000px) rotateX(-10deg); }
+  50% { transform: translateY(-15px) perspective(1000px) rotateX(-10deg); }
 }
 `;
 
