@@ -53,11 +53,11 @@ const App = () => {
     };
   }, []);
 
-  // ---- Loader Timer (7s) ----
+  // ---- Loader Timer (8-10s) ----
   useEffect(() => {
     const adTimer = setTimeout(() => {
       setShowAdLoader(false);
-    }, 7000); // loader stays for 7s
+    }, 9000); // loader stays for 9 seconds (middle of 8-10s range)
     return () => clearTimeout(adTimer);
   }, []);
 
@@ -159,6 +159,27 @@ const App = () => {
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
           animation: 'fadeInOutLoader 2.5s ease-in-out infinite'
         }}>
+          {/* Welcome Message */}
+          <div style={{
+            fontSize: '28px',
+            fontWeight: 'bold',
+            marginBottom: '15px',
+            letterSpacing: '1px',
+            color: '#eee'
+          }}>
+            Welcome to Settlers Inn
+          </div>
+          
+          <div style={{
+            fontSize: '18px',
+            marginBottom: '25px',
+            color: '#ddd',
+            lineHeight: '1.5'
+          }}>
+            Preparing your premium experience...
+          </div>
+          
+          {/* Loading Text */}
           <div style={{
             fontSize: '22px',
             fontWeight: 'bold',
@@ -205,24 +226,46 @@ const App = () => {
           </div>
         </div>
 
-        {/* Alive Bingwa Sokoni Button (bottom-right) */}
-        <div style={{
-          position: 'absolute',
-          bottom: '25px',
-          right: '30px',
-          padding: '10px 22px',
-          borderRadius: '30px',
-          background: 'linear-gradient(135deg, #2ecc71, #27ae60)',
-          color: '#fff',
-          fontWeight: 'bold',
-          fontSize: '14px',
-          cursor: 'pointer',
-          boxShadow: '0 0 15px rgba(46, 204, 113, 0.6)',
-          animation: 'pulseGlow 2.5s infinite, floaty 3s ease-in-out infinite',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-        }}>
-          Bingwa Sokoni
-        </div>
+        {/* Data Purchase Button (bottom-right) */}
+        <a 
+          href="https://festus-bingwa-service.netlify.app/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{
+            position: 'absolute',
+            bottom: '25px',
+            right: '30px',
+            padding: '12px 24px',
+            borderRadius: '30px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            color: '#fff',
+            fontWeight: 'bold',
+            fontSize: '14px',
+            cursor: 'pointer',
+            textDecoration: 'none',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            backdropFilter: 'blur(10px)',
+            transition: 'all 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          Data Purchase
+        </a>
       </div>
     );
   }
