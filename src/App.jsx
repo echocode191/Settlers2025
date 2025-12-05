@@ -57,7 +57,7 @@ const App = () => {
   useEffect(() => {
     const adTimer = setTimeout(() => {
       setShowAdLoader(false);
-    }, 9000); // loader stays for 9 seconds (middle of 8-10s range)
+    }, 3000); // loader stays for 9 seconds (middle of 8-10s range)
     return () => clearTimeout(adTimer);
   }, []);
 
